@@ -1,7 +1,27 @@
 {
-  "name": "vue-quill",
+  "name": "@vue/quill",
+  "description": "Quill editor component for Vue 3",
   "version": "0.0.0",
-  "files": ["dist"],
+  "license": "MIT",
+  "author": {
+    "name": "Ahmad Luthfi Masruri",
+    "email": "luthfimasruri@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luthfimasruri/vue-quill.git"
+  },
+  "keywords": [
+    "vue-quill",
+    "vue3 quill",
+    "vue3 text editor",
+    "vue3 rich text editor",
+    "vue3 web editor",
+    "vue3 editor"
+  ],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/vue-quill.umd.js",
   "module": "./dist/vue-quill.es.js",
   "exports": {
@@ -16,11 +36,11 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@types/node": "^14.14.31",
     "quill": "^1.3.7",
     "vue": "^3.0.5"
   },
   "devDependencies": {
+    "@types/node": "^14.14.31",
     "@types/quill": "^2.0.5",
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",

@@ -1,8 +1,8 @@
 
 /*
-* Vue-Quill-Editor index.js
-* Author: surmon@foxmail.com
-* Github: https://github.com/surmon-china/vue-quill-editor
+* Vue-Quill index.js
+* Author: luthfimasruri@gmail.com
+* Github: https://github.com/luthfimasruri/vue-quill.git
 */
 
 import QuillEditor from "./QuillEditor.vue"

@@ -11,6 +11,9 @@
     "type": "git",
     "url": "https://github.com/luthfimasruri/vue-quill.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "vue-quill",
     "vue3 quill",

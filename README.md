@@ -1,26 +1,103 @@
-# Vue 3 + Typescript + Vite
+### Install
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+**NPM**
 
-## Recommended IDE Setup
+``` bash
+npm install vue3-quill-editor --save
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+# or
+yarn add vue3-quill-editor
+```
 
-### If Using `<script setup>`
+### Mount
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+**Mount with global**
 
-## Type Support For `.vue` Imports in TS
+``` javascript
+import { createApp } from 'vue'
+import Vue3QuillEditor from 'vue3-quill-editor'
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+const app = createApp()
+app.use(Vue3QuillEditor, /* { default global options } */)
 
-### If Using Volar
+```
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+**Mount with local component**
 
-### If Using Vetur
+```javascript
+import { QuillEditor } from 'vue3-quill-editor'
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette 5. Search and run "Select TypeScript version" -> "Use workspace version"
+export default {
+  components: {
+    QuillEditor
+  }
+}
+
+```
+
+### Component
+
+``` vue
+<template>
+  <!-- Two-way Data-Binding -->
+  <quill-editor
+    ref="myQuillEditor"
+    v-model="content"
+    :options="editorOption"
+    @blur="onEditorBlur($event)"
+    @focus="onEditorFocus($event)"
+    @ready="onEditorReady($event)"
+  />
+
+  <!-- Or manually control the data synchronization -->
+  <quill-editor
+    :content="content"
+    :options="editorOption"
+    @change="onEditorChange($event)"
+  />
+</template>
+
+<script>
+  // You can also register Quill modules in the component
+  import Quill from 'quill'
+  import someModule from '../yourModulePath/someQuillModule.js'
+  Quill.register('modules/someModule', someModule)
+  
+  export default {
+    data () {
+      return {
+        content: '<h2>I am Example</h2>',
+        editorOption: {
+          // Some Quill options...
+        }
+      }
+    },
+    methods: {
+      onEditorBlur(quill) {
+        console.log('editor blur!', quill)
+      },
+      onEditorFocus(quill) {
+        console.log('editor focus!', quill)
+      },
+      onEditorReady(quill) {
+        console.log('editor ready!', quill)
+      },
+      onEditorChange({ quill, html, text }) {
+        console.log('editor change!', quill, html, text)
+        this.content = html
+      }
+    },
+    computed: {
+      editor() {
+        return this.$refs.myQuillEditor.quill
+      }
+    },
+    mounted() {
+      console.log('this is current quill instance object', this.editor)
+    }
+  }
+</script>
+```
+
+### Quill
+[Quill API document](https://quilljs.com/docs/quickstart/)

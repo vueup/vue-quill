@@ -1,7 +1,7 @@
 {
   "name": "@vue/quill",
   "description": "Quill editor component for Vue 3",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": {
     "name": "Ahmad Luthfi Masruri",
@@ -15,7 +15,7 @@
     "access": "public"
   },
   "keywords": [
-    "vue-quill",
+    "vue3 quill",
     "vue3 quill",
     "vue3 text editor",
     "vue3 rich text editor",

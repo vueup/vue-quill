@@ -1,7 +1,7 @@
 {
-  "name": "@vue/quill",
+  "name": "vue3-quill-editor",
   "description": "Quill editor component for Vue 3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": {
     "name": "Ahmad Luthfi Masruri",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/luthfimasruri/vue-quill.git"
+    "url": "https://github.com/luthfimasruri/vue3-quill-editor.git"
   },
   "publishConfig": {
     "access": "public"

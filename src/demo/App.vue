@@ -1,3 +1,3 @@
 <template>
-  <VueQuill></VueQuill>
+  <QuillEditor></QuillEditor>
 </template>

@@ -35,34 +35,9 @@ const defaultOpts: object = {
   readOnly: false,
 };
 
-// pollfill
-if (typeof Object.assign != "function") {
-  Object.defineProperty(Object, "assign", {
-    value<T, U>(target: T, varArgs: U) {
-      if (target == null) {
-        throw new TypeError("Cannot convert undefined or null to object");
-      }
-      const to = Object(target);
-      for (let index = 1; index < arguments.length; index++) {
-        const nextSource = arguments[index];
-        if (nextSource != null) {
-          for (const nextKey in nextSource) {
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    },
-    writable: true,
-    configurable: true,
-  });
-}
-
 // export
 export default defineComponent({
-  name: "VueQuill",
+  name: "QuillEditor",
   props: {
     content: String,
     value: String,
@@ -82,7 +57,7 @@ export default defineComponent({
     },
   },
   setup: (props, ctx) => {
-    let quill: Quill | null;
+    let quill: Quill | null = null;
 
     const _options = ref<object>({});
     const _content = ref<string>("");
@@ -94,7 +69,6 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       quill = null;
-      // delete quill;
     });
 
     // Init Quill instance
@@ -161,26 +135,32 @@ export default defineComponent({
       }
     });
 
-    // // Watch content change
-    // watch(props.value, (newVal, oldVal) => {
-    //   if (this.quill) {
-    //     if (newVal && newVal !== _content.value) {
-    //       _content.value = newVal;
-    //       this.quill.pasteHTML(newVal);
-    //     } else if (!newVal) {
-    //       this.quill.setText("");
-    //     }
-    //   }
-    // })
+    // Watch content change
+    watch(
+      () => props.value,
+      (newVal, oldVal) => {
+        if (quill) {
+          if (newVal && newVal !== _content.value) {
+            _content.value = newVal;
+            quill.pasteHTML(newVal);
+          } else if (!newVal) {
+            quill.setText("");
+          }
+        }
+      }
+    );
 
-    // // Watch disabled change
-    // watch (props.disabled, (newVal, oldVal) => {
-    //   if (this.quill) {
-    //     this.quill.enable(!newVal);
-    //   }
-    // })
+    // Watch disabled change
+    watch(
+      () => props.disabled,
+      (newVal, oldVal) => {
+        if (quill) {
+          quill.enable(!newVal);
+        }
+      }
+    );
 
-    return { editor };
+    return { editor, quill };
   },
 });
 </script>

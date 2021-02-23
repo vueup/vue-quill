@@ -17,7 +17,8 @@
       "./node_modules/@types"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ]
   },
   "include": [

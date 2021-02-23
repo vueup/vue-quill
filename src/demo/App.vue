@@ -1,0 +1,3 @@
+<template>
+  <VueQuill></VueQuill>
+</template>

@@ -2,7 +2,7 @@
 /*
 * Vue-Quill index.js
 * Author: luthfimasruri@gmail.com
-* Github: https://github.com/luthfimasruri/vue-quill.git
+* Github: https://github.com/luthfimasruri/vue3-quill-editor.git
 */
 
 import QuillEditor from "./QuillEditor.vue"

@@ -7,6 +7,7 @@
 
 import QuillEditor from "./QuillEditor.vue"
 import { App } from "vue"
+
 import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme

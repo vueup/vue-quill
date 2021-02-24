@@ -56,6 +56,14 @@ export default defineComponent({
       default: () => ({}),
     },
   },
+  emits: [
+    "text-change",
+    "selection-change",
+    "editor-change",
+    "off",
+    "on",
+    "once",
+  ],
   setup: (props, ctx) => {
     let quill: Quill | null = null;
 

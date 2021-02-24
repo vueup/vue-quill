@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, './src/plugin/index.ts'),
+      entry: path.resolve(__dirname, './src/main.ts'),
       name: 'QuillEditor',
       formats: ['es', 'cjs', 'umd', 'iife'],
     },

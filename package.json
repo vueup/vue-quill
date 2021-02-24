@@ -45,7 +45,7 @@
       "import": "./dist/vue3-quill-editor.es.js",
       "require": "./dist/vue3-quill-editor.umd.js"
     },
-    "./":  "./"
+    "./": "./"
   },
   "scripts": {
     "dev": "vite",
@@ -63,6 +63,7 @@
     "@vue/compiler-sfc": "^3.0.5",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-chunks": "^2.0.2",
+    "types-quill-delta": "^1.0.0",
     "typescript": "^4.1.3",
     "vite": "^2.0.1"
   }

@@ -1,3 +1,0 @@
-<template>
-  <QuillEditor></QuillEditor>
-</template>

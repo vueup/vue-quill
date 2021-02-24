@@ -7,8 +7,21 @@
 
 <script lang="ts">
 // require sources
-import Quill from "quill";
-import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import Quill, {
+  TextChangeHandler,
+  SelectionChangeHandler,
+  EditorChangeHandler,
+  RangeStatic,
+} from "quill";
+import { Delta } from "types-quill-delta";
+import {
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from "vue";
 
 const defaultOpts: object = {
   theme: "snow",
@@ -39,11 +52,13 @@ const defaultOpts: object = {
 export default defineComponent({
   name: "QuillEditor",
   props: {
-    content: String,
-    value: String,
-    disabled: {
+    content: {
+      type: Object as PropType<Delta>,
+      default: {},
+    },
+    enable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     options: {
       type: Object,
@@ -57,18 +72,16 @@ export default defineComponent({
     },
   },
   emits: [
+    "update:content",
+    "blur",
+    "focus",
+    "ready",
     "text-change",
     "selection-change",
     "editor-change",
-    "off",
-    "on",
-    "once",
   ],
   setup: (props, ctx) => {
-    let quill: Quill | null = null;
-
     const _options = ref<object>({});
-    const _content = ref<string>("");
     const defaultOptions = ref<object>(defaultOpts);
 
     onMounted(() => {
@@ -80,6 +93,7 @@ export default defineComponent({
     });
 
     // Init Quill instance
+    let quill: Quill | null = null;
     const editor = ref<Element>();
     const initialize = () => {
       if (editor) {
@@ -90,68 +104,53 @@ export default defineComponent({
           props.globalOptions,
           props.options
         );
-
-        // Instance
+        // Create Instance
         quill = new Quill(editor.value as Element, _options.value);
-
-        quill.enable(false);
-
         // Set editor content
-        if (props.value || props.content) {
-          quill.pasteHTML(props.value || props.content || "");
-        }
-
-        // Disabled editor
-        if (!props.disabled) {
-          quill.enable(true);
-        }
-
-        // Mark model as touched if editor lost focus
-        quill.on("selection-change", (range: any) => {
-          if (!range) {
-            ctx.emit("blur", quill);
-          } else {
-            ctx.emit("focus", quill);
-          }
-        });
-
-        // Update model if text changes
-        quill.on("text-change", (delta: any, oldDelta: any, source: any) => {
-          let html = editor.value?.children[0].innerHTML;
-          const newQuill = quill;
-          const text = quill?.getText();
-          if (html === "<p><br></p>") html = "";
-          _content.value = html as string;
-          ctx.emit("input", _content.value);
-          ctx.emit("change", { html, text, newQuill });
-        });
-
+        if (props.content) quill.setContents(props.content);
+        // Set event handlers
+        quill.on("text-change", onTextChangeHandler);
+        quill.on("selection-change", onSelectionChangeHandler);
+        quill.on("editor-change", onEditorChageHandler);
         // Emit ready event
         ctx.emit("ready", quill);
       }
     };
 
-    // Watch content change
-    watch(_content, (newVal, oldVal) => {
-      if (quill) {
-        if (newVal && newVal !== _content.value) {
-          _content.value = newVal;
-          quill.pasteHTML(newVal);
-        } else if (!newVal) {
-          quill.setText("");
-        }
+    const onTextChangeHandler: TextChangeHandler = (...args) => {
+      // Update model if text changes
+      ctx.emit("update:content", quill?.getContents());
+      ctx.emit("text-change", ...args);
+    };
+
+    const onSelectionChangeHandler: SelectionChangeHandler = (
+      range: RangeStatic,
+      ...args
+    ) => {
+      // Mark model as touched if editor lost focus
+      if (!range) {
+        ctx.emit("blur", quill);
+      } else {
+        ctx.emit("focus", quill);
       }
-    });
+      ctx.emit("selection-change", range, ...args);
+    };
+
+    const onEditorChageHandler: EditorChangeHandler = (
+      name: String,
+      ...args
+    ) => {
+      ctx.emit("editor-change", name, ...args);
+    };
 
     // Watch content change
     watch(
-      () => props.value,
-      (newVal, oldVal) => {
+      () => props.content,
+      (newContent, oldContent) => {
         if (quill) {
-          if (newVal && newVal !== _content.value) {
-            _content.value = newVal;
-            quill.pasteHTML(newVal);
-          } else if (!newVal) {
+          if (newContent && newContent !== props.content) {
+            quill.setContents(newContent);
+          } else if (!newContent) {
             quill.setText("");
           }
         }
@@ -160,15 +159,21 @@ export default defineComponent({
 
     // Watch disabled change
     watch(
-      () => props.disabled,
+      () => props.enable,
       (newVal, oldVal) => {
         if (quill) {
-          quill.enable(!newVal);
+          quill.enable(newVal);
         }
       }
     );
 
-    return { editor, quill };
+    return {
+      editor,
+      quill,
+      onTextChangeHandler,
+      onSelectionChangeHandler,
+      onEditorChageHandler,
+    };
   },
 });
 </script>

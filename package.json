@@ -1,6 +1,6 @@
 {
   "name": "vue3-quill-editor",
-  "version": "0.0.8",
+  "version": "0.0.18",
   "description": "Quill editor component for Vue 3",
   "keywords": [
     "vue3 quill",
@@ -8,7 +8,8 @@
     "vue3 text editor",
     "vue3 rich text editor",
     "vue3 web editor",
-    "vue3 editor"
+    "vue3 editor",
+    "vue3 wysiwyg"
   ],
   "homepage": "https://github.com/luthfimasruri/vue3-quill-editor.git",
   "bugs": {
@@ -33,13 +34,18 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/*.css",
+    "dist/*.js"
+  ],
   "main": "./dist/vue3-quill-editor.umd.js",
   "module": "./dist/vue3-quill-editor.es.js",
   "exports": {
     ".": {
       "import": "./dist/vue3-quill-editor.es.js",
       "require": "./dist/vue3-quill-editor.umd.js"
-    }
+    },
+    "./":  "./"
   },
   "scripts": {
     "dev": "vite",

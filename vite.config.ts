@@ -45,6 +45,7 @@ const buildDemoConfig = defineConfig({
   plugins: [
     vue()
   ],
+  base: "/vueup-quill/",
   build: {
     outDir: path.resolve(__dirname, './demo/dist'),
     rollupOptions: {

@@ -1,19 +1,19 @@
 {
-  "name": "vue3-quill-editor",
-  "version": "0.1.2",
+  "name": "@vueup/quill",
+  "version": "0.0.0",
   "description": "Quill editor component for Vue 3",
   "keywords": [
-    "vue3 quill",
-    "vue3 quill",
-    "vue3 text editor",
-    "vue3 rich text editor",
-    "vue3 web editor",
-    "vue3 editor",
-    "vue3 wysiwyg"
+    "vue 3 quill",
+    "vue 3 quill",
+    "vue 3 text editor",
+    "vue 3 rich text editor",
+    "vue 3 web editor",
+    "vue 3 editor",
+    "vue 3 wysiwyg"
   ],
-  "homepage": "https://github.com/luthfimasruri/vue3-quill-editor.git",
+  "homepage": "https://github.com/luthfimasruri/vueup-quill.git",
   "bugs": {
-    "url": "https://github.com/luthfimasruri/vue3-quill-editor/issues",
+    "url": "https://github.com/luthfimasruri/vueup-quill/issues",
     "email": "luthfimasruri@gmail.com"
   },
   "license": "MIT",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/luthfimasruri/vue3-quill-editor.git"
+    "url": "https://github.com/luthfimasruri/vueup-quill.git"
   },
   "publishConfig": {
     "access": "public"
@@ -38,20 +38,20 @@
     "dist/*.css",
     "dist/*.js"
   ],
-  "main": "./dist/vue3-quill-editor.umd.js",
-  "module": "./dist/vue3-quill-editor.es.js",
+  "main": "./dist/quill.umd.js",
+  "module": "./dist/quill.es.js",
   "exports": {
     ".": {
-      "import": "./dist/vue3-quill-editor.es.js",
-      "require": "./dist/vue3-quill-editor.umd.js"
+      "import": "./dist/quill.es.js",
+      "require": "./dist/quill.umd.js"
     },
     "./": "./"
   },
   "scripts": {
-    "dev": "vite serve",
-    "build:lib": "vite build --mode lib",
-    "build:demo": "vite build --mode demo",
-    "serve": "vite preview",
+    "lib:build": "vite build --mode lib",
+    "demo:dev": "vite serve",
+    "demo:build": "vite build --mode demo",
+    "demo:serve": "vite preview",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"

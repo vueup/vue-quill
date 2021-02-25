@@ -12,6 +12,7 @@ import Quill, {
   SelectionChangeHandler,
   EditorChangeHandler,
   RangeStatic,
+  QuillOptionsStatic,
 } from "quill";
 import { Delta } from "types-quill-delta";
 import {
@@ -22,31 +23,7 @@ import {
   ref,
   watch,
 } from "vue";
-
-const defaultOpts: object = {
-  theme: "snow",
-  boundary: document.body,
-  modules: {
-    toolbar: [
-      ["bold", "italic", "underline", "strike"],
-      ["blockquote", "code-block"],
-      [{ header: 1 }, { header: 2 }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ script: "sub" }, { script: "super" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      [{ direction: "rtl" }],
-      [{ size: ["small", false, "large", "huge"] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ color: [] }, { background: [] }],
-      [{ font: [] }],
-      [{ align: [] }],
-      ["clean"],
-      ["link", "image", "video"],
-    ],
-  },
-  placeholder: "Insert text here ...",
-  readOnly: false,
-};
+import config from "./quill.config";
 
 // export
 export default defineComponent({
@@ -61,14 +38,21 @@ export default defineComponent({
       default: true,
     },
     options: {
-      type: Object,
+      type: Object as PropType<QuillOptionsStatic>,
       required: false,
-      default: () => ({}),
+      default: {},
     },
     globalOptions: {
-      type: Object,
+      type: Object as PropType<QuillOptionsStatic>,
       required: false,
-      default: () => ({}),
+      default: {},
+    },
+    baseOptions: {
+      type: String,
+      default: "default",
+      validator: (value: string) => {
+        return Object.keys(config.options).indexOf(value) !== -1;
+      },
     },
   },
   emits: [
@@ -81,9 +65,6 @@ export default defineComponent({
     "editor-change",
   ],
   setup: (props, ctx) => {
-    const _options = ref<object>({});
-    const defaultOptions = ref<object>(defaultOpts);
-
     onMounted(() => {
       initialize();
     });
@@ -94,18 +75,18 @@ export default defineComponent({
 
     // Init Quill instance
     let quill: Quill | null = null;
+    const options = ref<QuillOptionsStatic>({});
     const editor = ref<Element>();
     const initialize = () => {
       if (editor) {
         // Options
-        _options.value = Object.assign(
-          {},
-          defaultOptions.value,
+        options.value = Object.assign(
+          options.value,
           props.globalOptions,
-          props.options
+          config.options[props.baseOptions]
         );
         // Create Instance
-        quill = new Quill(editor.value as Element, _options.value);
+        quill = new Quill(editor.value as Element, options.value);
         // Set editor content
         if (props.content) quill.setContents(props.content);
         // Set event handlers
@@ -157,7 +138,7 @@ export default defineComponent({
       }
     );
 
-    // Watch disabled change
+    // Watch enable change
     watch(
       () => props.enable,
       (newVal, oldVal) => {
@@ -168,6 +149,7 @@ export default defineComponent({
     );
 
     return {
+      options,
       editor,
       quill,
       onTextChangeHandler,

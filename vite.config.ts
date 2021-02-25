@@ -3,8 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import copy from 'rollup-plugin-copy'
 const path = require('path')
 
-// https://vitejs.dev/config/
-export default defineConfig({
+const buildPluginConfig = defineConfig({
   plugins: [
     vue()
   ],
@@ -19,6 +18,7 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       output: {
+        exports: "named",
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
@@ -40,3 +40,44 @@ export default defineConfig({
     }
   }
 })
+
+const buildDemoConfig = defineConfig({
+  plugins: [
+    vue()
+  ],
+  build: {
+    outDir: path.resolve(__dirname, './demo/dist'),
+    rollupOptions: {
+      plugins: [
+        copy({
+          targets: [
+            { src: './docs/.vitepress/dist/*', dest: './demo/dist/docs' },
+          ],
+          hook: 'writeBundle',
+          verbose: true,
+          copyOnce: true
+        })
+      ]
+    }
+  }
+})
+
+const defaultConfig = defineConfig({
+  plugins: [
+    vue()
+  ]
+})
+
+
+export default ({ command, mode }) => {
+  if (command === 'build' && mode === 'lib') {
+    return buildPluginConfig
+  } else if (command === 'build' && mode === 'demo') {
+    return buildDemoConfig
+  } else {
+    return defaultConfig
+  }
+}
+
+// https://vitejs.dev/config/
+

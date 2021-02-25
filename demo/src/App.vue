@@ -2,6 +2,7 @@
   <QuillEditor
     v-model:content="myContent"
     @textChange="handleTextChange"
+    baseOptions="snow"
   ></QuillEditor>
   <p>{{ myContent }}</p>
 </template>

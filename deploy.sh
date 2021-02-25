@@ -4,10 +4,10 @@
 set -e
 
 # build
-npm run docs:build
+# npm run docs:build
 
 # navigate into the build output directory
-cd docs/.vitepress/dist
+cd demo/dist
 
 # if you are deploying to a custom domain
 # echo 'www.example.com' > CNAME

@@ -9,8 +9,8 @@ rm -r -f demo/dist
 rm -r -f docs/.vitepress/dist
 
 # build
-npm run docs:build
 npm run lib:build
+npm run docs:build
 npm run demo:build
 
 # navigate into the build output directory

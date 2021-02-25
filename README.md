@@ -3,10 +3,10 @@
 **NPM**
 
 ``` bash
-npm install vue3-quill-editor --save
+npm install @vueup/quill --save
 
 # or
-yarn add vue3-quill-editor
+yarn add @vueup/quill
 ```
 
 ### Mount
@@ -15,17 +15,17 @@ yarn add vue3-quill-editor
 
 ``` javascript
 import { createApp } from 'vue'
-import Vue3QuillEditor from 'vue3-quill-editor'
+import VueUpQuill from '@vueup/quill'
 
 const app = createApp()
-app.use(Vue3QuillEditor, /* { default global options } */)
+app.use(VueUpQuill, /* { default global options } */)
 
 ```
 
 **Mount with local component**
 
 ```javascript
-import { QuillEditor } from 'vue3-quill-editor'
+import { QuillEditor } from '@vueup/quill'
 
 export default {
   components: {
@@ -42,7 +42,7 @@ export default {
   <!-- Two-way Data-Binding -->
   <quill-editor
     ref="myQuillEditor"
-    v-model="content"
+    v-model:content="content"
     :options="editorOption"
     @blur="onEditorBlur($event)"
     @focus="onEditorFocus($event)"
@@ -51,52 +51,11 @@ export default {
 
   <!-- Or manually control the data synchronization -->
   <quill-editor
-    :content="content"
+    v-model:content="content"
     :options="editorOption"
-    @change="onEditorChange($event)"
+    @editorChange="onEditorChange($event)"
   />
 </template>
-
-<script>
-  // You can also register Quill modules in the component
-  import Quill from 'quill'
-  import someModule from '../yourModulePath/someQuillModule.js'
-  Quill.register('modules/someModule', someModule)
-  
-  export default {
-    data () {
-      return {
-        content: '<h2>I am Example</h2>',
-        editorOption: {
-          // Some Quill options...
-        }
-      }
-    },
-    methods: {
-      onEditorBlur(quill) {
-        console.log('editor blur!', quill)
-      },
-      onEditorFocus(quill) {
-        console.log('editor focus!', quill)
-      },
-      onEditorReady(quill) {
-        console.log('editor ready!', quill)
-      },
-      onEditorChange({ quill, html, text }) {
-        console.log('editor change!', quill, html, text)
-        this.content = html
-      }
-    },
-    computed: {
-      editor() {
-        return this.$refs.myQuillEditor.quill
-      }
-    },
-    mounted() {
-      console.log('this is current quill instance object', this.editor)
-    }
-  }
-</script>
 ```
 
 ### Quill

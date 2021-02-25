@@ -1,6 +1,6 @@
 {
   "name": "@vueup/quill",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Quill editor component for Vue 3",
   "keywords": [
     "vue 3 quill",
@@ -11,9 +11,9 @@
     "vue 3 editor",
     "vue 3 wysiwyg"
   ],
-  "homepage": "https://github.com/luthfimasruri/vueup-quill.git",
+  "homepage": "https://vueup.github.io/vueup-quill/",
   "bugs": {
-    "url": "https://github.com/luthfimasruri/vueup-quill/issues",
+    "url": "https://github.com/vueup/vueup-quill/issues",
     "email": "luthfimasruri@gmail.com"
   },
   "license": "MIT",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/luthfimasruri/vueup-quill.git"
+    "url": "https://github.com/vueup/vueup-quill.git"
   },
   "publishConfig": {
     "access": "public"

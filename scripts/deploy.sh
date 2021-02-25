@@ -4,12 +4,10 @@
 set -e
 
 # remove dists
-rm -r -f dist
 rm -r -f demo/dist
 rm -r -f docs/.vitepress/dist
 
 # build
-npm run lib:build
 npm run docs:build
 npm run demo:build
 

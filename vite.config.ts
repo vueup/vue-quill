@@ -23,7 +23,11 @@ const libBuildConfig = defineConfig({
       },
       plugins: [
         copy({
-          targets: [{ src: './node_modules/quill/dist/*.css', dest: './dist', transform: (contents, filename) => csso.minify(contents).css }],
+          targets: [{
+            src: './node_modules/quill/dist/*.css',
+            dest: './dist',
+            transform: (contents, filename) => csso.minify(contents).css
+          }],
           hook: 'writeBundle',
           verbose: true,
           copyOnce: true

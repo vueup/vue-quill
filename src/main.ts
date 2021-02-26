@@ -19,7 +19,4 @@ const install = (app: App<Element>, globalOptions: object) => {
   app.component(QuillEditor.name, QuillEditor)
 }
 
-export { Quill, QuillEditor, install }
-const VueUpQuill = { Quill, QuillEditor, install }
-export default VueUpQuill
-
+export { install as default, Quill, QuillEditor }

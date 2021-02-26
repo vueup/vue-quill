@@ -44,7 +44,7 @@ const bubbleOptions: QuillOptionsStatic | StringMap = {
   boundary: document.body
 }
 const snowOptions: QuillOptionsStatic = {
-  theme: "snow"
+  theme: "snow",
 }
 
 export default {

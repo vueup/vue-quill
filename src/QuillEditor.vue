@@ -1,7 +1,7 @@
 <template>
   <div class="quill-editor">
     <slot name="toolbar"></slot>
-    <div ref="editor"></div>
+    <div ref="editor" class="editor" :class="editorClass"></div>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import Quill, {
 } from "quill";
 import { Delta } from "types-quill-delta";
 import {
+  computed,
   defineComponent,
   onBeforeUnmount,
   onMounted,
@@ -28,6 +29,7 @@ import config from "./quill.config";
 // export
 export default defineComponent({
   name: "QuillEditor",
+  // inheritAttrs: false,
   props: {
     content: {
       type: Object as PropType<Delta>,
@@ -76,7 +78,8 @@ export default defineComponent({
     // Init Quill instance
     let quill: Quill | null = null;
     const options = ref<QuillOptionsStatic>({});
-    const editor = ref<Element>();
+    const editor = ref<HTMLDivElement>();
+
     const initialize = () => {
       if (editor) {
         // Options
@@ -124,6 +127,12 @@ export default defineComponent({
       ctx.emit("editor-change", name, ...args);
     };
 
+    let editorClass = computed(() => {
+      if (props.baseOptions !== "bubble") {
+        return "overflow-y-auto";
+      }
+    });
+
     // Watch content change
     watch(
       () => props.content,
@@ -149,9 +158,10 @@ export default defineComponent({
     );
 
     return {
+      quill,
       options,
       editor,
-      quill,
+      editorClass,
       onTextChangeHandler,
       onSelectionChangeHandler,
       onEditorChageHandler,
@@ -159,3 +169,17 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.quill-editor {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+.quill-editor .editor {
+  flex-grow: 1;
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+</style>

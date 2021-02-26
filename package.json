@@ -67,6 +67,7 @@
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.2.4",
+    "csso": "^4.2.0",
     "postcss": "^8.2.6",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-css-chunks": "^2.0.2",

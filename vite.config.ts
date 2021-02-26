@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import copy from 'rollup-plugin-copy'
+const csso = require('csso');
 
 const libBuildConfig = defineConfig({
   plugins: [
@@ -22,7 +23,7 @@ const libBuildConfig = defineConfig({
       },
       plugins: [
         copy({
-          targets: [{ src: './node_modules/quill/dist/*.css', dest: './dist' }],
+          targets: [{ src: './node_modules/quill/dist/*.css', dest: './dist', transform: (contents, filename) => csso.minify(contents).css }],
           hook: 'writeBundle',
           verbose: true,
           copyOnce: true

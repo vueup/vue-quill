@@ -26,7 +26,7 @@ const libBuildConfig = defineConfig({
           targets: [{
             src: './node_modules/quill/dist/*.css',
             dest: './dist',
-            transform: (contents, filename) => csso.minify(contents).css
+            transform: (contents, filename) => csso.minify(contents.toString()).css
           }],
           hook: 'writeBundle',
           verbose: true,

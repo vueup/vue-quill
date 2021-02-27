@@ -1,7 +1,7 @@
 /*
-* Vue-Quill index.js
+* VueUpQuill main.ts
 * Author: luthfimasruri@gmail.com
-* Github: https://github.com/luthfimasruri/vue3-quill-editor.git
+* Github: https://github.com/vueup/vueup-quill.git
 */
 
 import QuillEditor from "./QuillEditor.vue"

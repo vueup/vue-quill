@@ -2,20 +2,20 @@
 
 A Quill Editor for Vue 3 plugin or component.
 <p>
-  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Version">
-    <img src="https://img.shields.io/npm/v/@vueup/quill?color=blue">
+  <a href="https://www.npmjs.com/package/@vueup/quill" title="Version">
+    <img src="https://img.shields.io/npm/v/@vueup/quill?color=blue" alt="Version">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Total downloads">
-    <img src="https://img.shields.io/npm/dt/@vueup/quill">
+  <a href="https://www.npmjs.com/package/@vueup/quill" title="Total downloads">
+    <img src="https://img.shields.io/npm/dt/@vueup/quill" alt="Total downloads">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" alt="License">
-    <img src="https://img.shields.io/npm/l/@vueup/quill?color=orange">
+  <a href="https://www.npmjs.com/package/@vueup/quill" title="License">
+    <img src="https://img.shields.io/npm/l/@vueup/quill?color=orange" alt="License">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Checks">
-    <img src="https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github">
+  <a href="https://www.npmjs.com/package/@vueup/quill" title="Checks">
+    <img src="https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github" alt="Checks">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Last commit">
-    <img src="https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github">
+  <a href="https://www.npmjs.com/package/@vueup/quill" title="Last commit">
+    <img src="https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github" alt="Last commit">
   </a>
  </p>
 

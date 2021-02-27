@@ -1,15 +1,17 @@
 {
   "name": "@vueup/quill",
-  "version": "0.0.1",
-  "description": "Quill editor component for Vue 3",
+  "version": "0.0.2",
+  "description": "Quill Editor for Vue 3 plugin or component.",
   "keywords": [
-    "vue 3 quill",
-    "vue 3 quill",
+    "vue 3 quill plugin",
+    "vue 3 quill component",
+    "vue 3 quill editor",
     "vue 3 text editor",
     "vue 3 rich text editor",
     "vue 3 web editor",
     "vue 3 editor",
-    "vue 3 wysiwyg"
+    "vue 3 wysiwyg",
+    "vue 3 wysiwyg editor"
   ],
   "homepage": "https://vueup.github.io/vueup-quill/",
   "bugs": {
@@ -70,7 +72,6 @@
     "csso": "^4.2.0",
     "postcss": "^8.2.6",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-css-chunks": "^2.0.2",
     "tailwindcss": "^2.0.3",
     "types-quill-delta": "^1.0.0",
     "typescript": "^4.1.3",

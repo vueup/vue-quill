@@ -5,7 +5,7 @@ A Quill Editor for Vue 3 plugin or component.
 ![npm (scoped)](https://img.shields.io/npm/v/@vueup/quill?color=blue) 
 ![npm](https://img.shields.io/npm/dw/@vueup/quill)
 ![NPM](https://img.shields.io/npm/l/@vueup/quill?color=orange)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/vueup/vueup-quill/master)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/vueup/vueup-quill?logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github)
 

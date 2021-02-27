@@ -1,6 +1,6 @@
 # VueUpQuill
 
-Quill Editor plugin and component for Vue 3.
+A Quill Editor for Vue 3 plugin or component.
 
 ## Installation
 

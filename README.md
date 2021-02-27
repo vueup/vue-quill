@@ -1,15 +1,18 @@
-### Install
+# VueUpQuill
 
-**NPM**
+Quill Editor plugin and component for Vue 3.
+
+## Installation
+
+Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install VueUpQuill.
 
 ``` bash
 npm install @vueup/quill --save
-
-# or
+# OR
 yarn add @vueup/quill
 ```
 
-### Mount
+## Usage
 
 **Mount with global**
 
@@ -58,5 +61,13 @@ export default {
 </template>
 ```
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
 ### Quill
 [Quill API document](https://quilljs.com/docs/quickstart/)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

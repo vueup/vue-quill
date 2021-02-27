@@ -1,19 +1,30 @@
 # VueUpQuill
 
 A Quill Editor for Vue 3 plugin or component.
-
-![npm (scoped)](https://img.shields.io/npm/v/@vueup/quill?color=blue) 
-![npm](https://img.shields.io/npm/dt/@vueup/quill)
-![NPM](https://img.shields.io/npm/l/@vueup/quill?color=orange)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github)
-![GitHub last commit](https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github)
+<p>
+  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Version">
+    <img src="https://img.shields.io/npm/v/@vueup/quill?color=blue">
+  </a>
+  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Total downloads">
+    <img src="https://img.shields.io/npm/dt/@vueup/quill">
+  </a>
+  <a href="https://www.npmjs.com/package/@vueup/quill" alt="License">
+    <img src="https://img.shields.io/npm/l/@vueup/quill?color=orange">
+  </a>
+  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Checks">
+    <img src="https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github">
+  </a>
+  <a href="https://www.npmjs.com/package/@vueup/quill" alt="Last commit">
+    <img src="https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github">
+  </a>
+ </p>
 
 ## Installation
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install VueUpQuill.
 
 ``` bash
-npm install @vueup/quill --save
+npm install @vueup/quill
 # OR
 yarn add @vueup/quill
 ```

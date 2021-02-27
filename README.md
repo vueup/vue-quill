@@ -11,10 +11,10 @@ A Quill Editor for Vue 3 plugin or component.
   <a href="https://www.npmjs.com/package/@vueup/quill" title="License">
     <img src="https://img.shields.io/npm/l/@vueup/quill?color=orange" alt="License">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" title="Checks">
+  <a href="https://github.com/vueup/vueup-quill" title="Checks">
     <img src="https://img.shields.io/github/checks-status/vueup/vueup-quill/master?logo=github" alt="Checks">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/quill" title="Last commit">
+  <a href="https://github.com/vueup/vueup-quill" title="Last commit">
     <img src="https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github" alt="Last commit">
   </a>
  </p>

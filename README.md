@@ -38,7 +38,7 @@ export default {
 
 ```
 
-### Component
+**SFC Implementation**
 
 ``` vue
 <template>

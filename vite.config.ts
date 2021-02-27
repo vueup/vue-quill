@@ -74,6 +74,3 @@ export default ({ command, mode }) => {
     return defaultConfig
   }
 }
-
-// https://vitejs.dev/config/
-

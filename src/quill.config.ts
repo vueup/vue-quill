@@ -50,7 +50,14 @@ const snowOptions: QuillOptionsStatic = {
 export default {
   events: [...defaultEvents, ...customEvents],
   options: {
-    none: {},
+    none: {
+      theme: "snow",
+      // boundary: document.body,
+      modules: {
+        toolbar: [
+          ["bold", "italic", "underline", "strike"]]
+      }
+    },
     default: defaultOptions,
     minimal: minimalOptions,
     bubble: bubbleOptions,

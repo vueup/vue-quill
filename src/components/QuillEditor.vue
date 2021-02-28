@@ -1,5 +1,8 @@
 <template>
-  <div ref="wrapper">
+  <Suspense>
+    <StyleLoader></StyleLoader>
+  </Suspense>
+  <div ref="wrapper" v-bind="$attrs">
     <slot name="toolbar"></slot>
     <div ref="editor"></div>
   </div>
@@ -25,9 +28,11 @@ import {
   watch,
 } from "vue";
 import { options as quillOptions } from "./options";
+import StyleLoader from "./StyleLoader.vue";
 
 // export
 export default defineComponent({
+  components: { StyleLoader },
   name: "QuillEditor",
   props: {
     content: {

@@ -80,7 +80,7 @@
         v-model:content="myContent"
         @ready="handleReady"
         @textChange="handleTextChange"
-        baseOptions="snow"
+        theme="snow"
       ></QuillEditor>
       <Prism language="html" :code="myHTML"></Prism>
       <button @click="clickMe">Click</button>

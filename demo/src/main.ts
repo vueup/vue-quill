@@ -6,7 +6,7 @@ import 'quill/dist/quill.bubble.css' // for bubble theme
 import "./style.css"
 
 // import QuillEditor from "@vueup/quill" // when use npm
-import QuillEditor from "../../dist/quill.es"
+import QuillEditor from "../../src/main"
 
 createApp(App)
   .use(QuillEditor)

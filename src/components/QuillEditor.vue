@@ -1,7 +1,7 @@
 <template>
-  <div class="quill-editor">
+  <div ref="wrapper" class="quill-editor">
     <slot name="toolbar"></slot>
-    <div ref="editor" class="editor" :class="editorClass"></div>
+    <div ref="editor" class="editor"></div>
   </div>
 </template>
 
@@ -24,12 +24,11 @@ import {
   ref,
   watch,
 } from "vue";
-import config from "./quill.config";
+import { options as quillOptions } from "./options";
 
 // export
 export default defineComponent({
   name: "QuillEditor",
-  // inheritAttrs: false,
   props: {
     content: {
       type: Object as PropType<Delta>,
@@ -39,32 +38,35 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    theme: {
+      type: String,
+      default: "snow",
+    },
     options: {
-      type: Object as PropType<QuillOptionsStatic>,
+      type: [String, Object],
       required: false,
       default: {},
+      validator: (value: string | object) => {
+        if (typeof value === "string") {
+          return Object.keys(quillOptions).indexOf(value) !== -1;
+        }
+        return true;
+      },
     },
     globalOptions: {
       type: Object as PropType<QuillOptionsStatic>,
       required: false,
       default: {},
     },
-    baseOptions: {
-      type: String,
-      default: "none",
-      validator: (value: string) => {
-        return Object.keys(config.options).indexOf(value) !== -1;
-      },
-    },
   },
   emits: [
-    "update:content",
-    "blur",
-    "focus",
-    "ready",
     "text-change",
     "selection-change",
     "editor-change",
+    "update:content",
+    "focus",
+    "blur",
+    "ready",
   ],
   setup: (props, ctx) => {
     onMounted(() => {
@@ -78,36 +80,54 @@ export default defineComponent({
     // Init Quill instance
     let quill: Quill | null = null;
     const options = ref<QuillOptionsStatic>({});
+    const wrapper = ref<HTMLDivElement>();
     const editor = ref<HTMLDivElement>();
 
     const initialize = () => {
-      if (editor) {
+      if (editor.value && wrapper.value) {
         // Options
+        const themeOptions: QuillOptionsStatic = {
+          theme: props.theme,
+        };
+        let clientOptions: QuillOptionsStatic;
+        if (typeof props.options === "string") {
+          clientOptions = quillOptions[props.options];
+        } else {
+          clientOptions = props.options;
+        }
         options.value = Object.assign(
-          options.value,
-          props.globalOptions,
-          config.options[props.baseOptions]
+          {},
+          themeOptions,
+          clientOptions,
+          props.globalOptions
         );
         // Create Instance
         quill = new Quill(editor.value as Element, options.value);
         // Set editor content
         if (props.content) quill.setContents(props.content);
         // Set event handlers
-        quill.on("text-change", onTextChangeHandler);
-        quill.on("selection-change", onSelectionChangeHandler);
-        quill.on("editor-change", onEditorChageHandler);
+        quill.on("text-change", handleTextChange);
+        quill.on("selection-change", handleSelectionChange);
+        quill.on("editor-change", handleEditorChange);
+        // Style the editor
+        if (props.theme !== "bubble") {
+          wrapper.value.style.display = "flex";
+          wrapper.value.style.flexDirection = "column";
+          editor.value.style.flexGrow = "1";
+          editor.value.style.overflowY = "auto";
+        }
         // Emit ready event
         ctx.emit("ready", quill);
       }
     };
 
-    const onTextChangeHandler: TextChangeHandler = (...args) => {
+    const handleTextChange: TextChangeHandler = (...args) => {
       // Update model if text changes
       ctx.emit("update:content", quill?.getContents());
       ctx.emit("text-change", ...args);
     };
 
-    const onSelectionChangeHandler: SelectionChangeHandler = (
+    const handleSelectionChange: SelectionChangeHandler = (
       range: RangeStatic,
       ...args
     ) => {
@@ -120,18 +140,9 @@ export default defineComponent({
       ctx.emit("selection-change", range, ...args);
     };
 
-    const onEditorChageHandler: EditorChangeHandler = (
-      name: String,
-      ...args
-    ) => {
+    const handleEditorChange: EditorChangeHandler = (name: String, ...args) => {
       ctx.emit("editor-change", name, ...args);
     };
-
-    let editorClass = computed(() => {
-      if (props.baseOptions !== "bubble") {
-        return "overflow-y-auto";
-      }
-    });
 
     // Watch content change
     watch(
@@ -157,29 +168,25 @@ export default defineComponent({
       }
     );
 
+    // Watch theme and options change
+    watch(
+      () => props.theme,
+      () => initialize()
+    );
+    watch(
+      () => props.options,
+      () => initialize()
+    );
+
     return {
       quill,
       options,
+      wrapper,
       editor,
-      editorClass,
-      onTextChangeHandler,
-      onSelectionChangeHandler,
-      onEditorChageHandler,
+      handleTextChange,
+      handleSelectionChange,
+      handleEditorChange,
     };
   },
 });
 </script>
-
-<style scoped>
-.quill-editor {
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-}
-.quill-editor .editor {
-  flex-grow: 1;
-}
-.overflow-y-auto {
-  overflow-y: auto;
-}
-</style>

@@ -1,7 +1,7 @@
 {
   "name": "@vueup/quill",
   "version": "0.0.2",
-  "description": "Quill Editor for Vue 3 plugin or component.",
+  "description": " NODE_ENV=productionQuill Editor for Vue 3 plugin or component.",
   "keywords": [
     "vue 3 quill plugin",
     "vue 3 quill component",
@@ -50,12 +50,12 @@
     "./": "./"
   },
   "scripts": {
-    "lib:build": "vite build --mode lib",
+    "lib:build": "cross-env NODE_ENV=production vite build --mode lib",
     "demo:dev": "vite serve --mode demo",
-    "demo:build": "vite build --mode demo",
+    "demo:build": "cross-env NODE_ENV=production vite build --mode demo",
     "demo:serve": "vite preview --mode demo",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "cross-env NODE_ENV=production vitepress build docs",
     "docs:serve": "vitepress serve docs"
   },
   "dependencies": {
@@ -69,6 +69,7 @@
     "@vitejs/plugin-vue": "^1.1.4",
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.2.4",
+    "cross-env": "^7.0.3",
     "csso": "^4.2.0",
     "postcss": "^8.2.6",
     "rollup-plugin-copy": "^3.4.0",

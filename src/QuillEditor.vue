@@ -51,7 +51,7 @@ export default defineComponent({
     },
     baseOptions: {
       type: String,
-      default: "default",
+      default: "none",
       validator: (value: string) => {
         return Object.keys(config.options).indexOf(value) !== -1;
       },

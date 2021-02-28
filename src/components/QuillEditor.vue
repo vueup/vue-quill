@@ -1,7 +1,7 @@
 <template>
-  <div ref="wrapper" class="quill-editor">
+  <div ref="wrapper">
     <slot name="toolbar"></slot>
-    <div ref="editor" class="editor"></div>
+    <div ref="editor"></div>
   </div>
 </template>
 
@@ -89,17 +89,16 @@ export default defineComponent({
         const themeOptions: QuillOptionsStatic = {
           theme: props.theme,
         };
-        let clientOptions: QuillOptionsStatic;
-        if (typeof props.options === "string") {
-          clientOptions = quillOptions[props.options];
-        } else {
-          clientOptions = props.options;
-        }
+        const clientOptions: QuillOptionsStatic =
+          typeof props.options === "string"
+            ? quillOptions[props.options]
+            : props.options;
+
         options.value = Object.assign(
           {},
-          themeOptions,
+          props.globalOptions,
           clientOptions,
-          props.globalOptions
+          themeOptions
         );
         // Create Instance
         quill = new Quill(editor.value as Element, options.value);
@@ -168,14 +167,24 @@ export default defineComponent({
       }
     );
 
-    // Watch theme and options change
-    watch(
-      () => props.theme,
-      () => initialize()
-    );
+    // Watch options change
     watch(
       () => props.options,
-      () => initialize()
+      () => {
+        wrapper.value?.querySelector(".ql-toolbar")?.remove();
+        initialize();
+      }
+    );
+
+    // Watch theme change
+    watch(
+      () => props.theme,
+      () => {
+        wrapper.value?.querySelector(".ql-toolbar")?.remove();
+        wrapper.value?.removeAttribute("style");
+        editor.value?.removeAttribute("style");
+        initialize();
+      }
     );
 
     return {
@@ -183,6 +192,7 @@ export default defineComponent({
       options,
       wrapper,
       editor,
+      toolbar,
       handleTextChange,
       handleSelectionChange,
       handleEditorChange,

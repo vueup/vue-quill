@@ -23,29 +23,6 @@ export default defineComponent({
     Hero,
     DemoEditor,
   },
-  setup: () => {
-    const myContent = ref([
-      { insert: "Hello " },
-      { insert: "World!", attributes: { bold: true } },
-      { insert: "\n" },
-    ]);
-    const myHTML = ref<string>("");
-    let myQuill: Quill | null = null;
-
-    const handleReady = (quill) => {
-      myQuill = quill;
-    };
-
-    const handleTextChange = (a: Delta, b: Delta, c: any) => {
-      myHTML.value = myQuill?.root.innerHTML as string;
-    };
-
-    const clickMe = () => {
-      myHTML.value = myQuill?.root.innerHTML as string;
-      console.log(myQuill?.root.innerHTML);
-    };
-
-    return { clickMe, myContent, myHTML, handleReady, handleTextChange };
-  },
+  setup: () => {},
 });
 </script>

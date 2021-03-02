@@ -68,7 +68,7 @@ export default defineComponent({
   ],
   setup: (props, ctx) => {
     let quill: Quill | null = null;
-    const options = ref<QuillOptionsStatic>({});
+    let options: QuillOptionsStatic = {};
     const wrapper = ref<HTMLDivElement>();
     const editor = ref<HTMLDivElement>();
 
@@ -84,14 +84,14 @@ export default defineComponent({
               : props.toolbar
           }
         };
-        options.value = Object.assign(
+        options = Object.assign(
           {},
           props.globalOptions,
           props.options,
           clientOptions,
         );
         // Create Instance
-        quill = new Quill(editor.value as Element, options.value);
+        quill = new Quill(editor.value as Element, options);
         // Set editor content
         if (props.content) quill.setContents(props.content);
         // Set event handlers
@@ -152,7 +152,7 @@ export default defineComponent({
     );
 
     watch(
-      [props.options, props.theme],
+      [() => props.options, () => props.theme],
       () => {
         wrapper.value?.removeAttribute("style");
         editor.value?.removeAttribute("style");
@@ -177,13 +177,8 @@ export default defineComponent({
     );
 
     return {
-      quill,
-      options,
       wrapper,
       editor,
-      handleTextChange,
-      handleSelectionChange,
-      handleEditorChange,
     };
   },
   render() {

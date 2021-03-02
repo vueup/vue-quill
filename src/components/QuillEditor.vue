@@ -171,7 +171,7 @@ export default defineComponent({
     watch(
       () => props.options,
       () => {
-        wrapper.value?.querySelector(".ql-toolbar")?.remove();
+        quill?.getModule("toolbar").container.remove();
         initialize();
       }
     );
@@ -180,9 +180,9 @@ export default defineComponent({
     watch(
       () => props.theme,
       () => {
-        wrapper.value?.querySelector(".ql-toolbar")?.remove();
         wrapper.value?.removeAttribute("style");
         editor.value?.removeAttribute("style");
+        quill?.getModule("toolbar").container.remove();
         initialize();
       }
     );

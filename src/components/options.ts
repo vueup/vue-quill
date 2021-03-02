@@ -1,8 +1,26 @@
 import { QuillOptionsStatic, StringMap } from "quill"
 
-const defaultOptions: QuillOptionsStatic = {}
-const minimalOptions: QuillOptionsStatic = {}
-const fullOptions: QuillOptionsStatic = {
+const defaultToolbar: QuillOptionsStatic = {
+  modules: {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'color': [] }, 'clean'],
+      [{ 'align': [] }, { 'indent': '-1' }, { 'indent': '+1' }],
+    ]
+  }
+}
+const minimalToolbar: QuillOptionsStatic = {
+  modules: {
+    toolbar: [
+      [{ 'header': 1 }, { 'header': 2 }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
+    ]
+  }
+}
+const fullToolbar: QuillOptionsStatic = {
   modules: {
     toolbar: [
       ["bold", "italic", "underline", "strike"],
@@ -25,8 +43,8 @@ const fullOptions: QuillOptionsStatic = {
   readOnly: false,
 }
 
-export const options = {
-  default: defaultOptions,
-  minimal: minimalOptions,
-  full: fullOptions,
+export const toolbar = {
+  default: defaultToolbar,
+  minimal: minimalToolbar,
+  full: fullToolbar,
 }

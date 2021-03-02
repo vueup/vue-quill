@@ -24,8 +24,7 @@ import {
   ref,
   watch,
 } from "vue";
-import { events, useHandlers } from "./events";
-import { options as quillOptions } from "./options";
+import { toolbar } from "./options";
 
 // export
 export default defineComponent({
@@ -39,17 +38,21 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    options: {
+      type: Object as PropType<QuillOptionsStatic>,
+      required: false,
+    },
     theme: {
-      type: String,
+      type: String as PropType<"snow" | "bubble">,
       default: "snow",
     },
-    options: {
+    toolbar: {
       type: [String, Object],
       required: false,
-      default: {},
+      default: toolbar.default,
       validator: (value: string | object) => {
         if (typeof value === "string") {
-          return Object.keys(quillOptions).indexOf(value) !== -1;
+          return Object.keys(toolbar).indexOf(value) !== -1;
         }
         return true;
       },
@@ -84,16 +87,16 @@ export default defineComponent({
         const themeOptions: QuillOptionsStatic = {
           theme: props.theme,
         };
-        const clientOptions: QuillOptionsStatic =
-          typeof props.options === "string"
-            ? quillOptions[props.options]
-            : props.options;
+        const toolbarOptions: QuillOptionsStatic =
+          typeof props.toolbar === "string"
+            ? toolbar[props.toolbar]
+            : props.toolbar;
 
         options.value = Object.assign(
           {},
           props.globalOptions,
-          clientOptions,
-          themeOptions
+          themeOptions,
+          toolbarOptions
         );
         // Create Instance
         quill = new Quill(editor.value as Element, options.value);
@@ -161,6 +164,14 @@ export default defineComponent({
       () => {
         wrapper.value?.removeAttribute("style");
         editor.value?.removeAttribute("style");
+        quill?.getModule("toolbar").container.remove();
+        initialize();
+      }
+    );
+
+    watch(
+      () => props.toolbar,
+      () => {
         quill?.getModule("toolbar").container.remove();
         initialize();
       }

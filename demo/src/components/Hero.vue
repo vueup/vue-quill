@@ -8,7 +8,7 @@
           class="bg-yellow-200 px-2 text-gray-900 transform -skew-x-12 inline-block leading-relaxed"
           >Vue 3 + Quill JS</span
         >
-        for your powerful rich text editor.
+        plugin for your powerful text editor.
       </h2>
       <div class="mt-10">
         <a

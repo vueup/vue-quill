@@ -1,26 +1,7 @@
 <template>
   <Header></Header>
   <Hero></Hero>
-  <!-- ============ DEMO ============ -->
-  <div class="container mx-auto xl:px-24">
-    <div class="grid grid-cols-2 gap-3">
-      <header class="col-start-1 col-end-3">Snow</header>
-      <QuillEditor
-        class="h-60 bg-white"
-        v-model:content="myContent"
-        @ready="handleReady"
-        @textChange="handleTextChange"
-        theme="bubble"
-        options="full"
-      >
-        <!-- <template #toolbar>
-          <h1>DAnceo</h1>
-        </template> -->
-      </QuillEditor>
-      <Prism language="html" :code="myHTML"></Prism>
-      <button @click="clickMe">Click</button>
-    </div>
-  </div>
+  <DemoEditor></DemoEditor>
 </template>
 
 <script lang="ts">
@@ -33,12 +14,14 @@ import { defineComponent, ref } from "vue";
 import Prism from "vue-prism-component";
 import Header from "./components/Header.vue";
 import Hero from "./components/Hero.vue";
+import DemoEditor from "./components/DemoEditor.vue";
 
 export default defineComponent({
   components: {
     Prism,
     Header,
     Hero,
+    DemoEditor,
   },
   setup: () => {
     const myContent = ref([

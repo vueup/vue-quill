@@ -4,7 +4,7 @@
 * Github: https://github.com/vueup/vueup-quill.git
 */
 
-import QuillEditor from "./components/QuillEditor.vue"
+import QuillEditor from "./components/QuillEditor"
 import Quill from "quill"
 import { App } from "vue"
 

@@ -1,12 +1,3 @@
-<template>
-  <div ref="wrapper" v-bind="$attrs">
-    <slot name="toolbar"></slot>
-    <div ref="editor"></div>
-  </div>
-</template>
-
-<script lang="ts">
-// require sources
 import Quill, {
   TextChangeHandler,
   SelectionChangeHandler,
@@ -18,13 +9,14 @@ import { Delta } from "types-quill-delta";
 import {
   computed,
   defineComponent,
+  h,
   onBeforeUnmount,
   onMounted,
   PropType,
   ref,
   watch,
 } from "vue";
-import { toolbar } from "./options";
+import { toolbarOptions } from "./options";
 
 // export
 export default defineComponent({
@@ -47,12 +39,12 @@ export default defineComponent({
       default: "snow",
     },
     toolbar: {
-      type: [String, Object],
+      type: [String, Array],
       required: false,
-      default: toolbar.default,
+      default: [],
       validator: (value: string | object) => {
         if (typeof value === "string") {
-          return Object.keys(toolbar).indexOf(value) !== -1;
+          return Object.keys(toolbarOptions).indexOf(value) !== -1;
         }
         return true;
       },
@@ -84,19 +76,19 @@ export default defineComponent({
     const initialize = () => {
       if (editor.value && wrapper.value) {
         // Options
-        const themeOptions: QuillOptionsStatic = {
+        const clientOptions: QuillOptionsStatic = {
           theme: props.theme,
+          modules: {
+            toolbar: typeof props.toolbar === "string"
+              ? toolbarOptions[props.toolbar]
+              : props.toolbar
+          }
         };
-        const toolbarOptions: QuillOptionsStatic =
-          typeof props.toolbar === "string"
-            ? toolbar[props.toolbar]
-            : props.toolbar;
-
         options.value = Object.assign(
           {},
           props.globalOptions,
-          themeOptions,
-          toolbarOptions
+          props.options,
+          clientOptions,
         );
         // Create Instance
         quill = new Quill(editor.value as Element, options.value);
@@ -160,7 +152,7 @@ export default defineComponent({
     );
 
     watch(
-      () => props.theme,
+      [props.options, props.theme],
       () => {
         wrapper.value?.removeAttribute("style");
         editor.value?.removeAttribute("style");
@@ -171,14 +163,6 @@ export default defineComponent({
 
     watch(
       () => props.toolbar,
-      () => {
-        quill?.getModule("toolbar").container.remove();
-        initialize();
-      }
-    );
-
-    watch(
-      () => props.options,
       () => {
         quill?.getModule("toolbar").container.remove();
         initialize();
@@ -197,11 +181,19 @@ export default defineComponent({
       options,
       wrapper,
       editor,
-      toolbar,
       handleTextChange,
       handleSelectionChange,
       handleEditorChange,
     };
   },
+  render() {
+    return h(
+      "div",
+      { ref: "wrapper", ...this.$attrs },
+      [
+        this.$slots.toolbar?.(),
+        h("div", { ref: "editor" })
+      ],
+    )
+  },
 });
-</script>

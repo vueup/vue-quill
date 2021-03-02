@@ -24,6 +24,7 @@ import {
   ref,
   watch,
 } from "vue";
+import { events, useHandlers } from "./events";
 import { options as quillOptions } from "./options";
 
 // export
@@ -60,29 +61,23 @@ export default defineComponent({
     },
   },
   emits: [
+    // Quill events
     "text-change",
     "selection-change",
     "editor-change",
+    // Additional events
     "update:content",
     "focus",
     "blur",
     "ready",
   ],
   setup: (props, ctx) => {
-    onMounted(() => {
-      initialize();
-    });
-
-    onBeforeUnmount(() => {
-      quill = null;
-    });
-
-    // Init Quill instance
     let quill: Quill | null = null;
     const options = ref<QuillOptionsStatic>({});
     const wrapper = ref<HTMLDivElement>();
     const editor = ref<HTMLDivElement>();
 
+    // Init Quill
     const initialize = () => {
       if (editor.value && wrapper.value) {
         // Options
@@ -131,11 +126,8 @@ export default defineComponent({
       ...args
     ) => {
       // Mark model as touched if editor lost focus
-      if (!range) {
-        ctx.emit("blur", quill);
-      } else {
-        ctx.emit("focus", quill);
-      }
+      if (!range) ctx.emit("blur", quill);
+      else ctx.emit("focus", quill);
       ctx.emit("selection-change", range, ...args);
     };
 
@@ -143,7 +135,14 @@ export default defineComponent({
       ctx.emit("editor-change", name, ...args);
     };
 
-    // Watch content change
+    onMounted(() => {
+      initialize();
+    });
+
+    onBeforeUnmount(() => {
+      quill = null;
+    });
+
     watch(
       () => props.content,
       (newContent, oldContent) => {
@@ -157,17 +156,16 @@ export default defineComponent({
       }
     );
 
-    // Watch enable change
     watch(
-      () => props.enable,
-      (newVal, oldVal) => {
-        if (quill) {
-          quill.enable(newVal);
-        }
+      () => props.theme,
+      () => {
+        wrapper.value?.removeAttribute("style");
+        editor.value?.removeAttribute("style");
+        quill?.getModule("toolbar").container.remove();
+        initialize();
       }
     );
 
-    // Watch options change
     watch(
       () => props.options,
       () => {
@@ -176,14 +174,10 @@ export default defineComponent({
       }
     );
 
-    // Watch theme change
     watch(
-      () => props.theme,
-      () => {
-        wrapper.value?.removeAttribute("style");
-        editor.value?.removeAttribute("style");
-        quill?.getModule("toolbar").container.remove();
-        initialize();
+      () => props.enable,
+      (newValue, oldValue) => {
+        if (quill) quill.enable(newValue);
       }
     );
 

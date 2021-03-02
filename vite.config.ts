@@ -10,6 +10,7 @@ const config = {
         vue()
       ],
       build: {
+        sourcemap: true,
         lib: {
           entry: './src/main.ts',
           name: 'QuillEditor',

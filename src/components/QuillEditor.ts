@@ -2,19 +2,18 @@ import Quill, {
   TextChangeHandler,
   SelectionChangeHandler,
   EditorChangeHandler,
-  RangeStatic,
   QuillOptionsStatic,
+  RangeStatic,
 } from "quill";
 import { Delta } from "types-quill-delta";
 import {
-  computed,
   defineComponent,
-  h,
   onBeforeUnmount,
   onMounted,
   PropType,
-  ref,
   watch,
+  ref,
+  h,
 } from "vue";
 import { toolbarOptions } from "./options";
 
@@ -30,6 +29,14 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      required: false
+    },
     options: {
       type: Object as PropType<QuillOptionsStatic>,
       required: false,
@@ -39,12 +46,14 @@ export default defineComponent({
       default: "snow",
     },
     toolbar: {
-      type: [String, Array],
+      type: [String, Array, Object],
       required: false,
-      default: [],
+      default: toolbarOptions.default,
       validator: (value: string | object) => {
         if (typeof value === "string") {
-          return Object.keys(toolbarOptions).indexOf(value) !== -1;
+          return value.charAt(0) === "#"
+            ? true
+            : Object.keys(toolbarOptions).indexOf(value) !== -1;
         }
         return true;
       },
@@ -56,41 +65,47 @@ export default defineComponent({
     },
   },
   emits: [
-    // Quill events
     "text-change",
     "selection-change",
     "editor-change",
-    // Additional events
     "update:content",
     "focus",
     "blur",
     "ready",
   ],
   setup: (props, ctx) => {
-    let quill: Quill | null = null;
-    let options: QuillOptionsStatic = {};
-    const wrapper = ref<HTMLDivElement>();
+    let quill: Quill | null;
+    let options: QuillOptionsStatic;
     const editor = ref<HTMLDivElement>();
 
-    // Init Quill
+    // Initialize Quill
     const initialize = () => {
-      if (editor.value && wrapper.value) {
-        // Options
-        const clientOptions: QuillOptionsStatic = {
+      if (editor.value) {
+        // Compose Options
+        const customOptions: QuillOptionsStatic = {
           theme: props.theme,
+          readOnly: props.readOnly,
+          placeholder: props.placeholder,
           modules: {
-            toolbar: typeof props.toolbar === "string"
-              ? toolbarOptions[props.toolbar]
-              : props.toolbar
+            toolbar: (() => {
+              if (typeof props.toolbar === "object") {
+                return props.toolbar
+              } else if (typeof props.toolbar === "string") {
+                const str = props.toolbar as string
+                return str.charAt(0) === "#"
+                  ? props.toolbar
+                  : toolbarOptions[props.toolbar]
+              }
+            })()
           }
         };
         options = Object.assign(
           {},
           props.globalOptions,
           props.options,
-          clientOptions,
+          customOptions,
         );
-        // Create Instance
+        // Create new instance
         quill = new Quill(editor.value as Element, options);
         // Set editor content
         if (props.content) quill.setContents(props.content);
@@ -99,12 +114,8 @@ export default defineComponent({
         quill.on("selection-change", handleSelectionChange);
         quill.on("editor-change", handleEditorChange);
         // Style the editor
-        if (props.theme !== "bubble") {
-          wrapper.value.style.display = "flex";
-          wrapper.value.style.flexDirection = "column";
-          editor.value.style.flexGrow = "1";
-          editor.value.style.overflowY = "auto";
-        }
+        if (props.theme !== "bubble") editor.value.classList.remove("ql-bubble");
+        if (props.theme !== "snow") editor.value.classList.remove("ql-snow");
         // Emit ready event
         ctx.emit("ready", quill);
       }
@@ -152,19 +163,13 @@ export default defineComponent({
     );
 
     watch(
-      [() => props.options, () => props.theme],
+      [
+        () => props.options,
+        () => props.theme,
+        () => props.toolbar
+      ],
       () => {
-        wrapper.value?.removeAttribute("style");
-        editor.value?.removeAttribute("style");
-        quill?.getModule("toolbar").container.remove();
-        initialize();
-      }
-    );
-
-    watch(
-      () => props.toolbar,
-      () => {
-        quill?.getModule("toolbar").container.remove();
+        if (!ctx.slots.toolbar) quill?.getModule("toolbar").container.remove();
         initialize();
       }
     );
@@ -177,18 +182,14 @@ export default defineComponent({
     );
 
     return {
-      wrapper,
       editor,
     };
   },
+  inheritAttrs: false,
   render() {
-    return h(
-      "div",
-      { ref: "wrapper", ...this.$attrs },
-      [
-        this.$slots.toolbar?.(),
-        h("div", { ref: "editor" })
-      ],
-    )
+    return [
+      this.$slots.toolbar?.(),
+      h("div", { ref: "editor", ...this.$attrs })
+    ]
   },
 });

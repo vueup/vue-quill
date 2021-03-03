@@ -65,8 +65,8 @@ export default {
   <QuillEditor
     theme="snow"
     toolbar="default"
-    v-model:content="content"
     :options="editorOption"
+    v-model:content="content"
     @blur="onEditorBlur(quill)"
     @focus="onEditorFocus(quill)"
     @ready="onEditorReady(quill)"
@@ -95,6 +95,7 @@ Then, pass the name of the theme to the `theme` [prop](#props).
 ~~~ vue
 <template>
   <QuillEditor theme="snow" .../>
+
   <!-- you can bind :theme="value" and it will automatically re render when its value change -->
   <QuillEditor :theme="value" .../>
   <button @click="value = 'snow'">Snow</button>
@@ -107,7 +108,27 @@ Then, pass the name of the theme to the `theme` [prop](#props).
 ~~~
 
 ### Toolbar
+The Toolbar module allow users to easily format Quill’s contents. It can be configured with a toolbar prop.
+There are 3 ways to configure toolbar:
 
+**Pre-Configure Toolbar Options**
+VueUpQuill provides 3 pre-configured toolbar options `default`, `minimal`, and `full`:
+
+<template>
+  <QuillEditor toolbar="minimal" .../>
+</template>
+
+**Custom Toolbar Options**
+You can also set your own options like this:
+
+<template>
+  <QuillEditor :toolbar="['bold', 'italic', 'underline']" .../>
+</template>
+
+See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
+
+**Custom Toolbar Container**
+See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

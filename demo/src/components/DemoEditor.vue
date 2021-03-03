@@ -27,10 +27,10 @@
           ></Options>
         </div>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 bg-white shadow-md">
         <QuillEditor
           ref="myEditor"
-          class="h-60 bg-white flex-1"
+          class="h-80 bg-white flex-1"
           v-model:content="myContent"
           @ready="handleReady"
           @textChange="handleTextChange"

@@ -2,14 +2,16 @@
   <!-- ============ HERO ============ -->
   <div class="">
     <div class="container mx-auto lg:px-24 py-24 text-center">
-      <h1 class="text-6xl font-bold">VueUpQuill</h1>
-      <h2 class="text-2xl font-medium mt-8">
-        <span
-          class="bg-yellow-200 px-2 text-gray-900 transform -skew-x-12 inline-block leading-relaxed"
-          >Vue 3 + Quill JS</span
-        >
-        plugin for your powerful text editor.
-      </h2>
+      <header class="text-gray-900">
+        <h1 class="text-6xl font-bold">VueUpQuill</h1>
+        <h2 class="text-2xl font-medium mt-8">
+          <span
+            class="bg-yellow-200 px-2 transform -skew-x-12 inline-block leading-relaxed"
+            >Vue 3 + Quill JS</span
+          >
+          plugin for your powerful text editor.
+        </h2>
+      </header>
       <div class="mt-10">
         <a
           href="#"

@@ -10,26 +10,24 @@
             <img src="/logo.png" alt="VueUpQuill" class="h-10" />
             <span class="font-semibold ml-1 text-lg">VueUpQuill</span>
             <span
-              class="bg-blue-100 text-indigo-600 font-medium px-1 text-sm rounded-sm ml-2"
-              >v0.0.1</span
+              class="bg-blue-100 text-indigo-600 font-semibold px-1 text-sm rounded-sm ml-2"
+              >v0.1.0</span
             >
           </a>
         </div>
       </div>
-      <div
-        class="px-2 pt-2 pb-4 sm:flex sm:p-0 hidden font-semibold text-gray-600"
-      >
+      <div class="px-2 pt-2 pb-4 sm:flex sm:p-0 hidden font-semibold">
         <a
           href="/docs/"
           rel="noopener"
           target="_blank"
-          class="px-3 py-1 rounded mt-1 sm:mt-0 sm:ml-2 hover:bg-gray-200"
+          class="px-3 py-1 rounded mt-1 sm:mt-0 sm:ml-2 hover:bg-gray-100 hover:border"
         >
           Documentation
         </a>
         <a
           href="https://paypal.me/bledex"
-          class="px-3 py-1 rounded mt-1 sm:mt-0 sm:ml-2 hover:bg-gray-200"
+          class="px-3 py-1 rounded mt-1 sm:mt-0 sm:ml-2 hover:bg-gray-100 hover:border"
         >
           Donate
         </a>

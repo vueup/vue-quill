@@ -112,6 +112,7 @@ The Toolbar module allow users to easily format Quill’s contents. It can be co
 There are 3 ways to configure toolbar:
 
 **Pre-Configure Toolbar Options**
+
 VueUpQuill provides 3 pre-configured toolbar options `default`, `minimal`, and `full`:
 
 ~~~ vue
@@ -121,6 +122,7 @@ VueUpQuill provides 3 pre-configured toolbar options `default`, `minimal`, and `
 ~~~
 
 **Custom Toolbar Options**
+
 You can also set your own options like this:
 
 ~~~ vue
@@ -132,6 +134,7 @@ You can also set your own options like this:
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 **Custom Toolbar Container**
+
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 ## Contributing

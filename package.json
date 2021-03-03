@@ -1,7 +1,7 @@
 {
   "name": "@vueup/quill",
   "version": "0.0.2",
-  "description": " NODE_ENV=productionQuill Editor for Vue 3 plugin or component.",
+  "description": "Quill Editor for Vue 3 plugin or component.",
   "keywords": [
     "vue 3 quill plugin",
     "vue 3 quill component",

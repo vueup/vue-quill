@@ -76,7 +76,9 @@ export default {
   />
 </template>
 ```
+
 ## Themes
+
 Quill features two offically supported themes: `snow` and `bubble` see [DEMO](https://vueup.github.io/vueup-quill/).
 Themes primarily control the visual look of Quill through its CSS stylesheet, and many changes can easily be made by overriding these rules. At the very least, the `core` theme must be included for modules like toolbars or tooltips to work.
 
@@ -113,6 +115,7 @@ The Toolbar module allow users to easily format Quill’s contents. It can be co
 ### There are 3 ways to configure toolbar:
 
 #### Pre-Configure Toolbar Options
+
 VueUpQuill provides 3 pre-configured toolbar options `essential`, `minimal`, `full`, and `""` to use default options.
 
 ~~~ vue
@@ -122,6 +125,7 @@ VueUpQuill provides 3 pre-configured toolbar options `essential`, `minimal`, `fu
 ~~~
 
 #### Custom Toolbar Options
+
 You can also set your own options like this:
 
 ~~~ vue
@@ -133,6 +137,7 @@ You can also set your own options like this:
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 #### Custom Toolbar Container
+
 ~~~ vue
 <template>
   <QuillEditor toolbar="#my-toolbar" ...>
@@ -153,7 +158,9 @@ See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more det
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 ## API Refference 
+
 ### Export
+
 ~~~ javascript
 // ES6
 import VueUpQuill, {QuillEditor, Quill} from '@vueup/quill';
@@ -164,6 +171,7 @@ const {QuillEditor, Quill} = VueUpQuill;
 ~~~
 
 ### Props
+
 **`content`** : Contents for the editor, Can be plain `string`, `html` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
 
 **`enable`** : Set ability for user to edit, via input devices like the mouse or keyboard.
@@ -178,7 +186,8 @@ const {QuillEditor, Quill} = VueUpQuill;
 
 **`toolbar`** : Toolbar options to configure the default toolbar icons using an array of format names. [see above](##Toolbar)
 
-## Events 
+### Events 
+
 **`@textChange`** :
 
 **`@selectionChange`** :
@@ -193,7 +202,8 @@ const {QuillEditor, Quill} = VueUpQuill;
 
 **`@ready`** :
 
-## Methods
+### Methods
+
 **`getQuill`** :
 
 **`getHTML`** :

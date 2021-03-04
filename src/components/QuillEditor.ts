@@ -191,18 +191,6 @@ export default defineComponent({
       }
     );
 
-    watch(() => props.theme, (newTheme, oldTheme) => {
-      if (ctx.slots.toolbar && quill) {
-        if (oldTheme === "snow")
-          quill?.getModule("toolbar").container.classList.remove("ql-snow")
-        if (oldTheme === "bubble") {
-          quill?.getModule("toolbar").container.classList.remove("ql-bubble")
-          const qlContainer = quill?.getModule("toolbar").container.closest(".ql-container")
-          qlContainer.insertAdjacentElement('beforebegin', quill?.getModule("toolbar").container)
-        }
-      }
-    })
-
     watch(
       [
         () => props.options,

@@ -76,16 +76,24 @@ export default defineComponent({
     "ready",
   ],
   setup: (props, ctx) => {
+    onMounted(() => {
+      initialize();
+    });
+
+    onBeforeUnmount(() => {
+      quill = null;
+    });
+
     let quill: Quill | null;
     let options: QuillOptionsStatic;
-    const editor = ref<HTMLElement>();
+    const editor = ref<Element>();
 
     // Initialize Quill
     const initialize = () => {
       if (editor.value) {
         options = composeOptions()
         // Create new instance
-        quill = new Quill(editor.value as Element, options);
+        quill = new Quill(editor.value, options);
         // Set editor content
         if (typeof props.content === "string")
           quill.setText(props.content);
@@ -95,7 +103,7 @@ export default defineComponent({
         quill.on("text-change", handleTextChange);
         quill.on("selection-change", handleSelectionChange);
         quill.on("editor-change", handleEditorChange);
-        // Style the editor
+        // Remove editor class when theme changes
         if (props.theme !== "bubble") editor.value.classList.remove("ql-bubble");
         if (props.theme !== "snow") editor.value.classList.remove("ql-snow");
         // Emit ready event
@@ -152,13 +160,20 @@ export default defineComponent({
       ctx.emit("editorChange", name, ...args);
     };
 
-    onMounted(() => {
-      initialize();
-    });
+    const getQuill = (): Quill => {
+      if (quill) return quill
+      else throw `The quill editor hasn't been instantiated yet, 
+                  make sure to call this method when the editor ready
+                  or use v-on:ready="onReady(quill)" event instead.`
+    }
 
-    onBeforeUnmount(() => {
-      quill = null;
-    });
+    const getHTML = (): String => {
+      return quill?.root.innerHTML ?? ""
+    }
+
+    const setHTML = (html: string) => {
+      if (quill) quill.root.innerHTML = html
+    }
 
     watch(
       () => props.content,
@@ -195,7 +210,7 @@ export default defineComponent({
         () => props.toolbar
       ],
       () => {
-        if (!ctx.slots.toolbar && quill)
+        if (!ctx.slots.toolbar && quill) 
           quill.getModule("toolbar")?.container.remove();
         initialize();
       }
@@ -210,6 +225,9 @@ export default defineComponent({
 
     return {
       editor,
+      getQuill,
+      getHTML,
+      setHTML,
     };
   },
   inheritAttrs: false,

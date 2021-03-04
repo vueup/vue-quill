@@ -22,7 +22,7 @@ export default defineComponent({
   name: "QuillEditor",
   props: {
     content: {
-      type: Object as PropType<Delta>,
+      type: [String, Object] as PropType<String | Delta>,
       default: {},
     },
     enable: {
@@ -42,15 +42,17 @@ export default defineComponent({
       required: false,
     },
     theme: {
-      type: String as PropType<"snow" | "bubble">,
-      default: "snow",
+      type: String,
+      required: false,
+      validator: (value: string) => {
+        return ["", "snow", "bubble"].includes(value)
+      }
     },
     toolbar: {
       type: [String, Array, Object],
       required: false,
-      default: toolbarOptions.default,
       validator: (value: string | object) => {
-        if (typeof value === "string") {
+        if (typeof value === "string" && value !== "") {
           return value.charAt(0) === "#"
             ? true
             : Object.keys(toolbarOptions).indexOf(value) !== -1;
@@ -65,9 +67,9 @@ export default defineComponent({
     },
   },
   emits: [
-    "text-change",
-    "selection-change",
-    "editor-change",
+    "textChange",
+    "selectionChange",
+    "editorChange",
     "update:content",
     "focus",
     "blur",
@@ -76,39 +78,19 @@ export default defineComponent({
   setup: (props, ctx) => {
     let quill: Quill | null;
     let options: QuillOptionsStatic;
-    const editor = ref<HTMLDivElement>();
+    const editor = ref<HTMLElement>();
 
     // Initialize Quill
     const initialize = () => {
       if (editor.value) {
-        // Compose Options
-        const customOptions: QuillOptionsStatic = {
-          theme: props.theme,
-          readOnly: props.readOnly,
-          placeholder: props.placeholder,
-          modules: {
-            toolbar: (() => {
-              if (typeof props.toolbar === "object") {
-                return props.toolbar
-              } else if (typeof props.toolbar === "string") {
-                const str = props.toolbar as string
-                return str.charAt(0) === "#"
-                  ? props.toolbar
-                  : toolbarOptions[props.toolbar]
-              }
-            })()
-          }
-        };
-        options = Object.assign(
-          {},
-          props.globalOptions,
-          props.options,
-          customOptions,
-        );
+        options = composeOptions()
         // Create new instance
         quill = new Quill(editor.value as Element, options);
         // Set editor content
-        if (props.content) quill.setContents(props.content);
+        if (typeof props.content === "string")
+          quill.setText(props.content);
+        else
+          quill.setContents(props.content as Delta);
         // Set event handlers
         quill.on("text-change", handleTextChange);
         quill.on("selection-change", handleSelectionChange);
@@ -121,24 +103,53 @@ export default defineComponent({
       }
     };
 
+    // Compose Options
+    const composeOptions = (): QuillOptionsStatic => {
+      const clientOptions: QuillOptionsStatic = {
+        theme: props.theme === "" ? undefined : props.theme,
+        readOnly: props.readOnly,
+        placeholder: props.placeholder,
+        modules: {
+          toolbar: (() => {
+            if (typeof props.toolbar === "object") {
+              return props.toolbar
+            } else if (typeof props.toolbar === "string") {
+              const str = props.toolbar as string
+              return str.charAt(0) === "#"
+                ? props.toolbar
+                : toolbarOptions[props.toolbar]
+            }
+          })()
+        }
+      };
+      return Object.assign(
+        {},
+        props.globalOptions,
+        props.options,
+        clientOptions,
+      );
+    }
+
     const handleTextChange: TextChangeHandler = (...args) => {
-      // Update model if text changes
+      // Update v-model:content when text changes
       ctx.emit("update:content", quill?.getContents());
-      ctx.emit("text-change", ...args);
+      ctx.emit("textChange", ...args);
     };
 
-    const handleSelectionChange: SelectionChangeHandler = (
-      range: RangeStatic,
-      ...args
-    ) => {
+    const isEditorFocus = ref<boolean>()
+    const handleSelectionChange: SelectionChangeHandler = (...args) => {
       // Mark model as touched if editor lost focus
-      if (!range) ctx.emit("blur", quill);
-      else ctx.emit("focus", quill);
-      ctx.emit("selection-change", range, ...args);
+      isEditorFocus.value = quill?.hasFocus() ? true : false
+      ctx.emit("selectionChange", ...args);
     };
+
+    watch(isEditorFocus, (focus) => {
+      if (focus) ctx.emit("focus", editor)
+      else ctx.emit("blur", editor);
+    })
 
     const handleEditorChange: EditorChangeHandler = (name: String, ...args) => {
-      ctx.emit("editor-change", name, ...args);
+      ctx.emit("editorChange", name, ...args);
     };
 
     onMounted(() => {
@@ -154,13 +165,28 @@ export default defineComponent({
       (newContent, oldContent) => {
         if (quill) {
           if (newContent && newContent !== props.content) {
-            quill.setContents(newContent);
+            if (typeof newContent === "string")
+              quill.setText(props.content as string);
+            else
+              quill.setContents(newContent as Delta);
           } else if (!newContent) {
             quill.setText("");
           }
         }
       }
     );
+
+    watch(() => props.theme, (newTheme, oldTheme) => {
+      if (ctx.slots.toolbar && quill) {
+        if (oldTheme === "snow")
+          quill?.getModule("toolbar").container.classList.remove("ql-snow")
+        if (oldTheme === "bubble") {
+          quill?.getModule("toolbar").container.classList.remove("ql-bubble")
+          const qlContainer = quill?.getModule("toolbar").container.closest(".ql-container")
+          qlContainer.insertAdjacentElement('beforebegin', quill?.getModule("toolbar").container)
+        }
+      }
+    })
 
     watch(
       [
@@ -169,7 +195,8 @@ export default defineComponent({
         () => props.toolbar
       ],
       () => {
-        if (!ctx.slots.toolbar) quill?.getModule("toolbar").container.remove();
+        if (!ctx.slots.toolbar && quill)
+          quill.getModule("toolbar")?.container.remove();
         initialize();
       }
     );
@@ -189,7 +216,7 @@ export default defineComponent({
   render() {
     return [
       this.$slots.toolbar?.(),
-      h("div", { ref: "editor", ...this.$attrs })
+      h("div", { ref: "editor", ...this.$attrs }),
     ]
   },
 });

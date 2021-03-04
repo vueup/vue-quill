@@ -1,7 +1,7 @@
 <template>
   <!-- ============ HERO ============ -->
   <div class="">
-    <div class="container mx-auto lg:px-24 py-24 text-center">
+    <div class="container py-10 mx-auto lg:px-24 md:py-24 text-center">
       <header class="text-gray-900">
         <h1 class="text-6xl font-bold">VueUpQuill</h1>
         <h2 class="text-2xl font-medium mt-8">

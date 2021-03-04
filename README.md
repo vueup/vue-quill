@@ -31,7 +31,7 @@ yarn add @vueup/quill
 
 ## Usage
 
-#### Mount with global
+### Mount with global
 
 ``` javascript
 import { createApp } from 'vue'
@@ -43,7 +43,7 @@ app.use(VueUpQuill, /* { default global options } */)
 
 ```
 
-#### Mount with local component
+### Mount with local component
 
 ``` javascript
 import { QuillEditor } from '@vueup/quill'
@@ -57,7 +57,7 @@ export default {
 
 ```
 
-#### SFC Implementation
+### SFC Implementation
 
 ``` vue
 <template>
@@ -67,8 +67,8 @@ export default {
     toolbar="default"
     :options="editorOption"
     v-model:content="content"
-    @blur="onEditorBlur(quill)"
-    @focus="onEditorFocus(quill)"
+    @blur="onEditorBlur(editor)"
+    @focus="onEditorFocus(editor)"
     @ready="onEditorReady(quill)"
     @textChange="onTextChange(...args)"
     @editorChange="onEditorChange(...args)"
@@ -76,7 +76,7 @@ export default {
   />
 </template>
 ```
-### Themes
+## Themes
 Quill features two offically supported themes: `snow` and `bubble` see [DEMO](https://vueup.github.io/vueup-quill/).
 Themes primarily control the visual look of Quill through its CSS stylesheet, and many changes can easily be made by overriding these rules. At the very least, the `core` theme must be included for modules like toolbars or tooltips to work.
 
@@ -107,12 +107,13 @@ Then, pass the name of the theme to the `theme` [prop](#props).
 </script>
 ~~~
 
-### Toolbar
+## Toolbar
 The Toolbar module allow users to easily format Quill’s contents. It can be configured with a toolbar prop.
-There are 3 ways to configure toolbar:
+
+### There are 3 ways to configure toolbar:
 
 #### Pre-Configure Toolbar Options
-VueUpQuill provides 3 pre-configured toolbar options `default`, `minimal`, and `full`:
+VueUpQuill provides 3 pre-configured toolbar options `essential`, `minimal`, `full`, and `""` to use default options.
 
 ~~~ vue
 <template>
@@ -132,7 +133,6 @@ You can also set your own options like this:
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
 
 #### Custom Toolbar Container
-
 ~~~ vue
 <template>
   <QuillEditor toolbar="#my-toolbar" ...>
@@ -151,6 +151,56 @@ See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more det
 ~~~
 
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.
+
+## API Refference 
+### Export
+~~~ javascript
+// ES6
+import VueUpQuill, {QuillEditor, Quill} from '@vueup/quill';
+
+// CommonJS
+const VueUpQuill = require('react-quill');
+const {QuillEditor, Quill} = VueUpQuill;
+~~~
+
+### Props
+**`content`** : Contents for the editor, Can be plain `string`, `html` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+
+**`enable`** : Set ability for user to edit, via input devices like the mouse or keyboard.
+
+**`readOnly`** : If *true*, the editor won't allow changing its contents. Wraps the Quill [`disable` API](https://quilljs.com/docs/api/#disable). 
+
+**`placeholder`** : The attribute to specifies a short hint that describes the expected value of an input field (e.g. a sample value or a short description of the expected format).
+
+**`options`** : To configure Quill options see [the docs options](https://quilljs.com/docs/configuration/#options) for more details
+
+**`theme`** :  The name of the theme to apply to the editor, Quill features two offically supported themes: `snow` and `bubble`. Pass `""` to use the minimal core theme. See the [docs on themes](https://quilljs.com/docs/themes/) for more information on including the required stylesheets. 
+
+**`toolbar`** : Toolbar options to configure the default toolbar icons using an array of format names. [see above](##Toolbar)
+
+## Events 
+**`@textChange`** :
+
+**`@selectionChange`** :
+
+**`@editorChange`** :
+
+**`@update:content`** :
+
+**`@focus`** :
+
+**`@blur`** :
+
+**`@ready`** :
+
+## Methods
+**`getQuill`** :
+
+**`getHTML`** :
+
+**`setHTML`** :
+
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

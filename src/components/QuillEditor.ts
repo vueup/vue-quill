@@ -172,7 +172,7 @@ export default defineComponent({
     }
 
     const setHTML = (html: string) => {
-      if (quill) quill.root.innerHTML = html
+      quill?.clipboard.dangerouslyPasteHTML(html)
     }
 
     watch(
@@ -198,7 +198,7 @@ export default defineComponent({
         () => props.toolbar
       ],
       () => {
-        if (!ctx.slots.toolbar && quill) 
+        if (!ctx.slots.toolbar && quill)
           quill.getModule("toolbar")?.container.remove();
         initialize();
       }

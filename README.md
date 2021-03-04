@@ -1,6 +1,7 @@
 # VueUpQuill
 
 A Quill Editor for Vue 3 plugin or component.
+
 <p>
   <a href="https://www.npmjs.com/package/@vueup/quill" title="Version">
     <img src="https://img.shields.io/npm/v/@vueup/quill?color=blue" alt="Version">
@@ -83,6 +84,7 @@ Quill features two offically supported themes: `snow` and `bubble` see [DEMO](ht
 Themes primarily control the visual look of Quill through its CSS stylesheet, and many changes can easily be made by overriding these rules. At the very least, the `core` theme must be included for modules like toolbars or tooltips to work.
 
 To activate a theme, import the stylesheet for the themes you want to use.
+
 ~~~ javascript
 import '@vueup/quill/dist/quill.snow.css';
 // OR | AND
@@ -98,15 +100,9 @@ Then, pass the name of the theme to the `theme` [prop](#props).
 <template>
   <QuillEditor theme="snow" .../>
 
-  <!-- you can bind :theme="value" and it will automatically re render when its value change -->
+  <!-- you can bind :theme and it will automatically re render when its value change -->
   <QuillEditor :theme="value" .../>
-  <button @click="value = 'snow'">Snow</button>
-  <button @click="value = 'bubble'">Bubble</button>
 </template>
-
-<script>
-  ...
-</script>
 ~~~
 
 ## Toolbar

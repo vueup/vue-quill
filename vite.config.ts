@@ -30,6 +30,13 @@ export default defineConfig({
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css
             }
+          },
+          {
+            src: './src/themes/*.css',
+            dest: './dist',
+            transform: (contents, filename) => {
+              return csso.minify(contents.toString()).css
+            }
           }],
           hook: 'writeBundle',
           verbose: true,

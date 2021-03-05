@@ -56,7 +56,8 @@
     "demo:serve": "cd demo && vite preview",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "theme:snow": "stylus -w ./src/assets/snow.styl -o ./src/themes/quill.snow2.css"
   },
   "dependencies": {
     "quill": "^1.3.7",

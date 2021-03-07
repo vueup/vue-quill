@@ -1,0 +1,35 @@
+.home .title {
+  font-weight: 600;
+}
+
+.home-hero .image {
+  height: 160px;
+  padding-top: 36px;
+}
+
+.nav-bar .logo {
+  height: 30px;
+  margin-right: 2px;
+  display: inline-block;
+}
+
+.content img {
+  border-radius: 10px;
+}
+
+.nav-dropdown-link-item .icon {
+  display: none;
+}
+
+:root {
+  --c-brand:#6279F4;
+  --c-brand-light:#6190F7;
+}
+
+.custom-block.tip {
+  border-color: var(--c-brand-light);
+}
+
+.DocSearch {
+  --docsearch-primary-color: var(--c-brand) !important;
+}

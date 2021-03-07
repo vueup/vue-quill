@@ -7,7 +7,7 @@
       <div class="flex items-center justify-between px-4 py-3 sm:p-0">
         <div>
           <a href="/" class="flex items-center">
-            <img src="/logo.png" alt="VueUpQuill" class="h-10" />
+            <img src="/logo.svg" alt="VueUpQuill" class="h-10" />
             <span class="font-semibold ml-1 text-lg">VueUpQuill</span>
             <span
               class="bg-blue-100 text-indigo-600 font-semibold px-1 text-sm rounded-sm ml-2"
@@ -16,7 +16,7 @@
           </a>
         </div>
       </div>
-      <div class="px-2 pt-2 pb-4 sm:flex sm:p-0 hidden font-semibold">
+      <div class="px-2 pt-2 pb-4 sm:flex sm:p-0 hidden font-semibold h">
         <a
           href="/docs/"
           rel="noopener"

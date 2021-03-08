@@ -4,7 +4,7 @@
  * @type {import('vitepress').UserConfig}
  */
 module.exports = {
-  base: '/vueup-quill/',
+  // base: '/vueup-quill/',
   lang: 'en-US',
   title: 'VueUpQuill',
   description: 'Vue 3 + Quill JS plugin for your powerful text editor. ',

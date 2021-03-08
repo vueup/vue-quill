@@ -2,7 +2,7 @@
   <Header></Header>
   <Hero></Hero>
   <DemoEditor></DemoEditor>
-  <Footer></Footer>
+  <Footer class="h-"></Footer>
 </template>
 
 <script lang="ts">

@@ -8,10 +8,10 @@ export default defineConfig({
     vue()
   ],
   build: {
-    sourcemap: true,
+    // sourcemap: true,
     lib: {
       entry: './src/main.ts',
-      name: 'QuillEditor',
+      name: 'VueUpQuill',
       formats: ['es', 'cjs', 'umd', 'iife'],
     },
     rollupOptions: {

@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Quill } from "../../src/main";
+import { QuillEditor, Quill } from "../../src/main";
 
 import { Delta } from "types-quill-delta";
 import { defineComponent, onMounted, ref } from "vue";
@@ -52,6 +52,7 @@ import Options from "./Options.vue";
 
 export default defineComponent({
   components: {
+    QuillEditor,
     Options,
   },
   setup: () => {
@@ -67,7 +68,7 @@ export default defineComponent({
     ]);
 
     const myHTML = ref<string>("");
-    let myQuill: Quill | null = null;
+    let myQuill: typeof Quill | null = null;
 
     const handleReady = (quill) => {
       myQuill = quill;

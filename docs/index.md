@@ -24,7 +24,9 @@ footer: MIT Licensed | Copyright © 2019-present Luthfi Masruri & VueUpQuill Con
       What you see is what you get. Check out our interactive product demos and discover all the features packed into TinyMCE.
     </p>
   </header>
-  <DemoEditor></DemoEditor>
+  <!-- <ClientOnly> -->
+    <DemoEditor></DemoEditor>
+  <!-- </ClientOnly> -->
 </div>
 
 <div class="frontpage sponsors">

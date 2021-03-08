@@ -5,9 +5,15 @@
 */
 
 import QuillEditor from "./components/QuillEditor"
-import Quill from "quill"
+import _Quill from "quill"
 import { App } from "vue"
 
+const GLOBAL = ((): any =>
+  typeof window !== 'undefined' ? window : global
+)();
+const Quill: _Quill = GLOBAL.Quill ?? _Quill
+
+// Declare install function executed by Vue.use()
 const install = (app: App<Element>, globalOptions: object) => {
   if (globalOptions) {
     QuillEditor.props.globalOptions.default = () => globalOptions
@@ -15,4 +21,6 @@ const install = (app: App<Element>, globalOptions: object) => {
   app.component(QuillEditor.name, QuillEditor)
 }
 
-export { install as default, Quill, QuillEditor }
+const VueUpQuill = { install, QuillEditor, Quill, };
+export { install, QuillEditor, Quill };
+export default VueUpQuill;

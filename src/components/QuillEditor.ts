@@ -1,10 +1,10 @@
-import Quill, {
+import {
   TextChangeHandler,
   SelectionChangeHandler,
   EditorChangeHandler,
   QuillOptionsStatic,
-  RangeStatic,
 } from "quill";
+import { Quill } from "../main"
 import { Delta } from "types-quill-delta";
 import {
   defineComponent,
@@ -84,7 +84,7 @@ export default defineComponent({
       quill = null;
     });
 
-    let quill: Quill | null;
+    let quill: typeof Quill | null;
     let options: QuillOptionsStatic;
     const editor = ref<Element>();
 
@@ -160,7 +160,7 @@ export default defineComponent({
       ctx.emit("editorChange", name, ...args);
     };
 
-    const getQuill = (): Quill => {
+    const getQuill = (): typeof Quill => {
       if (quill) return quill
       else throw `The quill editor hasn't been instantiated yet, 
                   make sure to call this method when the editor ready

@@ -2,9 +2,9 @@ export const toolbarOptions = {
   essential: [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ['bold', 'italic', 'underline'],
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
+    ['blockquote', 'code-block', 'link'],
     [{ 'color': [] }, 'clean'],
-    [{ 'align': [] }, { 'indent': '-1' }, { 'indent': '+1' }],
   ],
   minimal: [
     [{ 'header': 1 }, { 'header': 2 }],

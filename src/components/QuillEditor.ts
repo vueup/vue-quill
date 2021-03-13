@@ -84,7 +84,7 @@ export default defineComponent({
       quill = null;
     });
 
-    let quill: typeof Quill | null;
+    let quill: Quill | null;
     let options: QuillOptionsStatic;
     const editor = ref<Element>();
 
@@ -160,7 +160,7 @@ export default defineComponent({
       ctx.emit("editorChange", name, ...args);
     };
 
-    const getQuill = (): typeof Quill => {
+    const getQuill = (): Quill => {
       if (quill) return quill
       else throw `The quill editor hasn't been instantiated yet, 
                   make sure to call this method when the editor ready

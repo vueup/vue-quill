@@ -4,7 +4,7 @@
     <div class="flex flex-col w-28">
       <div class="text-sm text-gray-400 font-bold mb-2">THEME</div>
       <div class="flex md:flex-col gap-2 mb-4">
-        <Options
+        <VOptions
           name="theme"
           v-model:selected="selectedTheme"
           :options="[
@@ -12,11 +12,11 @@
             { value: 'bubble', label: 'Bubble' },
             { value: '', label: 'None' },
           ]"
-        ></Options>
+        ></VOptions>
       </div>
       <div class="text-sm text-gray-400 font-bold mb-2">TOOLBAR</div>
       <div class="flex md:flex-col gap-2 mb-4">
-        <Options
+        <VOptions
           name="toolbar"
           v-model:selected="selectedToolbar"
           :options="[
@@ -25,10 +25,10 @@
             { value: 'full', label: 'Full' },
             { value: '', label: 'None' },
           ]"
-        ></Options>
+        ></VOptions>
       </div>
     </div>
-    <div class="flex-1 flex flex-col">
+    <div class="initial flex-1 flex flex-col">
       <QuillEditor
         ref="myEditor"
         class="h-80 flex-1"
@@ -44,17 +44,11 @@
 </template>
 
 <script lang="ts">
-import { QuillEditor, Quill } from "../../src/main";
-
+import Quill from "quill";
 import { Delta } from "types-quill-delta";
 import { defineComponent, onMounted, ref } from "vue";
-import Options from "./Options.vue";
 
 export default defineComponent({
-  components: {
-    QuillEditor,
-    Options,
-  },
   setup: () => {
     const myEditor = ref();
     onMounted(() => {
@@ -68,7 +62,7 @@ export default defineComponent({
     ]);
 
     const myHTML = ref<string>("");
-    let myQuill: typeof Quill | null = null;
+    let myQuill: Quill | null = null;
 
     const handleReady = (quill) => {
       myQuill = quill;

@@ -6,10 +6,8 @@ set -e
 # remove dists
 rm -r -f dist
 
-# build
+# build library
 npm run lib:build
 
-# navigate into the build output directory
+# publish package to npm
 npm publish
-
-cd -

@@ -102,8 +102,12 @@ module.exports = {
           text: 'APIs',
           children: [
             {
-              text: 'Props',
+              text: 'Export',
               link: '/api/'
+            },
+            {
+              text: 'Props',
+              link: '/api/props'
             },
             {
               text: 'Events',

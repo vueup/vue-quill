@@ -1,6 +1,6 @@
 {
   "name": "@vueup/quill",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Quill Editor for Vue 3 plugin or component.",
   "keywords": [
     "vue 3 quill plugin",
@@ -42,6 +42,9 @@
   ],
   "main": "./dist/quill.umd.js",
   "module": "./dist/quill.es.js",
+  "browser": "dist/quill.umd.js",
+  "unpkg": "dist/quill.umd.js",
+  "jsdelivr": "dist/quill.umd.js",
   "exports": {
     ".": {
       "import": "./dist/quill.es.js",

@@ -1,37 +1,20 @@
 # Usage
 
-### Mount with global
+## In The Browser
 
-``` javascript
-import { createApp } from 'vue'
-import VueUpQuill from '@vueup/quill'
-import '@vueup/quill/dist/quill.snow.css';
-
-const app = createApp()
-app.use(VueUpQuill, /* { default global options } */)
+``` html
+<div id="app">
+  <quill-editor theme="snow"></quill-editor>
+</div>
 ```
+::: tip INFO
+We're showing you a simple example here, but in a typical Vue application we use Single File Components instead of a string template. You can find **SFC implementation** in [this section](usage.md#single-file-component-implementation).
+:::
 
-### Mount with local component
-
-``` javascript
-import { QuillEditor } from '@vueup/quill'
-import '@vueup/quill/dist/quill.snow.css';
-
-export default {
-  components: {
-    QuillEditor
-  }
-}
-```
-
-### SFC Implementation
+## Single File Component
 
 ``` vue
 <template>
-  <!-- Two-way Data-Binding -->
-  <QuillEditor
-    theme="snow"
-    toolbar="essential"
-  />
+  <QuillEditor theme="snow" />
 </template>
 ```

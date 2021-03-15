@@ -29,9 +29,9 @@
 
 **VueUpQuill** is a **Plugin** or **Component** for building rich text editors in Vue 3, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
 
-- 💚 **Built With Vue 3**: More powerful and performant framework than ever before.
-- 🧙‍♂️ **Fully Typescript**: VueUpQuill source code is written entirely in TypeScript.
-- 🛠️ **Easy To Use**: Straightforward implementation through a simple API.
+- 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
+- 🧙‍♂️ **Fully Typescript:** VueUpQuill source code is written entirely in TypeScript.
+- 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
 [Read the Docs to Learn More](https://vueup.github.io/vueup-quill/).
 

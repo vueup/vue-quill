@@ -16,7 +16,6 @@ Cross platform support is important to many Javascript libraries, but the criter
 
 Quill supports all modern browsers on desktops, tablets and phones. Experience the same consistent behavior and produced HTML across platforms. [See the chart](https://github.com/quilljs/quill/#readme) for more details.
 
-
 ## Community
 
 If you have questions or need help, reach out to the community at [GitHub Discussions](https://github.com/vueup/vueup-quill/discussions).

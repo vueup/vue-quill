@@ -37,15 +37,11 @@ export default defineComponent({
       type: String,
       required: false
     },
-    options: {
-      type: Object as PropType<QuillOptionsStatic>,
-      required: false,
-    },
     theme: {
       type: String,
-      required: false,
+      default: "snow",
       validator: (value: string) => {
-        return ["", "snow", "bubble"].includes(value)
+        return ["snow", "bubble", ""].includes(value)
       }
     },
     toolbar: {
@@ -59,6 +55,10 @@ export default defineComponent({
         }
         return true;
       },
+    },
+    options: {
+      type: Object as PropType<QuillOptionsStatic>,
+      required: false,
     },
     globalOptions: {
       type: Object as PropType<QuillOptionsStatic>,

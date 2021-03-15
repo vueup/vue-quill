@@ -14,7 +14,7 @@ import '@vueup/quill/dist/quill.bubble.css';
 
 These stylesheets can be found in the Quill distribution, but for convenience they are also linked in VueUpQuill's `dist` folder.
 
-Then, pass the name of the theme to the `theme` [prop](#props).
+Then, pass the name of the theme to the [`theme prop`](../api/props.md).
 
 ~~~ vue
 <template>

@@ -1,23 +1,23 @@
 # Events 
 
-**`@textChange`** :
+## @textChange
 
-**`@selectionChange`** :
+## @selectionChange
 
-**`@editorChange`** :
+## @editorChange
 
-**`@update:content`** :
+## @update:content
 
-**`@focus`** :
+## @focus
 
-**`@blur`** :
+## @blur
 
-**`@ready`** :
+## @ready
 
-### Methods
+# Methods
 
-**`getQuill`** :
+## getQuill
 
-**`getHTML`** :
+## getHTML
 
-**`setHTML`** :
+## setHTML

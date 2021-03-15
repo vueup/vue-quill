@@ -1,9 +1,8 @@
 <p align="center">
   <a href="https://vueup.github.io/vueup-quill/" target="_blank" rel="noopener noreferrer">
-    <img height="180" src="https://vueup.github.io/vueup-quill/quill.svg" alt="Vue + Quill logo">
+    <img height="120" src="https://vueup.github.io/vueup-quill/quill.svg" alt="Vue + Quill logo">
   </a>
 </p>
-<br/>
 <h1 align="center">VueUpQuill</h1>
 <h3 align="center">
   Vue 3 + Quill JS plugin for your powerful text editor.
@@ -25,20 +24,19 @@
     <img src="https://img.shields.io/github/last-commit/vueup/vueup-quill?logo=github" alt="Last commit">
   </a>
  </p>
+ 
+## Overview
 
-💚 **Built With Vue 3**
-More powerful and performant framework than ever before.
-🧙‍♂️ **Fully Typescript**
-VueUpQuill source code is written entirely in TypeScript.
-🛠️ **Easy To Use**
-Straightforward implementation through a simple API.
+**VueUpQuill** is a **Plugin** or **Component** for building rich text editors in Vue 3, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
+
+- 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
+- 🧙‍♂️ **Fully Typescript:** VueUpQuill source code is written entirely in TypeScript.
+- 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
 [Read the Docs to Learn More](https://vueup.github.io/vueup-quill/).
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
 
 ## Quill
 [Quill API document](https://quilljs.com/docs/quickstart/)

@@ -1,9 +1,8 @@
 <p align="center">
   <a href="https://vueup.github.io/vueup-quill/" target="_blank" rel="noopener noreferrer">
-    <img height="180" src="https://vueup.github.io/vueup-quill/quill.svg" alt="Vue + Quill logo">
+    <img height="120" src="https://vueup.github.io/vueup-quill/quill.svg" alt="Vue + Quill logo">
   </a>
 </p>
-<br/>
 <h1 align="center">VueUpQuill</h1>
 <h3 align="center">
   Vue 3 + Quill JS plugin for your powerful text editor.
@@ -26,17 +25,9 @@
   </a>
  </p>
 
-💚 **Built With Vue 3**
-
-More powerful and performant framework than ever before.
-
-🧙‍♂️ **Fully Typescript**
-
-VueUpQuill source code is written entirely in TypeScript.
-
-🛠️ **Easy To Use**
-
-Straightforward implementation through a simple API.
+- 💚 **Built With Vue 3**: More powerful and performant framework than ever before.
+- 🧙‍♂️ **Fully Typescript**: VueUpQuill source code is written entirely in TypeScript.
+- 🛠️ **Easy To Use**: Straightforward implementation through a simple API.
 
 [Read the Docs to Learn More](https://vueup.github.io/vueup-quill/).
 

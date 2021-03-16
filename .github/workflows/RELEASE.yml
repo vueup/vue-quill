@@ -15,6 +15,7 @@ jobs:
         with: 
           node-version: "14.x"
       - run: npm ci
+      - run: npm run theme:build
       - run: npm run lib:build
       - run: npx semantic-release
         env: 

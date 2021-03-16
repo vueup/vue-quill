@@ -75,6 +75,7 @@
     "postcss": "^8.2.8",
     "rollup-plugin-copy": "^3.4.0",
     "semantic-release": "^17.4.2",
+    "stylus": "^0.54.8",
     "tailwindcss": "^2.0.3",
     "types-quill-delta": "^1.0.0",
     "typescript": "^4.2.3",

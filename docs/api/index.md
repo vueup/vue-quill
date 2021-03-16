@@ -14,7 +14,7 @@
 
 ## readOnly
 - **Type:** `Boolean`
-- **Default:** `true`
+- **Default:** `false`
 
   If *true*, the editor won't allow changing its contents. Wraps the Quill [`disable` API](https://quilljs.com/docs/api/#disable). 
 

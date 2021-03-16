@@ -5,7 +5,9 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/npm",
     ["@semantic-release/github", {
-      "assets": [["dist"]]
+      "assets": [
+        {"path": "dist", "label": "Distribution code"}
+      ]
     }]
   ]
 }

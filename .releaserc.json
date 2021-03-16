@@ -9,7 +9,11 @@
     }],
     ["@semantic-release/github", {
       "assets": [
-        {"path": "vueup-quill-dist.zip", "name": "vueup-quill-dist-${nextRelease.gitTag}.zip", "label": "Distribution code"}
+        {
+          "path": "vueup-quill-dist.zip", 
+          "name": "vueup-quill-dist-${nextRelease.gitTag}.zip", 
+          "label": "Distribution code (zip)"
+        }
       ]
     }]
   ]

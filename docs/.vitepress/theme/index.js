@@ -7,9 +7,8 @@ import './sponsors.css'
 import './custom.css'
 
 import "quill/dist/quill.core.css"; // import styles
-// import 'quill/dist/quill.snow.css' // for snow theme
 import "quill/dist/quill.bubble.css"; // for bubble theme
-import "../../../src/themes/quill.snow2.css"; // for snow theme
+import "../../../src/themes/quill.snow.css"; // for snow theme
 
 import VOptions from "../components/VOptions.vue"
 const QuillEditor = defineAsyncComponent(

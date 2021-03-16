@@ -54,9 +54,9 @@
   },
   "scripts": {
     "lib:build": "vite build",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs",
+    "docs:dev": "cd docs && npm run dev",
+    "docs:build": "cd docs && npm run build",
+    "docs:serve": "cd docs && npm run serve",
     "theme:dev": "stylus -w ./src/assets/snow.styl -o ./src/themes/quill.snow.css",
     "theme:build": "stylus ./src/assets/snow.styl -o ./src/themes/quill.snow.css"
   },
@@ -66,21 +66,16 @@
   },
   "devDependencies": {
     "@semantic-release/exec": "^5.0.0",
-    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/node": "^14.14.34",
     "@types/quill": "^2.0.5",
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.7",
-    "autoprefixer": "^10.2.5",
     "csso": "^4.2.0",
-    "postcss": "^8.2.8",
     "rollup-plugin-copy": "^3.4.0",
     "semantic-release": "^17.4.2",
     "stylus": "^0.54.8",
-    "tailwindcss": "^2.0.3",
     "types-quill-delta": "^1.0.0",
     "typescript": "^4.2.3",
-    "vite": "^2.0.5",
-    "vitepress": "^0.12.2"
+    "vite": "^2.0.5"
   }
 }

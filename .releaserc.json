@@ -4,9 +4,12 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/npm",
+    ["@semantic-release/exec", {
+      "prepareCmd": "zip vueup-quill-dist-${nextRelease.gitTag}.zip -r dist"
+    }],
     ["@semantic-release/github", {
       "assets": [
-        {"path": "dist", "label": "Distribution code"}
+        {"path": "vueup-quill-dist-${nextRelease.gitTag}.zip", "label": "Distribution code"}
       ]
     }]
   ]

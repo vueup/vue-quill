@@ -13,11 +13,3 @@
 ## @blur
 
 ## @ready
-
-# Methods
-
-## getQuill
-
-## getHTML
-
-## setHTML

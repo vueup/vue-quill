@@ -110,6 +110,10 @@ module.exports = {
               link: '/api/events'
             },
             {
+              text: 'Methods',
+              link: '/api/methods'
+            },
+            {
               text: 'Slots',
               link: '/api/slots'
             },

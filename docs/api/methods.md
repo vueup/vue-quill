@@ -1,0 +1,7 @@
+# Methods
+
+## getQuill
+
+## getHTML
+
+## setHTML

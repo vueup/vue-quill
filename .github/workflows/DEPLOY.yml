@@ -1,0 +1,31 @@
+name: Deploy docs
+
+on: 
+  push: 
+    branches: 
+      - master
+    paths:
+      - 'docs/**'
+
+jobs: 
+  deploy: 
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with: 
+          node-version: '14.x'
+      - working-directory: docs
+        run: |
+          npm ci
+          npm run build
+      - working-directory: docs/.vitepress/dist
+        run: |
+          git init
+          git add -A
+          git commit -m 'deploy'
+          git commit -m 'deploy'
+          git push -f git@github.com:vueup/vueup-quill.git master:gh-pages
+        env: 
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

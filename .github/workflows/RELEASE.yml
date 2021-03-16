@@ -4,6 +4,8 @@ on:
   push: 
     branches: 
       - master
+    paths-ignore:
+      - 'docs/**'
 
 jobs: 
   release: 
@@ -13,7 +15,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with: 
-          node-version: "14.x"
+          node-version: '14.x'
       - run: npm ci
       - run: npm run theme:build
       - run: npm run lib:build

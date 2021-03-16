@@ -25,14 +25,21 @@ export default defineConfig({
       plugins: [
         copy({
           targets: [{
-            src: './node_modules/quill/dist/*.css',
+            src: './node_modules/quill/dist/quill.core.css',
             dest: './dist',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css
             }
           },
           {
-            src: './src/themes/*.css',
+            src: './node_modules/quill/dist/quill.bubble.css',
+            dest: './dist',
+            transform: (contents, filename) => {
+              return csso.minify(contents.toString()).css
+            }
+          },
+          {
+            src: './src/themes/quill.snow.css',
             dest: './dist',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css

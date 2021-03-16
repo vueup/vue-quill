@@ -54,9 +54,6 @@
   },
   "scripts": {
     "lib:build": "vite build",
-    "demo:dev": "cd demo && vite serve",
-    "demo:build": "cd demo && vite build",
-    "demo:serve": "cd demo && vite preview",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
@@ -76,6 +73,7 @@
     "csso": "^4.2.0",
     "postcss": "^8.2.8",
     "rollup-plugin-copy": "^3.4.0",
+    "semantic-release": "^17.4.2",
     "tailwindcss": "^2.0.3",
     "types-quill-delta": "^1.0.0",
     "typescript": "^4.2.3",

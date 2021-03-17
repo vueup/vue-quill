@@ -21,10 +21,10 @@ Basic Usage:
 </div>
 ```
 ::: tip INFO
-We're showing you a simple example here, but in a typical Vue application we use Single File Components instead of a string template. You can find **SFC implementation** in [this section](usage.md#single-file-component).
+We're showing you a simple example here, but in a typical Vue application we use Single File Components instead of a string template. You can find **SFC implementation** in [this section](usage.md#in-single-file-component).
 :::
 
-## Single File Component
+## In Single File Component
 
 ### Use as a Plugin
 After a Vue app has been initialized with `createApp()`, you can add a `VueUpQuill` to your application by calling the `use()` method. The `use()` method takes two parameters. The first one is the plugin to be installed, in this case `VueUpQuill`. The second parameter is optional, in this case [Quill Options](options.md).

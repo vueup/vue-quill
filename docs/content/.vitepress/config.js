@@ -8,10 +8,10 @@ module.exports = {
   lang: 'en-US',
   title: 'VueUpQuill',
   description: 'Vue 3 + Quill JS plugin for your powerful text editor. ',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vueup-quill/logo.svg' }]],
   themeConfig: {
     repo: 'vueup/vueup-quill',
-    logo: '/logo.svg',
+    logo: '/vueup-quill/logo.svg',
     docsDir: 'docs',
     docsBranch: 'main',
     editLinks: true,

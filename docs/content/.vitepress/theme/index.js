@@ -15,13 +15,10 @@ const QuillEditor = defineAsyncComponent({
   loader: () => {
     if (process.env.NODE_ENV === "production") {
       return import("@vueup/quill")
-    } else {
-      try {
-        return import("../../../../src/main")
-      } finally {
-        // You are in development mode
-      }
     }
+    //#if process.env.NODE_ENV === "development"
+    return import("../../../../src/main")
+    //#endif
   }
 })
 

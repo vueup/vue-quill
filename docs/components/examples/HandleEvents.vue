@@ -33,7 +33,7 @@ export default defineComponent({
     });
 
     const onEditorBlur = (args) => {
-      // console.log("EditorBlur", args);
+      console.log("EditorBlur", args);
     };
 
     const onEditorFocus = (editor) => {

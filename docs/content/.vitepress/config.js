@@ -11,7 +11,7 @@ module.exports = {
   head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vueup-quill/logo.svg' }]],
   themeConfig: {
     repo: 'vueup/vueup-quill',
-    logo: '/vueup-quill/logo.svg',
+    logo: '/logo.svg',
     docsDir: 'docs',
     docsBranch: 'main',
     editLinks: true,

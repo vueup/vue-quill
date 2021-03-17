@@ -11,20 +11,8 @@ import "@vueup/quill/dist/quill.core.css"; // import styles
 import "@vueup/quill/dist/quill.bubble.css"; // for bubble theme
 import "@vueup/quill/dist/quill.snow.css"; // for snow theme
 
-let QuillEditor
-
-// if (process.env.NODE_ENV === "development") {
-//   QuillEditor = defineAsyncComponent(
-//     () => import("../../../../src/components/QuillEditor")
-//   )
-// } else {
-//   QuillEditor = defineAsyncComponent({
-//     loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
-//   })
-// }
-
-QuillEditor = defineAsyncComponent({
-  loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
+const QuillEditor = defineAsyncComponent({
+  loader: () => import("@vueup/quill")
 })
 
 export default {

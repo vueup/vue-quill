@@ -2,8 +2,12 @@
 
 ~~~ javascript
 // ES6
-import QuillEditor, {QuillEditor, Quill} from '@vueup/quill';
+import QuillEditor from '@vueup/quill';
+import { QuillEditor, Quill } from '@vueup/quill';
 
 // CommonJS
-const {default: QuillEditor, QuillEditor, Quill} = require('@vueup/quill');
+const QuillEditor = require('@vueup/quill').default;
+const { QuillEditor, Quill } = require('@vueup/quill');
 ~~~
+
+`Quill` : The `Quill` namespace on which you can call `register`.

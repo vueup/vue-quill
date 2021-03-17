@@ -27,4 +27,4 @@ jobs:
           git commit -m 'deploy'
           git push -f git@github.com:vueup/vueup-quill.git master:gh-pages
         env: 
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

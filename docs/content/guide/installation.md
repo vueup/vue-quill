@@ -17,8 +17,8 @@ VueUpQuill ships as an UMD module that is accessible in the browser. When loaded
 <link rel="stylesheet" href="https://unpkg.com/@vueup/quill@latest/dist/quill.snow.css">
 
 <!-- or point to a specific VueUpQuill release -->
-<script src="https://unpkg.com/@vueup/quill@0.1.2"></script>
-<link rel="stylesheet" href="https://unpkg.com/@vueup/quill@0.1.2/dist/quill.snow.css">
+<script src="https://unpkg.com/@vueup/quill@2.0.0"></script>
+<link rel="stylesheet" href="https://unpkg.com/@vueup/quill@2.0.0/dist/quill.snow.css">
 ```
 
 ::: warning 

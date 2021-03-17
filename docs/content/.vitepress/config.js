@@ -12,8 +12,8 @@ module.exports = {
   themeConfig: {
     repo: 'vueup/vueup-quill',
     logo: '/logo.svg',
-    docsDir: 'docs',
-    docsBranch: 'main',
+    docsDir: 'docs/content',
+    docsBranch: 'master',
     editLinks: true,
     editLinkText: 'Suggest changes to this page',
 

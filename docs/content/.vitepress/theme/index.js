@@ -13,15 +13,19 @@ import "@vueup/quill/dist/quill.snow.css"; // for snow theme
 
 let QuillEditor
 
-if (process.env.NODE_ENV === "development") {
-  QuillEditor = defineAsyncComponent(
-    () => import("../../../../src/components/QuillEditor")
-  )
-} else {
-  QuillEditor = defineAsyncComponent({
-    loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
-  })
-}
+// if (process.env.NODE_ENV === "development") {
+//   QuillEditor = defineAsyncComponent(
+//     () => import("../../../../src/components/QuillEditor")
+//   )
+// } else {
+//   QuillEditor = defineAsyncComponent({
+//     loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
+//   })
+// }
+
+QuillEditor = defineAsyncComponent({
+  loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
+})
 
 export default {
   enhanceApp({ app, router, siteData }) {

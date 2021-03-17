@@ -1,1 +1,0 @@
-import{o as n,a,i as s}from"./app.fb0daa73.js";const t='{"title":"Export","description":"","frontmatter":{},"relativePath":"api/export.md","lastUpdated":1615953804483}',p={},o=s('',2);p.render=function(s,t,p,e,l,c){return n(),a("div",null,[o])};export default p;export{t as __pageData};

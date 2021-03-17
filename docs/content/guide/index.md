@@ -8,7 +8,7 @@ You can learn more about the rationale behind the project in the [Why Quill](htt
 
 ## What is VueUpQuill
 
-**VueUpQuill** is a **Plugin** or **Component** for building rich text editors in Vue 3, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
+**VueUpQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
 
 ## Browser Support
 

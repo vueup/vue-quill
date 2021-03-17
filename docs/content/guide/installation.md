@@ -35,4 +35,4 @@ npm install @vueup/quill --save
 yarn add @vueup/quill
 ```
 
-npm or yarn is the recommended installation method when you are using [Single File Component](usage.md#in-single-file-component), and there are two way to implement `VueUpQuill`, you can use it as a [Plugin](usage.md#use-as-a-plugin) or [Component](usage.md#use-as-a-component)
+npm or yarn is the recommended installation method when you are using [Single File Component](usage.md#in-single-file-component), and then you can register the [Component](usage.md#in-single-file-component) in your app.

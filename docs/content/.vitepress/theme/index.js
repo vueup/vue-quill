@@ -13,9 +13,9 @@ import "@vueup/quill/dist/quill.snow.css"; // for snow theme
 
 const QuillEditor = defineAsyncComponent({
   loader: () =>
-    process.env.NODE_ENV === "development"
-      ? import("../../../../src/main")
-      : import("@vueup/quill")
+    process.env.NODE_ENV === "production"
+      ? import("@vueup/quill")
+      : import("../../../../src/main")
 })
 
 export default {

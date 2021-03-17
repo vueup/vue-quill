@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-node@v1
         with: 
           node-version: '14.x'
+      - run: npm ci
       - working-directory: docs
         run: |
           npm ci

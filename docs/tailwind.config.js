@@ -3,8 +3,7 @@ module.exports = {
     preflight: false,
   },
   purge: [
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-    './docs/**/*.{vue,js,ts,jsx,tsx,md}'
+    './content/**/*.{vue,js,ts,jsx,tsx,md}'
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {

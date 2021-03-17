@@ -44,11 +44,13 @@
 </template>
 
 <script lang="ts">
-import Quill from "quill";
+import { Quill } from "@vueup/quill";
 import { Delta } from "types-quill-delta";
 import { defineComponent, onMounted, ref } from "vue";
+import VOptions from "../VOptions.vue";
 
 export default defineComponent({
+  components: { VOptions },
   setup: () => {
     const myEditor = ref();
     onMounted(() => {

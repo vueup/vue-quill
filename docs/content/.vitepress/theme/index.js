@@ -6,20 +6,27 @@ import './tailwind.css'
 import './sponsors.css'
 import './custom.css'
 
-import "quill/dist/quill.core.css"; // import styles
-import "quill/dist/quill.bubble.css"; // for bubble theme
-import "../../../src/themes/quill.snow.css"; // for snow theme
+import "@tailwindcss/custom-forms/dist/custom-forms.min.css";
+import "@vueup/quill/dist/quill.core.css"; // import styles
+import "@vueup/quill/dist/quill.bubble.css"; // for bubble theme
+import "@vueup/quill/dist/quill.snow.css"; // for snow theme
 
-import VOptions from "../components/VOptions.vue"
-const QuillEditor = defineAsyncComponent(
-  () => import("../../../src/components/QuillEditor")
-)
+let QuillEditor
+
+if (process.env.NODE_ENV === "development") {
+  QuillEditor = defineAsyncComponent(
+    () => import("../../../../src/components/QuillEditor")
+  )
+} else {
+  QuillEditor = defineAsyncComponent({
+    loader: () => import("@vueup/quill").then(VueUpQuill => VueUpQuill.QuillEditor)
+  })
+}
 
 export default {
   enhanceApp({ app, router, siteData }) {
     // app is the Vue 3 app instance from `createApp()`. router is VitePress'
     // custom router. `siteData`` is a `ref`` of current site-level metadata.
-    app.component("VOptions", VOptions)
     app.component("QuillEditor", QuillEditor)
   },
   // NotFound: () => 'custom 404', // <- this is a Vue 3 functional component

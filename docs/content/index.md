@@ -39,7 +39,7 @@ footer: MIT Licensed | Copyright © 2020-present Luthfi Masruri & VueUpQuill Con
 </div>
 
 <script setup>
-import DemoEditor from './demo/DemoEditor.vue'
+import DemoEditor from '../components/demo/DemoEditor.vue'
 import sponsors from './.vitepress/theme/sponsors.json'
 </script>
 

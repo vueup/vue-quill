@@ -20,11 +20,10 @@ jobs:
         run: |
           npm ci
           npm run build
-      - working-directory: docs/.vitepress/dist
+      - working-directory: docs/content/.vitepress/dist
         run: |
           git init
           git add -A
-          git commit -m 'deploy'
           git commit -m 'deploy'
           git push -f git@github.com:vueup/vueup-quill.git master:gh-pages
         env: 

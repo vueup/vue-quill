@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { defineComponent, onMounted, ref } from "vue";
-import { Quill, QuillEditor } from "../../../../src/main";
+import { defineComponent, onMounted, ref } from "vue";
+import { Quill } from "@vueup/quill";
 export default defineComponent({
   setup: () => {
     const content = ref<string>("Holala...");

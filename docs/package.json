@@ -4,21 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build",
-    "serve": "vitepress serve"
+    "dev": "cross-env NODE_ENV=development vitepress dev content",
+    "build": "cross-env NODE_ENV=production vitepress build content",
+    "serve": "cross-env NODE_ENV=production vitepress serve content"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^10.2.5",
+    "cross-env": "^7.0.3",
     "postcss": "^8.2.8",
     "tailwindcss": "^2.0.3",
+    "types-quill-delta": "^1.0.0",
     "vitepress": "^0.12.2"
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
-    "quill": "^1.3.7"
+    "@vueup/quill": "^1.1.5"
   }
 }

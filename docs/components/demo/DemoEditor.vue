@@ -97,3 +97,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.ql-editor h2 {
+  border: none;
+}
+</style>

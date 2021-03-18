@@ -1,1 +1,0 @@
-import{o as t,a as e}from"./app.eddc83b7.js";const r='{"title":"","description":"","frontmatter":{},"relativePath":"api/slots.md","lastUpdated":1616022009970}',a={};a.render=function(r,a,o,d,i,p){return t(),e("div")};export default a;export{r as __pageData};

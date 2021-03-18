@@ -141,14 +141,14 @@ export default defineComponent({
     const handleTextChange: TextChangeHandler = (...args) => {
       // Update v-model:content when text changes
       ctx.emit("update:content", quill?.getContents());
-      ctx.emit("textChange", ...args);
+      ctx.emit("textChange", { ...args });
     };
 
     const isEditorFocus = ref<boolean>()
     const handleSelectionChange: SelectionChangeHandler = (...args) => {
       // Mark model as touched if editor lost focus
       isEditorFocus.value = quill?.hasFocus() ? true : false
-      ctx.emit("selectionChange", ...args);
+      ctx.emit("selectionChange", { ...args });
     };
 
     watch(isEditorFocus, (focus) => {
@@ -157,7 +157,7 @@ export default defineComponent({
     })
 
     const handleEditorChange: EditorChangeHandler = (name: String, ...args) => {
-      ctx.emit("editorChange", name, ...args);
+      ctx.emit("editorChange", { name, ...args });
     };
 
     const getQuill = (): Quill => {

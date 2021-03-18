@@ -117,11 +117,15 @@ export default defineComponent({
 
     // Compose Options
     const composeOptions = (): QuillOptionsStatic => {
-      const clientOptions: QuillOptionsStatic = {
-        theme: props.theme === "" ? undefined : props.theme,
-        readOnly: props.readOnly,
-        placeholder: props.placeholder,
-        modules: {
+      const clientOptions: QuillOptionsStatic = {}
+      if (props.theme !== "")
+        clientOptions.theme = props.theme
+      if (props.readOnly)
+        clientOptions.readOnly = props.readOnly
+      if (props.placeholder)
+        clientOptions.placeholder = props.placeholder
+      if (props.theme && props.theme !== "") {
+        clientOptions.modules = {
           toolbar: (() => {
             if (typeof props.toolbar === "object") {
               return props.toolbar
@@ -133,7 +137,7 @@ export default defineComponent({
             }
           })()
         }
-      };
+      }
       return Object.assign(
         {},
         props.globalOptions,

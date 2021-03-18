@@ -4,3 +4,4 @@ dist
 dist-ssr
 *.local
 dummy/assets
+_test

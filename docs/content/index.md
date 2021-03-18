@@ -4,8 +4,8 @@ heroImage: /quill.svg
 actionText: Get Started
 actionLink: /guide/
 
-altActionText: Learn More
-altActionLink: /guide/why
+altActionText: ⭐ Github
+altActionLink: https://github.com/vueup/vueup-quill
 
 features:
   - title: 💚 Built With Vue 3

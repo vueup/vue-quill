@@ -73,7 +73,7 @@ module.exports = {
           text: 'Guide',
           children: [
             {
-              text: 'Getting Started',
+              text: 'Introduction',
               link: '/guide/'
             },
             {

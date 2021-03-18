@@ -1,4 +1,4 @@
-# Getting Started
+# Introduction
 
 ## What is Quill
 

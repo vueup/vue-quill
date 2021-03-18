@@ -124,7 +124,7 @@ export default defineComponent({
         clientOptions.readOnly = props.readOnly
       if (props.placeholder)
         clientOptions.placeholder = props.placeholder
-      if (props.theme && props.theme !== "") {
+      if (props.toolbar && props.toolbar !== "") {
         clientOptions.modules = {
           toolbar: (() => {
             if (typeof props.toolbar === "object") {

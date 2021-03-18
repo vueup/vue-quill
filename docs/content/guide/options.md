@@ -22,7 +22,7 @@ Only use `options` prop when you register QuillEditor component locally
         options: {
           debug: 'info',
           modules: {
-            toolbar: 'minimal'
+            toolbar: ['bold', 'italic', 'underline']
           },
           placeholder: 'Compose an epic...',
           readOnly: true,
@@ -37,7 +37,7 @@ Only use `options` prop when you register QuillEditor component locally
 
   ``` vue
   <template>
-    <QuillEditor options="options" />
+    <QuillEditor :options="options" />
   </template>
   ```
 
@@ -49,7 +49,7 @@ Only use `globalOptions` prop when you register QuillEditor component globally
 
 - **Usage:**
 
-  ~~~ js
+  ``` js
   import { createApp } from 'vue'
   import QuillEditor from '@vueup/quill'
 
@@ -58,7 +58,7 @@ Only use `globalOptions` prop when you register QuillEditor component globally
   const globalOptions = {
     debug: 'info',
     modules: {
-      toolbar: 'minimal'
+      toolbar: ['bold', 'italic', 'underline']
     },
     placeholder: 'Compose an epic...',
     readOnly: true,
@@ -68,7 +68,7 @@ Only use `globalOptions` prop when you register QuillEditor component globally
   QuillEditor.props.globalOptions.default = () => globalOptions
   // register QuillEditor component
   app.component('QuillEditor', QuillEditor)
-  ~~~
+  ```
 
 ## Option Attributes
 

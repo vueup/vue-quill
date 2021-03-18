@@ -8,18 +8,32 @@ This guide assumes intermediate level knowledge of Vue 3. If you are totally new
 
 VueUpQuill ships as an UMD module that is accessible in the browser. When loaded in the browser, you can access the component through the `VueUpQuill.QuillEditor` global variable. You'll need to load Vue.js, VueUpQuill JS & VueUpQuill CSS theme.
 
-```html
-<!-- include VueJS first -->
-<script src="https://unpkg.com/vue@latest"></script>
+<div id="cdn-install">
 
-<!-- use the latest VueUpQuill release -->
-<script src="https://unpkg.com/@vueup/quill@latest"></script>
-<link rel="stylesheet" href="https://unpkg.com/@vueup/quill@latest/dist/quill.snow.css">
+  ```html
+  <!-- include VueJS first -->
+  <script src="https://unpkg.com/vue@latest"></script>
 
-<!-- or point to a specific VueUpQuill release -->
-<script src="https://unpkg.com/@vueup/quill@2.0.1"></script>
-<link rel="stylesheet" href="https://unpkg.com/@vueup/quill@2.0.1/dist/quill.snow.css">
-```
+  <!-- use the latest VueUpQuill release -->
+  <script src="https://unpkg.com/@vueup/quill@latest"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@vueup/quill@latest/dist/quill.snow.css">
+
+  <!-- or point to a specific VueUpQuill release -->
+  <script src="https://unpkg.com/@vueup/quill@$latest"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@vueup/quill@$latest/dist/quill.snow.css">
+  ```
+
+</div>
+
+<script setup>
+  import { onMounted } from 'vue'
+  import { getLatestReleaseVersion } from '../.utils/github-api'
+  onMounted(async () => {
+    const latestVersion = await getLatestReleaseVersion('vueup', 'vueup-quill')
+    document.getElementById('cdn-install').innerHTML = 
+    document.getElementById('cdn-install').innerHTML.replace(/\$latest/g, latestVersion);
+  })
+</script>
 
 ::: warning 
 For production, we recommend linking to a specific version number and build to avoid unexpected breakage from newer versions.

@@ -3,9 +3,11 @@ import {
   SelectionChangeHandler,
   EditorChangeHandler,
   QuillOptionsStatic,
+  RangeStatic,
+  Sources,
 } from "quill";
 import { Quill } from "../main"
-import { Delta } from "types-quill-delta";
+import Delta from "quill-delta";
 import {
   defineComponent,
   onBeforeUnmount,
@@ -140,17 +142,17 @@ export default defineComponent({
       );
     }
 
-    const handleTextChange: TextChangeHandler = (...args) => {
+    const handleTextChange: TextChangeHandler = (delta: Delta, oldContents: Delta, source: Sources) => {
       // Update v-model:content when text changes
       ctx.emit("update:content", quill?.getContents());
-      ctx.emit("textChange", { ...args });
+      ctx.emit("textChange", { delta, oldContents, source });
     };
 
     const isEditorFocus = ref<boolean>()
-    const handleSelectionChange: SelectionChangeHandler = (...args) => {
+    const handleSelectionChange: SelectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, source: Sources) => {
       // Mark model as touched if editor lost focus
       isEditorFocus.value = quill?.hasFocus() ? true : false
-      ctx.emit("selectionChange", { ...args });
+      ctx.emit("selectionChange", { range, oldRange, source });
     };
 
     watch(isEditorFocus, (focus) => {
@@ -158,8 +160,28 @@ export default defineComponent({
       else ctx.emit("blur", editor);
     })
 
-    const handleEditorChange: EditorChangeHandler = (...args) => {
-      ctx.emit("editorChange", { ...args });
+    const handleEditorChange: EditorChangeHandler = (name: "text-change" | "selection-change", ...args) => {
+      if (name === "text-change") {
+        ctx.emit(
+          "editorChange",
+          {
+            name,
+            delta: args[0] as Delta,
+            oldContents: args[1] as Delta,
+            source: args[2] as Sources
+          }
+        );
+      } else if (name === "selection-change") {
+        ctx.emit(
+          "editorChange",
+          {
+            name,
+            range: args[0] as RangeStatic,
+            oldRange: args[1] as RangeStatic,
+            source: args[2] as Sources
+          }
+        );
+      }
     };
 
     const getQuill = (): Quill => {

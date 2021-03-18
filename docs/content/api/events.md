@@ -32,13 +32,13 @@
 
 ## @focus
 
-- **Arguments:** `editor: Element`
+- **Arguments:** `editor: Ref<Element>`
 
   Triggered when the editor loses focus.
 
 ## @blur
 
-- **Arguments:** `editor: Element`
+- **Arguments:** `editor: Ref<Element>`
   
   Triggered when the editor gains focus.
 

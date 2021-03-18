@@ -1,5 +1,5 @@
-
-import { Octokit } from '@octokit/core';
+// @ts-ignore
+import { Octokit } from 'https://cdn.skypack.dev/@octokit/core';
 
 export const getLatestReleaseVersion = async (owner: string, repo: string) => {
   const octokit = new Octokit();

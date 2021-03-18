@@ -8,6 +8,7 @@ This guide assumes intermediate level knowledge of Vue 3. If you are totally new
 
 VueUpQuill ships as an UMD module that is accessible in the browser. When loaded in the browser, you can access the component through the `VueUpQuill.QuillEditor` global variable. You'll need to load Vue.js, VueUpQuill JS & VueUpQuill CSS theme.
 
+
 <div id="cdn-install">
 
   ```html
@@ -25,6 +26,7 @@ VueUpQuill ships as an UMD module that is accessible in the browser. When loaded
 
 </div>
 
+<ClientOnly>
 <script setup>
   import { onMounted } from 'vue'
   import { getLatestReleaseVersion } from '../.utils/github-api'
@@ -34,6 +36,7 @@ VueUpQuill ships as an UMD module that is accessible in the browser. When loaded
     document.getElementById('cdn-install').innerHTML.replace(/\$latest/g, latestVersion);
   })
 </script>
+</ClientOnly>
 
 ::: warning 
 For production, we recommend linking to a specific version number and build to avoid unexpected breakage from newer versions.

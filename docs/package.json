@@ -20,6 +20,7 @@
     "vitepress": "^0.12.2"
   },
   "dependencies": {
+    "@octokit/core": "^3.3.1",
     "@tailwindcss/custom-forms": "^0.2.1",
     "@vueup/quill": "^2.0.4"
   }

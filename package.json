@@ -71,10 +71,10 @@
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.7",
     "csso": "^4.2.0",
+    "quill-delta": "^4.2.2",
     "rollup-plugin-copy": "^3.4.0",
     "semantic-release": "^17.4.2",
     "stylus": "^0.54.8",
-    "types-quill-delta": "^1.0.0",
     "typescript": "^4.2.3",
     "vite": "^2.0.5"
   }

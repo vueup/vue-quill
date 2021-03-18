@@ -43,9 +43,41 @@
 ## toolbar
 - **Type:** `String | Array | Object`
 
-  Toolbar options to configure the default toolbar icons using an array of format names. [see above](##Toolbar)
+  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) seection for more details.
 
 ## options
 - **Type:** `Object`
 
-  To configure Quill options see [the docs options](https://quilljs.com/docs/configuration/#options) for more details
+  Options to configure Quill, see [the docs options](../guide/options.md) for more details
+
+## globalOptions
+- **Type:** `Object`
+
+  Global Options to configure Quill, see [the docs options](../guide/options.md) for more details
+  
+  ::: warning
+  Only use `globalOptions` when you register QuillEditor component globally
+  :::
+
+- **Usage:**
+
+  ~~~ js
+  import { createApp } from 'vue'
+  import QuillEditor from '@vueup/quill'
+
+  const app = createApp()
+  // define your options
+  const globalOptions = {
+    debug: 'info',
+    modules: {
+      toolbar: 'minimal'
+    },
+    placeholder: 'Compose an epic...',
+    readOnly: true,
+    theme: 'snow'
+  }
+  // set default globalOptions prop
+  QuillEditor.props.globalOptions.default = () => globalOptions
+  // register QuillEditor component
+  app.component('QuillEditor', QuillEditor)
+  ~~~

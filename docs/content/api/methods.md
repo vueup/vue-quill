@@ -12,7 +12,7 @@
 
   Returns the full HTML contents of the editor.
 
-## setHTML(html: String)
+## setHTML(html)
 
 - **Parameter** `html: string`
 

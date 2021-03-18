@@ -1,9 +1,7 @@
-import { request } from '@octokit/request';
-
-export const getLatestReleaseVersion = async (owner: string, repo: string) => {
-  const res = await request(`GET /repos/${owner}/${repo}/releases/latest`, {
-    owner,
-    repo
-  })
-  // return res.data.tag_name.replace('v', '')
-}
+export const getLatestReleaseVersion = async (owner: string, repo: string): Promise<string> => {
+  return await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+  )
+    .then((response) => response.json())
+    .then((data) => data.tag_name.replace("v", ""));
+};

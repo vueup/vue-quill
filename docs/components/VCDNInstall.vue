@@ -2,17 +2,7 @@
 
 <script>
 import { defineComponent, onMounted } from "vue";
-// import { request } from "@octokit/request";
-import { request } from "https://cdn.skypack.dev/@octokit/request";
-
-export const getLatestReleaseVersion = async (owner, repo) => {
-  const res = await request(`GET /repos/${owner}/${repo}/releases/latest`, {
-    owner,
-    repo,
-  });
-  return res.data.tag_name.replace("v", "");
-  // return "2";
-};
+import { getLatestReleaseVersion } from "../utils/github-api";
 
 export default defineComponent({
   setup: () => {
@@ -26,7 +16,6 @@ export default defineComponent({
       ).innerHTML = document
         .getElementById("cdn-install")
         .innerHTML.replace(/\$latest/g, latestVersion);
-      // console.log("Mounted");
     });
   },
 });

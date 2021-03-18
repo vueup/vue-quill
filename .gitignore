@@ -1,7 +1,7 @@
 node_modules
 .DS_Store
+.debug
 dist
 dist-ssr
 *.local
 dummy/assets
-_test

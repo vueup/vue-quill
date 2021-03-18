@@ -10,7 +10,7 @@
         :checked="option.value === localValue"
         v-model="localValue"
       />
-      <span class="ml-2">{{ option.label }}</span>
+      <span class="ml-1">{{ option.label }}</span>
     </label>
   </div>
 </template>

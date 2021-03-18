@@ -1,10 +1,6 @@
 import Theme from 'vitepress/theme'
 import { defineAsyncComponent, h } from 'vue'
 import sponsors from './sponsors.json'
-import './base.css'
-import './tailwind.css'
-import './sponsors.css'
-import './custom.css'
 
 import "@tailwindcss/custom-forms/dist/custom-forms.min.css";
 import "@vueup/quill/dist/quill.core.css"; // import styles
@@ -17,6 +13,11 @@ const QuillEditor = defineAsyncComponent({
       ? import("@vueup/quill")
       : import("../../../../src/main")
 })
+
+import './base.css'
+import './tailwind.css'
+import './sponsors.css'
+import './custom.css'
 
 export default {
   enhanceApp({ app, router, siteData }) {

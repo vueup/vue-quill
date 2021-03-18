@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col md:flex-row gap-3">
+  <div class="flex flex-col md:flex-row md:gap-3">
     <!-- Theme and Toolbar menu -->
-    <div class="flex flex-col w-28">
+    <div class="flex flex-col md:w-28 mx-4 sm:mx-0">
       <div class="text-sm text-gray-400 font-bold mb-2">THEME</div>
       <div class="flex md:flex-col gap-2 mb-4">
         <VOptions
@@ -31,7 +31,7 @@
     <div class="initial flex-1 flex flex-col">
       <QuillEditor
         ref="myEditor"
-        class="h-80 flex-1"
+        class="h-64"
         v-model:content="myContent"
         @ready="handleReady"
         @textChange="handleTextChange"

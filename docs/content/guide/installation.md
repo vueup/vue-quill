@@ -26,18 +26,6 @@ VueUpQuill ships as an UMD module that is accessible in the browser. When loaded
 
 </div>
 
-<ClientOnly>
-<script setup>
-  import { onMounted } from 'vue'
-  import { getLatestReleaseVersion } from '../.utils/github-api'
-  onMounted(async () => {
-    const latestVersion = await getLatestReleaseVersion('vueup', 'vueup-quill')
-    document.getElementById('cdn-install').innerHTML = 
-    document.getElementById('cdn-install').innerHTML.replace(/\$latest/g, latestVersion);
-  })
-</script>
-</ClientOnly>
-
 ::: warning 
 For production, we recommend linking to a specific version number and build to avoid unexpected breakage from newer versions.
 :::
@@ -53,3 +41,15 @@ yarn add @vueup/quill
 ```
 
 npm or yarn is the recommended installation method when you are using [Single File Component](usage.md#in-single-file-component), and then you can register the [Component](usage.md#in-single-file-component) in your app.
+
+<ClientOnly>
+  <VCDNInstall></VCDNInstall>
+</ClientOnly>
+
+<script setup>
+  import VCDNInstall from '../../components/VCDNInstall.vue'
+  // import { defineAsyncComponent } from 'vue'
+  // const VCDNInstall = defineAsyncComponent({
+  //   loader: () => import("../../components/VCDNInstall.vue")
+  // })
+</script>

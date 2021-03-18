@@ -95,10 +95,12 @@ export default defineComponent({
         // Create new instance
         quill = new Quill(editor.value, options);
         // Set editor content
-        if (typeof props.content === "string")
+        if (typeof props.content === "string") {
           quill.setText(props.content);
-        else
+          ctx.emit("update:content", quill.getContents());
+        } else {
           quill.setContents(props.content as Delta);
+        }
         // Set event handlers
         quill.on("text-change", handleTextChange);
         quill.on("selection-change", handleSelectionChange);
@@ -156,8 +158,8 @@ export default defineComponent({
       else ctx.emit("blur", editor);
     })
 
-    const handleEditorChange: EditorChangeHandler = (name: String, ...args) => {
-      ctx.emit("editorChange", { name, ...args });
+    const handleEditorChange: EditorChangeHandler = (...args) => {
+      ctx.emit("editorChange", { ...args });
     };
 
     const getQuill = (): Quill => {
@@ -167,7 +169,7 @@ export default defineComponent({
                   or use v-on:ready="onReady(quill)" event instead.`
     }
 
-    const getHTML = (): String => {
+    const getHTML = (): string => {
       return quill?.root.innerHTML ?? ""
     }
 

@@ -27,15 +27,30 @@
  
 ## Overview
 
-**VueUpQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
+**VueUpQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill, to make it easier to use in a Vue 3 application.
 
 - 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
 - 🧙‍♂️ **Fully Typescript:** VueUpQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
-## Documentations
-- [Read the Docs to Learn More](https://vueup.github.io/vueup-quill/guide/).
+## Demo
 - [See a Live Demo](https://vueup.github.io/vueup-quill/#demo).
+
+## Documentation
+- **[Guide](https://vueup.github.io/vueup-quill/guide/)**
+  - [Introduction](https://vueup.github.io/vueup-quill/guide/)
+  - [Installation](https://vueup.github.io/vueup-quill/guide/installation.html)
+  - [Usage](https://vueup.github.io/vueup-quill/guide/usage.html)
+  - [Themes](https://vueup.github.io/vueup-quill/guide/themes.html)
+  - [Toolbar](https://vueup.github.io/vueup-quill/guide/toolbar.html)
+  - [Options](https://vueup.github.io/vueup-quill/guide/options.html)
+  
+- **[APIs](https://vueup.github.io/vueup-quill/api/)**
+  - [Props](https://vueup.github.io/vueup-quill/api/)
+  - [Events](https://vueup.github.io/vueup-quill/api/events.html)
+  - [Methods](https://vueup.github.io/vueup-quill/api/methods.html)
+  - [Slots](https://vueup.github.io/vueup-quill/api/slots.html)
+  - [Export](https://vueup.github.io/vueup-quill/api/export.html)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

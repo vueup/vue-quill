@@ -77,7 +77,7 @@ module.exports = {
               link: '/guide/'
             },
             {
-              text: 'Installataion',
+              text: 'Installation',
               link: '/guide/installation'
             },
             {

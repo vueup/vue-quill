@@ -33,6 +33,7 @@
 - 🧙‍♂️ **Fully Typescript:** VueUpQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
+## Documentations
 [Read the Docs to Learn More](https://vueup.github.io/vueup-quill/).
 
 ## Contributing

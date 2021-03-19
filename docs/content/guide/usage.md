@@ -16,7 +16,7 @@ Basic Usage:
 </div>
 ```
 ::: tip INFO
-We're showing you a simple example here, but in a typical Vue application we use Single File Components instead of a string template. You can find **SFC implementation** in [this section](usage.md#in-single-file-component).
+We're showing you a simple example here, but in a typical Vue application, we use Single File Components instead of a string template. You can find **SFC implementation** in [this section](usage.md#in-single-file-component).
 :::
 
 ## In Single File Component

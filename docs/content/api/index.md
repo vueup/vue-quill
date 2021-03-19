@@ -38,7 +38,7 @@
 - **Type:** `"snow" | "bubble" | ""`
 - **Default:** `"snow"`
 
-  The name of the theme to apply to the editor, Quill features two offically supported themes: `snow` and `bubble`. Pass `""` to use the minimal core theme. See the [docs on themes](https://quilljs.com/docs/themes/) for more information on including the required stylesheets. 
+  The name of the theme to apply to the editor, Quill features two officially supported themes: `snow` and `bubble`. Pass `""` to use the minimal core theme. See the [docs on themes](https://quilljs.com/docs/themes/) for more information on including the required stylesheets. 
 
 ## toolbar
 - **Type:** `String | Array | Object`

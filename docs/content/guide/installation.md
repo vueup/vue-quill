@@ -1,12 +1,12 @@
 # Installation
 
 ::: tip TIP
-This guide assumes intermediate level knowledge of Vue 3. If you are totally new to Vue 3, grasp the [Basics of Vue 3](https://v3.vuejs.org/guide/introduction.html) first and then come back, but is not required.
+This guide assumes intermediate-level knowledge of Vue 3. If you are totally new to Vue 3, grasp the [Basics of Vue 3](https://v3.vuejs.org/guide/introduction.html) first and then come back, but is not required.
 :::
 
 ## CDN
 
-VueUpQuill ships as an UMD module that is accessible in the browser. When loaded in the browser, you can access the component through the `VueUpQuill.QuillEditor` global variable. You'll need to load Vue.js, VueUpQuill JS & VueUpQuill CSS theme.
+VueUpQuill ships as a UMD module that is accessible in the browser. When loaded in the browser, you can access the component through the `VueUpQuill.QuillEditor` global variable. You'll need to load Vue.js, VueUpQuill JS & VueUpQuill CSS theme.
 
 <div id="cdn-install">
 

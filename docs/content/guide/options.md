@@ -44,7 +44,7 @@ Only use `options` prop when you register QuillEditor component locally
 ## globalOptions prop
 
 ::: warning
-Only use `globalOptions` prop when you register QuillEditor component globally
+Only use `globalOptions` prop when you register the QuillEditor component globally
 :::
 
 - **Usage:**
@@ -75,12 +75,12 @@ Only use `globalOptions` prop when you register QuillEditor component globally
 ### bounds
 - **Default:** `document.body`
 
-  DOM Element or a CSS selector for a DOM Element, within which the editor’s ui elements (i.e. tooltips, etc.) should be confined. Currently, it only considers left and right boundaries.
+  DOM Element or a CSS selector for a DOM Element, within which the editor’s UI elements (i.e. tooltips, etc.) should be confined. Currently, it only considers left and right boundaries.
 
 ### debug
 - **Default:** `warn`
 
-  Shortcut for debug. Note debug is a static method and will affect other instances of Quill editors on the page. Only warning and error messages are enabled by default.
+  Shortcut for debugging. Note debug is a static method and will affect other instances of Quill editors on the page. Only warning and error messages are enabled by default.
 
 ### formats
 - **Default:** `All formats`
@@ -93,7 +93,7 @@ Only use `globalOptions` prop when you register QuillEditor component globally
 ### placeholder
 - **Default:** `None`
 
-  Placeholder text to show when editor is empty.
+  Placeholder text to show when the editor is empty.
 
 ### readOnly
 - **Default:** `false`
@@ -103,7 +103,7 @@ Only use `globalOptions` prop when you register QuillEditor component globally
 ### scrollingContainer
 - **Default:** `null`
 
-  DOM Element or a CSS selector for a DOM Element, specifying which container has the scrollbars (i.e. overflow-y: auto), if is has been changed from the default ql-editor with custom CSS. Necessary to fix scroll jumping bugs when Quill is set to auto grow its height, and another ancestor container is responsible from the scrolling.
+  DOM Element or a CSS selector for a DOM Element, specifying which container has the scrollbars (i.e. overflow-y: auto), if is has been changed from the default ql-editor with custom CSS. Necessary to fix scroll jumping bugs when Quill is set to auto grow its height, and another ancestor container is responsible for the scrolling.
 
 ### theme
-Name of theme to use. The builtin options are `bubble` or `snow`. An invalid or falsy value will load a default minimal theme. Note the theme’s specific stylesheet still needs to be included manually. See [Themes](themes.md) for more information.
+Name of a theme to use. The built-in options are `bubble` or `snow`. An invalid or falsy value will load a default minimal theme. Note the theme’s specific stylesheet still needs to be included manually. See [Themes](themes.md) for more information.

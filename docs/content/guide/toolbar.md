@@ -1,7 +1,7 @@
 # Toolbar
-The toolbar module allow users to easily format Quill’s contents. It can be configured with a  [`toolbar` prop](../api/index.md#toolbar).
+The toolbar module allows users to easily format Quill’s contents. It can be configured with a  [`toolbar` prop](../api/index.md#toolbar).
 
-There are 3 ways to configure toolbar:
+There are 3 ways to configure the toolbar:
 
 ## Pre-Configure Toolbar Options
 

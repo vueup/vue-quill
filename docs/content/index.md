@@ -19,7 +19,7 @@ footer: MIT Licensed | Copyright © 2020-present Luthfi Masruri & VueUpQuill Con
 
 <div class="border-t border-gray-200 block py-4">
   <header class="text-center pb-5">
-    <h2 class="font-semibold border-none mb-2">Interactive Demo</h2>
+    <h2 id="demo" class="font-semibold border-none mb-2">Interactive Demo</h2>
     <p class="mx-auto max-w-lg my-2">
       What you see is what you get. Try out our interactive demo and discover all the features packed into VueUpQuill.
     </p>

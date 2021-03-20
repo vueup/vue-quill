@@ -48,25 +48,19 @@ import { Quill } from "@vueup/quill";
 import { Delta } from "types-quill-delta";
 import { defineComponent, onMounted, ref } from "vue";
 import VOptions from "../VOptions.vue";
+import { deltaContent } from "./delta-content";
 
 export default defineComponent({
   components: { VOptions },
   setup: () => {
     const myEditor = ref();
-    onMounted(() => {
-      // console.log(myEditor.value);
-    });
 
-    const myContent = ref([
-      { insert: "Hello " },
-      { insert: "World!", attributes: { bold: true } },
-      { insert: "\n" },
-    ]);
+    const myContent = ref(deltaContent);
 
     const myHTML = ref<string>("");
     let myQuill: Quill | null = null;
 
-    const handleReady = (quill) => {
+    const handleReady = (quill: Quill) => {
       myQuill = quill;
     };
 

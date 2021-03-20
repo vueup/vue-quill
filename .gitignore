@@ -5,3 +5,4 @@ dist
 dist-ssr
 *.local
 dummy/assets
+src/themes/css

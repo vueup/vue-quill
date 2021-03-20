@@ -53,7 +53,7 @@
     "./": "./"
   },
   "scripts": {
-    "lib:build": "vite build",
+    "lib:build": "npm run theme:build && vite build",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "docs:serve": "cd docs && npm run serve",

@@ -36,7 +36,7 @@
 ## Demo
 - [See a Live Demo](https://vueup.github.io/vueup-quill/#demo).
   
-  [![Screenshot_2021-03-20 Home VueUpQuill(1)](https://user-images.githubusercontent.com/6185447/111871917-23f5c400-89bf-11eb-9bfb-956c98b41f17.png)](https://vueup.github.io/vueup-quill/#demo)
+  [![Screenshot VueUpQuill Editor](https://user-images.githubusercontent.com/6185447/111872090-273d7f80-89c0-11eb-9f6a-599a8e090ae1.png)](https://vueup.github.io/vueup-quill/#demo)
 
 ## Documentation
 - **[Guide](https://vueup.github.io/vueup-quill/guide/)**

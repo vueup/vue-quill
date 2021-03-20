@@ -39,7 +39,7 @@ export default defineConfig({
             }
           },
           {
-            src: './themes/css/quill.snow.css',
+            src: './src/themes/css/quill.snow.css',
             dest: './dist',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css

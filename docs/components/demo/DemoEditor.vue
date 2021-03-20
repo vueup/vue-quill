@@ -31,7 +31,7 @@
     <div class="initial flex-1 flex flex-col">
       <QuillEditor
         ref="myEditor"
-        class="h-64"
+        class="h-64 sm:h-96"
         v-model:content="myContent"
         @ready="handleReady"
         @textChange="handleTextChange"

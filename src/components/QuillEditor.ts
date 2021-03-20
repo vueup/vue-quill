@@ -110,6 +110,10 @@ export default defineComponent({
         // Remove editor class when theme changes
         if (props.theme !== "bubble") editor.value.classList.remove("ql-bubble");
         if (props.theme !== "snow") editor.value.classList.remove("ql-snow");
+        // Fix clicking the quill toolbar is detected as blur event
+        quill.getModule("toolbar")?.container.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+        });
         // Emit ready event
         ctx.emit("ready", quill);
       }

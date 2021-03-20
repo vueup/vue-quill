@@ -35,6 +35,8 @@
 
 ## Demo
 - [See a Live Demo](https://vueup.github.io/vueup-quill/#demo).
+- Screenshot
+  
 
 ## Documentation
 - **[Guide](https://vueup.github.io/vueup-quill/guide/)**

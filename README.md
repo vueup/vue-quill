@@ -11,14 +11,11 @@
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version">
     <img src="https://img.shields.io/npm/v/@vueup/vue-quill?color=blue" alt="Version">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Total downloads">
-    <img src="https://img.shields.io/npm/dt/@vueup/vue-quill" alt="Total downloads">
-  </a>
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License">
     <img src="https://img.shields.io/npm/l/@vueup/vue-quill?color=orange" alt="License">
   </a>
   <a href="https://github.com/vueup/vue-quill" title="Checks">
-    <img src="https://img.shields.io/github/checks-status/vueup/vue-quill/master?logo=github" alt="Checks">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/vueup/vue-quill/Release%20package?logo=github">
   </a>
   <a href="https://github.com/vueup/vue-quill" title="Last commit">
     <img src="https://img.shields.io/github/last-commit/vueup/vue-quill?logo=github" alt="Last commit">

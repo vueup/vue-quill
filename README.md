@@ -55,7 +55,7 @@
   - [Export](https://vueup.github.io/vue-quill/api/export.html)
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first for what you would like to change.
 
 ## Quill
 [Quill API document](https://quilljs.com/docs/quickstart/)

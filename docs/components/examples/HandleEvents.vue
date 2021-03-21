@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { Quill } from "@vueup/quill";
+import { Quill } from "@vueup/vue-quill";
 export default defineComponent({
   setup: () => {
     const content = ref<string>("Holala...");

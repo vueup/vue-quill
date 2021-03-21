@@ -3,14 +3,14 @@ import { defineAsyncComponent, h } from 'vue'
 import sponsors from './sponsors.json'
 
 import "@tailwindcss/custom-forms/dist/custom-forms.min.css";
-import "@vueup/quill/dist/quill.core.css"; // import styles
-import "@vueup/quill/dist/quill.bubble.css"; // for bubble theme
-import "@vueup/quill/dist/quill.snow.css"; // for snow theme
+import "@vueup/vue-quill/dist/vue-quill.core.css"; // import styles
+import "@vueup/vue-quill/dist/vue-quill.bubble.css"; // for bubble theme
+import "@vueup/vue-quill/dist/vue-quill.snow.css"; // for snow theme
 
 const QuillEditor = defineAsyncComponent({
   loader: () =>
     process.env.NODE_ENV === "production"
-      ? import("@vueup/quill")
+      ? import("@vueup/vue-quill")
       : import("../../../../src/main")
 })
 
@@ -49,7 +49,7 @@ export default {
                 rel: 'noopener',
                 'aria-label': 'sponsor-img'
               },
-              [h('img', { src: `/vueup-quill/${src}`, alt: name })]
+              [h('img', { src: `/vue-quill/${src}`, alt: name })]
             )
           )
         ])

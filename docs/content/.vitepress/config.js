@@ -4,13 +4,13 @@
  * @type {import('vitepress').UserConfig}
  */
 module.exports = {
-  base: '/vueup-quill/',
+  base: '/vue-quill/',
   lang: 'en-US',
-  title: 'VueUpQuill',
+  title: 'VueQuill',
   description: 'Vue 3 + Quill Component for your powerful text editor. ',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vueup-quill/logo.svg' }]],
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' }]],
   themeConfig: {
-    repo: 'vueup/vueup-quill',
+    repo: 'vueup/vue-quill',
     logo: '/logo.svg',
     docsDir: 'docs/content',
     docsBranch: 'master',

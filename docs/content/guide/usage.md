@@ -5,7 +5,7 @@
 Register the component in your javascript:
 
 ```js
-Vue.component('QuillEditor', VueUpQuill.QuillEditor);
+Vue.component('QuillEditor', VueQuill.QuillEditor);
 ```
 
 Basic Usage:
@@ -25,8 +25,8 @@ We're showing you a simple example here, but in a typical Vue application, we us
 
 ``` javascript
 import { createApp } from 'vue'
-import QuillEditor from '@vueup/quill'
-import '@vueup/quill/dist/quill.snow.css';
+import QuillEditor from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const app = createApp()
 app.component('QuillEditor', QuillEditor)
@@ -35,8 +35,8 @@ app.component('QuillEditor', QuillEditor)
 **or Local Registration:**
 
 ``` javascript
-import QuillEditor from '@vueup/quill'
-import '@vueup/quill/dist/quill.snow.css';
+import QuillEditor from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {
   components: {
@@ -55,5 +55,5 @@ export default {
 
 ::: tip NOTE
 The component itself does not include any CSS theme. You'll need to include it separately:
-`import '@vueup/quill/dist/quill.snow.css'` or `import '@vueup/quill/dist/quill.bubble.css'`
+`import '@vueup/vue-quill/dist/vue-quill.snow.css'` or `import '@vueup/vue-quill/dist/vue-quill.bubble.css'`
 :::

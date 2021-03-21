@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Quill } from "@vueup/quill";
+import { Quill } from "@vueup/vue-quill";
 import { Delta } from "types-quill-delta";
 import { defineComponent, onMounted, ref } from "vue";
 import VOptions from "../VOptions.vue";

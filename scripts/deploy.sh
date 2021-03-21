@@ -19,7 +19,7 @@ git init
 git add -A
 git commit -m 'deploy'
 
-# if you are deploying to https://vueup.github.io/vueup-quill
-git push -f git@github.com:vueup/vueup-quill.git master:gh-pages
+# if you are deploying to https://vueup.github.io/vue-quill
+git push -f git@github.com:vueup/vue-quill.git master:gh-pages
 
 cd -

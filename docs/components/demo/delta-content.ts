@@ -1,7 +1,7 @@
 export const deltaContent = {
   "ops": [
     {
-      "insert": "VueUpQuill Rich Text Editor"
+      "insert": "VueQuill Rich Text Editor"
     },
     {
       "attributes": {
@@ -22,9 +22,9 @@ export const deltaContent = {
         "bold": true,
         "color": "#6b24b2",
         "background": "#ffffff",
-        "link": "https://vueup.github.io/vueup-quill/"
+        "link": "https://vueup.github.io/vue-quill/"
       },
-      "insert": "VueUpQuill"
+      "insert": "VueQuill"
     },
     {
       "attributes": {
@@ -133,7 +133,7 @@ export const deltaContent = {
       "insert": "Fully Typescript:"
     },
     {
-      "insert": " VueUpQuill source code is written entirely in TypeScript."
+      "insert": " VueQuill source code is written entirely in TypeScript."
     },
     {
       "attributes": {
@@ -185,7 +185,7 @@ export const deltaContent = {
     },
     {
       "attributes": {
-        "link": "https://vueup.github.io/vueup-quill/guide/"
+        "link": "https://vueup.github.io/vue-quill/guide/"
       },
       "insert": "Getting Started"
     },
@@ -194,7 +194,7 @@ export const deltaContent = {
     },
     {
       "attributes": {
-        "link": "https://vueup.github.io/vueup-quill/#demo"
+        "link": "https://vueup.github.io/vue-quill/#demo"
       },
       "insert": "See Live Demo"
     },

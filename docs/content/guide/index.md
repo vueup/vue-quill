@@ -6,9 +6,9 @@
 
 You can learn more about the rationale behind the project in the [Why Quill](https://quilljs.com/guides/why-quill/) guides.
 
-## What is VueUpQuill
+## What is VueQuill
 
-**VueUpQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
+**VueQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill to make it easier to use in a Vue 3 application.
 
 ## Browser Support
 
@@ -18,4 +18,4 @@ Quill supports all modern browsers on desktops, tablets, and phones. Experience 
 
 ## Community
 
-If you have questions or need help, reach out to the community at [GitHub Discussions](https://github.com/vueup/vueup-quill/discussions).
+If you have questions or need help, reach out to the community at [GitHub Discussions](https://github.com/vueup/vue-quill/discussions).

@@ -63,7 +63,7 @@
 
   ~~~ js
   import { createApp } from 'vue'
-  import QuillEditor from '@vueup/quill'
+  import QuillEditor from '@vueup/vue-quill'
 
   const app = createApp()
   // define your options

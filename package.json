@@ -1,5 +1,5 @@
 {
-  "name": "@vueup/quill",
+  "name": "@vueup/vue-quill",
   "version": "0.0.0-development",
   "description": "Quill Editor for Vue 3 plugin or component.",
   "keywords": [
@@ -13,9 +13,9 @@
     "vue 3 wysiwyg",
     "vue 3 wysiwyg editor"
   ],
-  "homepage": "https://vueup.github.io/vueup-quill/",
+  "homepage": "https://vueup.github.io/vue-quill/",
   "bugs": {
-    "url": "https://github.com/vueup/vueup-quill/issues",
+    "url": "https://github.com/vueup/vue-quill/issues",
     "email": "luthfimasruri@gmail.com"
   },
   "license": "MIT",
@@ -31,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vueup/vueup-quill.git"
+    "url": "https://github.com/vueup/vue-quill.git"
   },
   "publishConfig": {
     "access": "public"
@@ -40,15 +40,15 @@
     "dist/*.css",
     "dist/*.js"
   ],
-  "main": "./dist/quill.umd.js",
-  "module": "./dist/quill.es.js",
-  "browser": "dist/quill.umd.js",
-  "unpkg": "dist/quill.umd.js",
-  "jsdelivr": "dist/quill.umd.js",
+  "main": "./dist/vue-quill.umd.js",
+  "module": "./dist/vue-quill.es.js",
+  "browser": "dist/vue-quill.umd.js",
+  "unpkg": "dist/vue-quill.umd.js",
+  "jsdelivr": "dist/vue-quill.umd.js",
   "exports": {
     ".": {
-      "import": "./dist/quill.es.js",
-      "require": "./dist/quill.umd.js"
+      "import": "./dist/vue-quill.es.js",
+      "require": "./dist/vue-quill.umd.js"
     },
     "./": "./"
   },
@@ -57,8 +57,8 @@
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "docs:serve": "cd docs && npm run serve",
-    "theme:dev": "stylus -w ./src/themes/assets/snow.styl -o ./src/themes/css/quill.snow.css",
-    "theme:build": "stylus ./src/themes/assets/snow.styl -o ./src/themes/css/quill.snow.css"
+    "theme:dev": "stylus -w ./src/themes/assets/snow.styl -o ./src/themes/css/vue-quill.snow.css",
+    "theme:build": "stylus ./src/themes/assets/snow.styl -o ./src/themes/css/vue-quill.snow.css"
   },
   "dependencies": {
     "quill": "^1.3.7",

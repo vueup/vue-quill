@@ -11,7 +11,7 @@ export default defineConfig({
     // sourcemap: true,
     lib: {
       entry: './src/main.ts',
-      name: 'VueUpQuill',
+      name: 'VueQuill',
       formats: ['es', 'cjs', 'umd', 'iife'],
     },
     rollupOptions: {
@@ -27,6 +27,7 @@ export default defineConfig({
           targets: [{
             src: './node_modules/quill/dist/quill.core.css',
             dest: './dist',
+            rename: 'vue-quill.core.css',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css
             }
@@ -34,12 +35,13 @@ export default defineConfig({
           {
             src: './node_modules/quill/dist/quill.bubble.css',
             dest: './dist',
+            rename: 'vue-quill.bubble.css',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css
             }
           },
           {
-            src: './src/themes/css/quill.snow.css',
+            src: './src/themes/css/vue-quill.snow.css',
             dest: './dist',
             transform: (contents, filename) => {
               return csso.minify(contents.toString()).css

@@ -10,8 +10,8 @@ Only use `options` prop when you register QuillEditor component locally
 
 - **Usage:**
   ``` javascript
-  import QuillEditor from '@vueup/quill'
-  import '@vueup/quill/dist/quill.snow.css';
+  import QuillEditor from '@vueup/vue-quill'
+  import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
   export default {
     components: {
@@ -51,7 +51,7 @@ Only use `globalOptions` prop when you register the QuillEditor component global
 
   ``` js
   import { createApp } from 'vue'
-  import QuillEditor from '@vueup/quill'
+  import QuillEditor from '@vueup/vue-quill'
 
   const app = createApp()
   // define your options

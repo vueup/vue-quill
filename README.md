@@ -30,6 +30,8 @@
 - 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
+[📘 Read the Docs to Learn More.](https://vueup.github.io/vue-quill/guide/)
+
 ## Demo
 - [See a Live Demo](https://vueup.github.io/vue-quill/#demo).
 

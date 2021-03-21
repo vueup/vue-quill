@@ -11,14 +11,11 @@
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version">
     <img src="https://img.shields.io/npm/v/@vueup/vue-quill?color=blue" alt="Version">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Total downloads">
-    <img src="https://img.shields.io/npm/dt/@vueup/vue-quill" alt="Total downloads">
-  </a>
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License">
     <img src="https://img.shields.io/npm/l/@vueup/vue-quill?color=orange" alt="License">
   </a>
   <a href="https://github.com/vueup/vue-quill" title="Checks">
-    <img src="https://img.shields.io/github/checks-status/vueup/vue-quill/master?logo=github" alt="Checks">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/vueup/vue-quill/Release%20package?logo=github">
   </a>
   <a href="https://github.com/vueup/vue-quill" title="Last commit">
     <img src="https://img.shields.io/github/last-commit/vueup/vue-quill?logo=github" alt="Last commit">
@@ -36,7 +33,7 @@
 ## Demo
 - [See a Live Demo](https://vueup.github.io/vue-quill/#demo).
   
-  [![Screenshot VueQuill Editor](https://user-images.githubusercontent.com/6185447/111872090-273d7f80-89c0-11eb-9f6a-599a8e090ae1.png)](https://vueup.github.io/vue-quill/#demo)
+  [![Screenshot VueQuill Editor](https://user-images.githubusercontent.com/6185447/111898684-33761b00-8a5a-11eb-9458-372c0185f576.png)](https://vueup.github.io/vue-quill/#demo)
 
 ## Documentation
 - **[Guide](https://vueup.github.io/vue-quill/guide/)**
@@ -55,7 +52,7 @@
   - [Export](https://vueup.github.io/vue-quill/api/export.html)
 
 ## Contributing
-Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first for what you would like to change.
+Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first about what you would like to change.
 
 ## Quill
 [Quill API document](https://quilljs.com/docs/quickstart/)

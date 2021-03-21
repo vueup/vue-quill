@@ -9,7 +9,7 @@ on:
 
 jobs: 
   deploy: 
-    name: Deploy
+    name: Build and deploy
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@master
@@ -17,11 +17,12 @@ jobs:
         with: 
           node-version: '14.x'
       - run: npm ci
-      - working-directory: docs
+      - name: Build docs
+        working-directory: docs
         run: |
           npm ci
           npm run build
-      - name: GitHub Pages action
+      - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

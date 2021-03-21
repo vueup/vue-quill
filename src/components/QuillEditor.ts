@@ -19,7 +19,6 @@ import {
 } from "vue";
 import { toolbarOptions } from "./options";
 
-// export
 export default defineComponent({
   name: "QuillEditor",
   props: {
@@ -158,7 +157,7 @@ export default defineComponent({
 
     const isEditorFocus = ref<boolean>()
     const handleSelectionChange: SelectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, source: Sources) => {
-      // Mark model as touched if editor lost focus
+      // Set isEditorFocus if quill.hasFocus()
       isEditorFocus.value = quill?.hasFocus() ? true : false
       ctx.emit("selectionChange", { range, oldRange, source });
     };

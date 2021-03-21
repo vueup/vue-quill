@@ -3,6 +3,8 @@ name: Release package
 on: 
   push: 
     branches: 
+      - alpha
+      - beta
       - master
     paths-ignore:
       - 'docs/**'

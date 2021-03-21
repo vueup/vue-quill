@@ -9,6 +9,7 @@ on:
       - 'scripts/**'
       - '**/README.md'
       - '**/.gitignore'
+      - '.github/*.yml'
 
 jobs: 
   release: 

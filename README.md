@@ -30,7 +30,35 @@
 - 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
+[👀 See a Live Demo](https://vueup.github.io/vue-quill/#demo).
+
 [📘 Read the Docs to Learn More.](https://vueup.github.io/vue-quill/guide/)
+
+> 🚀 **VueQuill** is in **alpha** version! Currently the focus is on making VueQuill stable and feature complete first. It is not recommended to use this for anything serious yet. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
+
+> 🧑‍🤝‍🧑 **VueQuill** is also contributor-driven. It is not backed by any huge company, which means that all contributions are voluntary and done by the people who need them. If you need something improved, added, or fixed, please contribute it yourself or no one will.
+
+## Support me
+You can support me by [**☕ buying me a cup of coffee ☕**](https://www.buymeacoffee.com/luthfimasruri) to help me stay awake while I am coding, spend more time on the projects, and speed up the development.
+
+## To do list
+
+- [x] Release alpha version
+- [ ] Release beta version
+- [ ] Initial `v1.0.0` release
+- [ ] Enhance Typescript support with Vue 3
+- [ ] Update the Documentation with improved examples and more information
+- [ ] **vue-quill-plugin-api:** provide built-in API for quill modules
+
+### Our Dream Features
+Our next goal is to provide a first-class plugins ecosystem: 
+- [ ] [**vue-quill-table:**](#) add table editing functionality with options to modify cells, rows and columns.
+- [ ] [**vue-quill-media:**](#) add image, HTML5 video, and audio elements to the editable area. Includes option for live preview of embedded videos.
+- [ ] [**vue-quill-emoji:**](#) Insert emojis into VueQuill’s editable area. The default emoji set can be extended or overridden.
+- [ ] [**vue-quill-suggest:**](#) insert shortcut-text and transforming it into `@mentions`, [links](), and `#hashtags`.
+- [ ] [**vue-quill-form:**](#) module for automatic form input and submit binding.
+- [ ] [**vue-quill-code:**](#) insert and embed syntax color highlighted code snippets into the editable area.
+- [ ] [**vue-quill-collab:**](#) module for realtime collaboration.
 
 ## Demo
 - [See a Live Demo](https://vueup.github.io/vue-quill/#demo).

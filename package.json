@@ -52,6 +52,7 @@
     },
     "./": "./"
   },
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "lib:build": "npm run theme:build && vite build",
     "docs:dev": "cd docs && npm run dev",
@@ -65,6 +66,7 @@
     "vue": "^3.0.7"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.13.2",
     "@semantic-release/exec": "^5.0.0",
     "@types/node": "^14.14.35",
     "@types/quill": "^2.0.5",

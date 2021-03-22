@@ -34,13 +34,9 @@
 
 [📘 Read the Docs to Learn More.](https://vueup.github.io/vue-quill/guide/)
 
----
+> 🚀 **VueQuill** is in **alpha** version! Currently the focus is on making VueQuill stable and feature complete first. It is not recommended to use this for anything serious yet. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
 
-🚀 **VueQuill** is in **alpha** version! Currently the focus is on making VueQuill stable and feature complete first. It is not recommended to use this for anything serious yet. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
-
-🧑‍🤝‍🧑 **VueQuill** is also contributor-driven. It is not backed by any huge company, which means that all contributions are voluntary and done by the people who need them. If you need something improved, added, or fixed, please contribute it yourself or no one will.
-
----
+> 🧑‍🤝‍🧑 **VueQuill** is also contributor-driven. It is not backed by any huge company, which means that all contributions are voluntary and done by the people who need them. If you need something improved, added, or fixed, please contribute it yourself or no one will.
 
 ## Support me
 You can support me by [**☕ buying me a cup of coffee ☕**](https://www.buymeacoffee.com/luthfimasruri) to help me stay awake while I am coding, spend more time on the projects, and speed up the development.

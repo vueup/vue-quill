@@ -1,5 +1,21 @@
 # Methods
 
+::: warning
+We highly recommend to call method when the quill editor ready, use @ready event
+:::
+
+## getEditor()
+  
+- **Return:** `editor: Element`
+
+  Returns the Editor Element.
+
+## getToolbar()
+  
+- **Return:** `toolbar: Element`
+
+  Returns the Toolbar Element.
+
 ## getQuill()
 
 - **Return:** `quill: Quill`

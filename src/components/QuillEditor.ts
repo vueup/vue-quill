@@ -110,7 +110,7 @@ export default defineComponent({
         if (props.theme !== "bubble") editor.value.classList.remove("ql-bubble");
         if (props.theme !== "snow") editor.value.classList.remove("ql-snow");
         // Fix clicking the quill toolbar is detected as blur event
-        quill.getModule("toolbar")?.container.addEventListener("mousedown", (e) => {
+        quill.getModule("toolbar")?.container.addEventListener("mousedown", (e: MouseEvent) => {
           e.preventDefault();
         });
         // Emit ready event
@@ -191,6 +191,14 @@ export default defineComponent({
       }
     };
 
+    const getEditor = (): Element => {
+      return editor.value as Element
+    }
+
+    const getToolbar = (): Element => {
+      return quill?.getModule("toolbar")?.container
+    }
+
     const getQuill = (): Quill => {
       if (quill) return quill
       else throw `The quill editor hasn't been instantiated yet, 
@@ -204,6 +212,12 @@ export default defineComponent({
 
     const setHTML = (html: string) => {
       quill?.clipboard.dangerouslyPasteHTML(html)
+    }
+
+    const reinit = () => {
+      if (!ctx.slots.toolbar && quill)
+        quill.getModule("toolbar")?.container.remove();
+      initialize();
     }
 
     watch(
@@ -223,19 +237,6 @@ export default defineComponent({
     );
 
     watch(
-      [
-        () => props.options,
-        () => props.theme,
-        () => props.toolbar
-      ],
-      () => {
-        if (!ctx.slots.toolbar && quill)
-          quill.getModule("toolbar")?.container.remove();
-        initialize();
-      }
-    );
-
-    watch(
       () => props.enable,
       (newValue, oldValue) => {
         if (quill) quill.enable(newValue);
@@ -244,9 +245,12 @@ export default defineComponent({
 
     return {
       editor,
+      getEditor,
+      getToolbar,
       getQuill,
       getHTML,
       setHTML,
+      reinit,
     };
   },
   inheritAttrs: false,

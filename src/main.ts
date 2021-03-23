@@ -5,10 +5,7 @@
 */
 
 import QuillEditor from "./components/QuillEditor"
-import Quill from "quill/core"
+import Quill from "quill"
 
-export {
-  QuillEditor as default,
-  QuillEditor,
-  Quill
-};
+export { QuillEditor, Quill }
+export default QuillEditor

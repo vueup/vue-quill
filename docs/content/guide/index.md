@@ -32,18 +32,19 @@ If you have questions or need help, reach out to the community at [GitHub Discus
 <ClientOnly>
   <TextReplacer 
     container=".replaceable-area"
-    pattern="@alpha" 
-    :replacement="latestRelease"
+    pattern="@alpha"
+    prefix="@"
+    :replacement="latestReleaseVersion"
   ></TextReplacer>
 </ClientOnly>
 
 <script setup>
   import { onMounted, ref } from 'vue'
   import TextReplacer from '../../components/TextReplacer.vue'
-  import { getLatestRelease } from '../../utils/github-api.ts'
+  import { getLatestReleaseVersion } from '../../utils/github-api.ts'
 
-  const latestRelease = ref('')
+  const latestReleaseVersion = ref('')
   onMounted(async () => {
-    latestRelease.value = await getLatestRelease('vueup', 'vue-quill').then(data => data)
+    latestReleaseVersion.value = await getLatestReleaseVersion('vueup', 'vue-quill').then(data => data)
   })
 </script>

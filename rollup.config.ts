@@ -22,7 +22,7 @@ export default {
       sourcemap: true
     },
     {
-      file: pkg.commonjs,
+      file: pkg.main,
       format: 'cjs',
       sourcemap: true,
       exports: 'named'

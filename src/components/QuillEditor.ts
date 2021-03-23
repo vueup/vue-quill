@@ -6,7 +6,7 @@ import {
   RangeStatic,
   Sources,
 } from "quill";
-import { Quill } from "../main"
+import Quill from "quill"
 import Delta from "quill-delta";
 import {
   defineComponent,

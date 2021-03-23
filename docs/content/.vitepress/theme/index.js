@@ -14,8 +14,6 @@ const QuillEditor = defineAsyncComponent({
       : import("../../../../src/main")
 })
 
-import Quill from '../../../../dist/vue-quill.es'
-
 import './base.css'
 import './tailwind.css'
 import './sponsors.css'

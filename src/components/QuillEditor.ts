@@ -64,7 +64,6 @@ export default defineComponent({
     globalOptions: {
       type: Object as PropType<QuillOptionsStatic>,
       required: false,
-      default: {},
     },
   },
   emits: [

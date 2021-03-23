@@ -37,8 +37,7 @@
     "access": "public"
   },
   "files": [
-    "dist/*.css",
-    "dist/*.js"
+    "dist"
   ],
   "main": "./dist/vue-quill.umd.js",
   "module": "./dist/vue-quill.es.js",

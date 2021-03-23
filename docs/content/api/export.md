@@ -5,11 +5,8 @@
 `Quill` : The `Quill` namespace on which you can call `register`.
 
 ~~~ js 
-export {
-  QuillEditor as default,
-  QuillEditor,
-  Quill
-};
+export { QuillEditor, Quill }
+export default QuillEditor
 ~~~
 
 # Import

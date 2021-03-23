@@ -37,22 +37,16 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "README.md"
   ],
-  "main": "./dist/vue-quill.umd.js",
-  "module": "./dist/vue-quill.es.js",
-  "commonjs": "dist/vue-quill.cjs.js",
+  "main": "dist/vue-quill.cjs.js",
+  "module": "dist/vue-quill.es.js",
   "browser": "dist/vue-quill.umd.js",
   "unpkg": "dist/vue-quill.umd.js",
   "jsdelivr": "dist/vue-quill.umd.js",
-  "exports": {
-    ".": {
-      "import": "./dist/vue-quill.es.js",
-      "require": "./dist/vue-quill.umd.js"
-    },
-    "./": "./"
-  },
-  "typings": "./dist/vue-quill.d.ts",
+  "types": "dist/vue-quill.d.ts",
   "scripts": {
     "lib:dev": "npm run theme:dev && rollup -c rollup.config.ts -w",
     "lib:build": "npm run theme:build && rollup -c rollup.config.ts && npm run lib:types",

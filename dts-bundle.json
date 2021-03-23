@@ -1,0 +1,6 @@
+{
+  "name": "@vueup/quill",
+  "main": "./temp/main.d.ts",
+  "out": "./vue-quill.d.ts",
+  "baseDir": "dist"
+}

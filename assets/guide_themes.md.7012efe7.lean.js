@@ -1,0 +1,1 @@
+import{o as a,a as s,h as e}from"./app.0fa57e7e.js";const n='{"title":"Themes","description":"","frontmatter":{},"relativePath":"guide/themes.md","lastUpdated":1616512568827}',t={},o=e('',7);t.render=function(e,n,t,p,l,c){return a(),s("div",null,[o])};export default t;export{n as __pageData};

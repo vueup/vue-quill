@@ -13,6 +13,7 @@
             { value: '', label: 'None' },
           ]"
         ></VOptions>
+        <div>{{ selectedTheme }}</div>
       </div>
       <div class="text-sm text-gray-400 font-bold mb-2">TOOLBAR</div>
       <div class="flex md:flex-col gap-2 mb-4">
@@ -26,6 +27,7 @@
             { value: '', label: 'None' },
           ]"
         ></VOptions>
+        <div>{{ selectedToolbar }}</div>
       </div>
     </div>
     <div class="initial flex-1 flex flex-col">
@@ -46,7 +48,7 @@
 <script lang="ts">
 import { Quill } from "@vueup/vue-quill";
 import { Delta } from "types-quill-delta";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, watch, onMounted, ref } from "vue";
 import VOptions from "../VOptions.vue";
 import { deltaContent } from "./delta-content";
 
@@ -76,6 +78,10 @@ export default defineComponent({
     // ============ OPTIONS =====================
     const selectedTheme = ref<string>("snow");
     const selectedToolbar = ref<string>("essential");
+
+    watch([selectedTheme, selectedToolbar], () => {
+      myEditor.value.reinit();
+    });
 
     return {
       selectedTheme,

@@ -12,6 +12,7 @@ import {
   defineComponent,
   onBeforeUnmount,
   onMounted,
+  nextTick,
   PropType,
   watch,
   ref,
@@ -214,9 +215,12 @@ export default defineComponent({
     }
 
     const reinit = () => {
-      if (!ctx.slots.toolbar && quill)
-        quill.getModule("toolbar")?.container.remove();
-      initialize();
+      nextTick(() => {
+        if (!ctx.slots.toolbar && quill)
+          quill.getModule("toolbar")?.container.remove();
+        initialize();
+        console.log("reinit call");
+      })
     }
 
     watch(

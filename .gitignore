@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 .debug
 dist
+temp
 dist-ssr
 *.local
 dummy/assets

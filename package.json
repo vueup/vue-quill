@@ -42,6 +42,7 @@
   ],
   "main": "./dist/vue-quill.umd.js",
   "module": "./dist/vue-quill.es.js",
+  "commonjs": "dist/vue-quill.cjs.js",
   "browser": "dist/vue-quill.umd.js",
   "unpkg": "dist/vue-quill.umd.js",
   "jsdelivr": "dist/vue-quill.umd.js",
@@ -52,9 +53,11 @@
     },
     "./": "./"
   },
-  "typings": "./dist/index.d.ts",
+  "typings": "./dist/vue-quill.d.ts",
   "scripts": {
-    "lib:build": "npm run theme:build && vite build",
+    "lib:dev": "npm run theme:dev && rollup -c rollup.config.ts -w",
+    "lib:build": "npm run theme:build && rollup -c rollup.config.ts && npm run lib:types",
+    "lib:types": "tsc --emitDeclarationOnly true && npx dts-bundle --configJson dts-bundle.json",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "docs:serve": "cd docs && npm run serve",
@@ -66,18 +69,23 @@
     "vue": "^3.0.7"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.13.2",
     "@semantic-release/exec": "^5.0.0",
     "@types/node": "^14.14.35",
     "@types/quill": "^2.0.5",
-    "@vitejs/plugin-vue": "^1.1.5",
-    "@vue/compiler-sfc": "^3.0.7",
     "csso": "^4.2.0",
+    "dts-bundle": "^0.7.3",
+    "lodash.camelcase": "^4.3.0",
     "quill-delta": "^4.2.2",
+    "rollup": "^2.42.3",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
     "semantic-release": "^17.4.2",
     "stylus": "^0.54.8",
-    "typescript": "^4.2.3",
-    "vite": "^2.1.2"
+    "typescript": "^4.2.3"
   }
 }

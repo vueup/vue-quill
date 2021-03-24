@@ -110,7 +110,7 @@ export const QuillEditor = defineComponent({
         if (props.theme !== "bubble") editor.value.classList.remove("ql-bubble");
         if (props.theme !== "snow") editor.value.classList.remove("ql-snow");
         // Fix clicking the quill toolbar is detected as blur event
-        quill.getModule("toolbar")?.container.addEventListener("mousedown", (e: MouseEvent) => {
+        quill.getModule("toolbar").container.addEventListener("mousedown", (e: MouseEvent) => {
           e.preventDefault();
         });
         // Emit ready event

@@ -10,8 +10,8 @@
     "outDir": "dist",
     "sourceMap": false,
     "noEmit": true,
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES2019",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowJs": true,
     "noUnusedLocals": true,
@@ -27,7 +27,7 @@
     "removeComments": false,
     "jsx": "preserve",
     "lib": [
-      "esnext",
+      "ES2019",
       "dom"
     ],
     "typeRoots": [

@@ -1,4 +1,5 @@
 // Quill toolbar options
+export type ToolbarOptions = typeof toolbarOptions
 export const toolbarOptions = {
   essential: [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],

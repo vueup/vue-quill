@@ -25,7 +25,7 @@ We're showing you a simple example here, but in a typical Vue application, we us
 
 ``` javascript
 import { createApp } from 'vue'
-import QuillEditor from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const app = createApp()
@@ -35,7 +35,7 @@ app.component('QuillEditor', QuillEditor)
 **or Local Registration:**
 
 ``` javascript
-import QuillEditor from '@vueup/vue-quill'
+import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {

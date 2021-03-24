@@ -10,8 +10,8 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css"; // for snow theme
 const QuillEditor = defineAsyncComponent({
   loader: () =>
     process.env.NODE_ENV === "production"
-      ? import("@vueup/vue-quill")
-      : import("../../../../src/main")
+      ? import("@vueup/vue-quill").then((VueQuill) => VueQuill.QuillEditor)
+      : import("../../../../src/main").then((VueQuill) => VueQuill.QuillEditor)
 })
 
 import './base.css'

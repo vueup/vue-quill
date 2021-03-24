@@ -1,1 +1,0 @@
-import{o as a,a as s,i as e}from"./app.acd68fb4.js";const n='{"title":"Themes","description":"","frontmatter":{},"relativePath":"guide/themes.md","lastUpdated":1616591403698}',t={},o=e('',7);t.render=function(e,n,t,p,l,c){return a(),s("div",null,[o])};export default t;export{n as __pageData};

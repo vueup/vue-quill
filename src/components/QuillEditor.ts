@@ -18,9 +18,9 @@ import {
   ref,
   h,
 } from "vue";
-import { toolbarOptions } from "./options";
+import { toolbarOptions, ToolbarOptions } from "./options";
 
-export default defineComponent({
+export const QuillEditor = defineComponent({
   name: "QuillEditor",
   props: {
     content: {
@@ -136,8 +136,9 @@ export default defineComponent({
               const str = props.toolbar as string
               return str.charAt(0) === "#"
                 ? props.toolbar
-                : toolbarOptions[props.toolbar]
+                : toolbarOptions[props.toolbar as keyof ToolbarOptions]
             }
+            return
           })()
         }
       }
@@ -167,7 +168,7 @@ export default defineComponent({
       else ctx.emit("blur", editor);
     })
 
-    const handleEditorChange: EditorChangeHandler = (name: "text-change" | "selection-change", ...args) => {
+    const handleEditorChange: EditorChangeHandler = (name: "text-change" | "selection-change", ...args: any[]) => {
       if (name === "text-change") {
         ctx.emit(
           "editorChange",

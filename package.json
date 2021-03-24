@@ -50,8 +50,8 @@
   "jsdelivr": "dist/vue-quill.global.js",
   "types": "dist/vue-quill.d.ts",
   "scripts": {
-    "lib:dev": " npm run theme:dev && rollup -c rollup.config1.ts -w",
-    "lib:build": "npm run theme:build && rollup -c rollup.config1.ts && npm run lib:types",
+    "lib:dev": " npm run theme:dev && rollup -c rollup.config.ts -w",
+    "lib:build": "npm run theme:build && rollup -c rollup.config.ts && npm run lib:types",
     "lib:types": "api-extractor run --local --verbose",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",

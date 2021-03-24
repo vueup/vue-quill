@@ -69,50 +69,8 @@ packageFormats.forEach(format => {
   }
 })
 
-// generate themes css
-const fs = require('fs');
-const csso = require('csso');
-const emptyJS = 'temp/empty.js'
-if (!fs.existsSync("temp")) fs.mkdirSync("temp");
-fs.writeFile(emptyJS, '', (err) => {
-  if (err) throw err;
-  console.log('empty.js created');
-})
-packageConfigs.push({
-  input: emptyJS,
-  output: { file: emptyJS },
-  external: [],
-  plugins: [
-    copy({
-      targets: [{
-        src: './node_modules/quill/dist/quill.core.css',
-        dest: './dist',
-        rename: 'vue-quill.core.css',
-        transform: (contents, filename) => {
-          return csso.minify(contents.toString()).css
-        }
-      },
-      {
-        src: './node_modules/quill/dist/quill.bubble.css',
-        dest: './dist',
-        rename: 'vue-quill.bubble.css',
-        transform: (contents, filename) => {
-          return csso.minify(contents.toString()).css
-        }
-      },
-      {
-        src: './dist/vue-quill.snow.css',
-        dest: './dist',
-        transform: (contents, filename) => {
-          return csso.minify(contents.toString()).css
-        }
-      }],
-      hook: 'writeBundle',
-      verbose: true,
-      copyOnce: true
-    })
-  ]
-})
+// generate themes
+packageConfigs.push(createThemesConfig())
 
 export default packageConfigs
 
@@ -247,4 +205,52 @@ function createMinifiedConfig(format) {
       }),
     ]
   )
+}
+
+function createThemesConfig() {
+  const fs = require('fs');
+  const csso = require('csso');
+  // empty.js only used as a dummy input
+  // and have nothing to do with the build
+  const emptyJS = 'temp/empty.js'
+  if (!fs.existsSync("temp")) fs.mkdirSync("temp");
+  fs.writeFile(emptyJS, '', (err) => {
+    if (err) throw err;
+    console.log('empty.js created');
+  })
+  return {
+    input: emptyJS,
+    output: { file: emptyJS },
+    external: [],
+    plugins: [
+      copy({
+        targets: [{
+          src: './node_modules/quill/dist/quill.core.css',
+          dest: './dist',
+          rename: 'vue-quill.core.css',
+          transform: (contents, filename) => {
+            return csso.minify(contents.toString()).css
+          }
+        },
+        {
+          src: './node_modules/quill/dist/quill.bubble.css',
+          dest: './dist',
+          rename: 'vue-quill.bubble.css',
+          transform: (contents, filename) => {
+            return csso.minify(contents.toString()).css
+          }
+        },
+        {
+          src: './dist/vue-quill.snow.css',
+          dest: './dist',
+          transform: (contents, filename) => {
+            return csso.minify(contents.toString()).css
+          }
+        }],
+        hook: 'writeBundle',
+        verbose: true,
+        copyOnce: true
+      })
+    ]
+  }
 }

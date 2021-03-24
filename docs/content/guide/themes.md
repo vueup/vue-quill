@@ -19,8 +19,5 @@ Then, pass the name of the theme to the [`theme prop`](../api/props.md).
 ~~~ vue
 <template>
   <QuillEditor theme="snow" .../>
-
-  <!-- you can bind :theme and it will automatically re render when its value change -->
-  <QuillEditor :theme="value" .../>
 </template>
 ~~~

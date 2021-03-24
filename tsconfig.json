@@ -1,35 +1,41 @@
 {
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "__tests__/**/*.ts"
+  ],
   "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "dist",
+    "sourceMap": false,
+    "noEmit": true,
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "allowJs": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "strict": true,
-    "jsx": "preserve",
-    // "sourceMap": true,
-    "declaration": true,
-    // "declarationMap": true,
-    // "emitDeclarationOnly": true,
-    "outDir": "temp",
-    // "outFile": "index.d.ts",
-    "noImplicitAny": false,
+    "isolatedModules": false,
+    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "removeComments": false,
+    "jsx": "preserve",
     "lib": [
       "esnext",
       "dom"
     ],
     "typeRoots": [
       "./src/types",
-      "./node_modules/@types",
+      "./node_modules/@types"
     ],
     "types": [
       "node"
     ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
-  ]
+  }
 }

@@ -25,7 +25,7 @@ const getNextVersion = async (): Promise<string> => {
   return ""
 }
 
-if (!process.env.CI) {
+if (process.env.CI) {
   const fs = require('fs');
   const getPackageConfigs = async () => {
     return { version: await getNextVersion() }

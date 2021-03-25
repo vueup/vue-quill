@@ -27,10 +27,13 @@ function getAuthors(pkg) {
 }
 
 const banner = `/*!
-    * ${pkg.name} v${pkg.version}
-    * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
-    * @license MIT
-    */`
+ * Library: ${pkg.name} v${pkg.version}
+ * ${pkg.homepage}
+ * 
+ * Copyright (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
+ * Released under the ${pkg.license} license
+ * Date: ${new Date().toISOString()}
+ */`
 
 // ensure TS checks only once for each build
 let hasTSChecked = false
@@ -214,15 +217,15 @@ function createThemesConfig() {
   const csso = require('csso');
   // empty.js only used as a dummy input
   // and have nothing to do with the build
-  const emptyJS = 'temp/empty.js'
+  const emptyJSFileName = 'temp/empty.js'
   if (!fs.existsSync("temp")) fs.mkdirSync("temp");
-  fs.writeFile(emptyJS, '', (err) => {
+  fs.writeFile(emptyJSFileName, '', (err) => {
     if (err) throw err;
-    console.log('empty.js created');
+    console.log(`${emptyJSFileName} created`);
   })
   return {
-    input: emptyJS,
-    output: { file: emptyJS },
+    input: emptyJSFileName,
+    output: { file: emptyJSFileName },
     external: [],
     plugins: [
       copy({

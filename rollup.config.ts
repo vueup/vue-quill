@@ -7,9 +7,11 @@ import pascalcase from 'pascalcase'
 import copy from 'rollup-plugin-copy'
 
 const pkg = require('./package.json')
+const prebuildPkg = require('./temp/prebuild-package.json')
+Object.assign(pkg, prebuildPkg)
+
 // get all or any character after '/' in this case 'vue-quill'
 const name = pkg.name.match(/[^/]*$/)[0]
-// const name = "vue-quill"
 
 function getAuthors(pkg) {
   const { contributors, author } = pkg
@@ -25,10 +27,10 @@ function getAuthors(pkg) {
 }
 
 const banner = `/*!
-  * ${pkg.name} v${pkg.version}
-  * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
-  * @license MIT
-  */`
+    * ${pkg.name} v${pkg.version}
+    * (c) ${new Date().getFullYear()} ${getAuthors(pkg)}
+    * @license MIT
+    */`
 
 // ensure TS checks only once for each build
 let hasTSChecked = false

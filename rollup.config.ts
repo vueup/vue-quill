@@ -7,8 +7,12 @@ import pascalcase from 'pascalcase'
 import copy from 'rollup-plugin-copy'
 
 const pkg = require('./package.json')
-const prebuildPkg = require('./temp/prebuild-package.json')
-Object.assign(pkg, prebuildPkg)
+try {
+  const prebuildPkg = require('./temp/prebuild-package.json')
+  Object.assign(pkg, prebuildPkg)
+} catch {
+  console.log("There's no pre-build package.json")
+}
 
 // get all or any character after '/' in this case 'vue-quill'
 const name = pkg.name.match(/[^/]*$/)[0]

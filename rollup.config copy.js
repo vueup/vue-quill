@@ -15,7 +15,7 @@ try {
 }
 
 // get all or any character after '/' in this case 'vue-quill'
-const name = pkg.name.match(/[^/]*$/)[0]
+const name = path.basename(pkg.name)
 
 function getAuthors(pkg) {
   const { contributors, author } = pkg

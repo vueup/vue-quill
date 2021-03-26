@@ -1,9 +1,8 @@
-node_modules
-.DS_Store
-.debug
 dist
+.DS_Store
+node_modules
+coverage
 temp
-dist-ssr
-*.local
-dummy/assets
-src/themes/css
+explorations
+TODOs.md
+*.log

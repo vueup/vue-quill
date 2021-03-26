@@ -27,7 +27,7 @@ jobs:
         run: | 
           npm ci
           npm run theme:build
-          npm run lib:build
+          npm run build
       - name: Release package
         run: npx semantic-release
         env: 

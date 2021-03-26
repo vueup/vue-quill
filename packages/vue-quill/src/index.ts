@@ -1,5 +1,5 @@
 /*
-* VueQuill main.ts
+* VueQuill index.ts
 * Author: luthfimasruri@gmail.com
 * Github: https://github.com/vueup/vue-quill.git
 */

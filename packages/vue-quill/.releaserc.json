@@ -1,0 +1,38 @@
+{
+  "branches": [
+    "master",
+    "next",
+    "next-major",
+    {
+      "name": "beta",
+      "prerelease": true
+    },
+    {
+      "name": "alpha",
+      "prerelease": true
+    }
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "zip vue-quill-dist.zip -r dist"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "vue-quill-dist.zip",
+            "name": "vue-quill-dist-${nextRelease.gitTag}.zip",
+            "label": "Distribution code (zip)"
+          }
+        ]
+      }
+    ]
+  ]
+}

@@ -1,9 +1,12 @@
-var t=Object.assign;import{d as e,j as n,k as r,e as o,f as i,l,n as a}from"./app.acd68fb4.js";
+var t=Object.assign;import{d as e,j as n,k as r,e as o,f as i,l,n as a}from"./app.f1884756.js";
 /*!
-  * @vueup/vue-quill v0.0.0-development
-  * (c) 2021 Ahmad Luthfi Masruri
-  * @license MIT
-  */"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self&&self;function s(t){return t&&t.__esModule&&Object.prototype.hasOwnProperty.call(t,"default")?t.default:t}
+ * Library: @vueup/vue-quill v1.0.0-alpha.12
+ * https://vueup.github.io/vue-quill/
+ * 
+ * Copyright (c) 2021 Ahmad Luthfi Masruri
+ * Released under the MIT license
+ * Date: 2021-03-25T16:18:03.417Z
+ */"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self&&self;function s(t){return t&&t.__esModule&&Object.prototype.hasOwnProperty.call(t,"default")?t.default:t}
 /*!
  * Quill Editor v1.3.7
  * https://quilljs.com/

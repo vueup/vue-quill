@@ -1,0 +1,14 @@
+{
+  "name": "@vueup/size-check",
+  "version": "3.0.9",
+  "private": true,
+  "buildOptions": {
+    "name": "SizeCheck",
+    "formats": [
+      "global"
+    ]
+  },
+  "dependencies": {
+    "vue": "^3.0.9"
+  }
+}

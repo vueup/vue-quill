@@ -9,7 +9,7 @@
       "output": "./dist/vue-quill.bubble.css"
     },
     {
-      "input": "./src/themes/assets/snow.styl",
+      "input": "./src/assets/snow.styl",
       "output": "./dist/vue-quill.snow.css"
     }
   ]

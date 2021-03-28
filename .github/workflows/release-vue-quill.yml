@@ -17,13 +17,14 @@ jobs:
       - uses: actions/setup-node@v1
         with: 
           node-version: '14.x'
+      - name: Install root deps
+        run: npm ci
       - name: Install package deps
         working-directory: packages/vue-quill
         run: npm ci
-      - name: Install root deps
-        run: npm ci
       - name: Release package
-        run: npm run release -- vue-quill
+        working-directory: packages/vue-quill
+        run: node ../../scripts/release.js vue-quill
         env: 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN}}

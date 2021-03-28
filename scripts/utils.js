@@ -3,33 +3,34 @@ const chalk = require('chalk')
 const path = require('path')
 const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
+const packagesDir = path.resolve(__dirname, '../packages')
 
-const targets = fs.readdirSync('packages').filter((f) => {
-  const packageDir = path.resolve(__dirname, '..', 'packages', f)
-  if (!fs.statSync(packageDir).isDirectory()) {
+const targets = fs.readdirSync(packagesDir).filter((f) => {
+  const pkgDir = path.resolve(__dirname, '..', 'packages', f)
+  if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
-  const packagePath = path.resolve(packageDir, 'package.json')
-  if (!fs.existsSync(packagePath)) {
+  const pkgPath = path.resolve(pkgDir, 'package.json')
+  if (!fs.existsSync(pkgPath)) {
     return false
   }
-  const pkg = require(packagePath)
+  const pkg = require(pkgPath)
   if (pkg.private && !pkg.buildOptions) {
     return false
   }
   return true
 })
 
-const targetAssets = fs.readdirSync('packages').filter((f) => {
-  const packageDir = path.resolve(__dirname, '..', 'packages', f)
-  if (!fs.statSync(packageDir).isDirectory()) {
+const targetAssets = fs.readdirSync(packagesDir).filter((f) => {
+  const pkgDir = path.resolve(__dirname, '..', 'packages', f)
+  if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
-  const packagePath = path.resolve(packageDir, 'assets.config.json')
-  if (!fs.existsSync(packagePath)) {
+  const pkgPath = path.resolve(pkgDir, 'assets.config.json')
+  if (!fs.existsSync(pkgPath)) {
     return false
   }
-  const assetsConfig = require(packagePath)
+  const assetsConfig = require(pkgPath)
   if (assetsConfig.private && !assetsConfig.css) {
     return false
   }

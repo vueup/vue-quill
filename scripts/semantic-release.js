@@ -6,9 +6,8 @@ const args = require('minimist')(process.argv.slice(2))
 const targets = args._
 
 if (process.env.CI && targets[0]) {
-  const rootDir = path.resolve(__dirname, '..')
-  const pkgDir = path.resolve(__dirname, '../packages', target)
   const target = targets[0]
+  const pkgDir = path.resolve(__dirname, '../packages', target)
   const distDir = path.resolve(pkgDir, 'dist')
   const semanticReleaseConfig = path.resolve(pkgDir, 'semantic-release.json')
   execa.sync('cd', [pkgDir])

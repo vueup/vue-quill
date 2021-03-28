@@ -10,7 +10,7 @@ if (process.env.CI && targets[0]) {
   const pkgDir = path.resolve(__dirname, '../packages', target)
   const distDir = path.resolve(pkgDir, 'dist')
   const semanticReleaseConfig = path.resolve(pkgDir, 'semantic-release.json')
-  execa.sync('zip', [`${target}vue-quill-dist.zip`, '-r', distDir])
+  execa.sync('zip', ['-r', `${target}vue-quill-dist.zip`, '.', '-i', distDir])
   execa.sync('npx', ['semantic-release', '--extends', semanticReleaseConfig])
 } else {
   console.log(chalk.redBright("You can't run semantic-release locally"))

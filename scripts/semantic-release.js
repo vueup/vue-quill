@@ -10,8 +10,6 @@ if (process.env.CI && targets[0]) {
   const pkgDir = path.resolve(__dirname, '../packages', target)
   const distDir = path.resolve(pkgDir, 'dist')
   const semanticReleaseConfig = path.resolve(pkgDir, 'semantic-release.json')
-  execa.sync('cd', [pkgDir])
-  execa.sync('npm', ['ci'])
   execa.sync('zip', [`${target}vue-quill-dist.zip`, '-r', distDir])
   execa.sync('npx', ['semantic-release', '--extends', semanticReleaseConfig])
 } else {

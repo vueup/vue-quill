@@ -1,4 +1,4 @@
-name: Release package
+name: Release @vueup/vue-quill
 
 on: 
   push: 
@@ -6,14 +6,8 @@ on:
       - alpha
       - beta
       - master
-    paths-ignore:
-      - 'docs/**'
-      - 'plugins/**'
-      - 'scripts/**'
-      - '**/README.md'
-      - '**/.gitignore'
-      - '.github/*.yml'
-
+    paths: 
+      - packages/vue-quill
 jobs: 
   release: 
     name: Build and release
@@ -23,13 +17,8 @@ jobs:
       - uses: actions/setup-node@v1
         with: 
           node-version: '14.x'
-      - name: Build package
-        run: | 
-          npm ci
-          npm run theme:build
-          npm run build
       - name: Release package
-        run: npx semantic-release
+        run: npm run release -- vue-quill
         env: 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN}}

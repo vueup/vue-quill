@@ -8,12 +8,12 @@ const version = require('../package.json').version
 const packagesDir = path.resolve(__dirname, '../packages')
 const files = fs.readdirSync(packagesDir)
 
-files.forEach(shortName => {
+files.forEach((shortName) => {
   if (!fs.statSync(path.join(packagesDir, shortName)).isDirectory()) {
     return
   }
 
-  const name = shortName === `vue` ? shortName : `@vue/${shortName}`
+  const name = `@vueup/${shortName}`
   const pkgPath = path.join(packagesDir, shortName, `package.json`)
   const pkgExists = fs.existsSync(pkgPath)
   if (pkgExists) {
@@ -34,15 +34,15 @@ files.forEach(shortName => {
       types: `dist/${shortName}.d.ts`,
       repository: {
         type: 'git',
-        url: 'git+https://github.com/vuejs/vue.git'
+        url: 'git+https://github.com/vuejs/vue.git',
       },
-      keywords: ['vue'],
-      author: 'Evan You',
+      keywords: ['vue-quill'],
+      author: 'Ahmad Luthfi Masruri',
       license: 'MIT',
       bugs: {
-        url: 'https://github.com/vuejs/vue/issues'
+        url: 'https://github.com/vueup/vue-quill/issues',
       },
-      homepage: `https://github.com/vuejs/vue/tree/dev/packages/${shortName}#readme`
+      homepage: `https://github.com/vueup/vue-quill/tree/dev/packages/${shortName}#readme`,
     }
     fs.writeFileSync(pkgPath, JSON.stringify(json, null, 2))
   }
@@ -67,6 +67,27 @@ files.forEach(shortName => {
   "dtsRollup": {
     "publicTrimmedFilePath": "./dist/<unscopedPackageName>.d.ts"
   }
+}
+`.trim()
+    )
+  }
+
+  const assetsConfigPath = path.join(
+    packagesDir,
+    shortName,
+    `assets.config.json`
+  )
+  if (args.force || !fs.existsSync(assetsConfigPath)) {
+    fs.writeFileSync(
+      assetsConfigPath,
+      `
+{
+  "css": [
+    {
+      "input": "./src/assets/css/index.css",
+      "output": "./dist/${shortName}.css"
+    }
+  ]
 }
 `.trim()
     )

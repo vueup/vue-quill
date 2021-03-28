@@ -6,20 +6,20 @@ formats to watch (defaults to "global"):
 
 ```
 # name supports fuzzy match. will watch all packages with name containing "dom"
-yarn dev dom
+npm run dev -- vue-quill
 
 # specify the format to output
-yarn dev core --formats cjs
+npm run dev -- vue-quill --formats cjs
 
 # Can also drop all __DEV__ blocks with:
-__DEV__=false yarn dev
+__DEV__=false npm run dev
 ```
 */
 
 const execa = require('execa')
 const { fuzzyMatchTarget } = require('./utils')
 const args = require('minimist')(process.argv.slice(2))
-const target = args._.length ? fuzzyMatchTarget(args._)[0] : 'vue'
+const target = args._.length ? fuzzyMatchTarget(args._)[0] : 'vue-quill'
 const formats = args.formats || args.f
 const sourceMap = args.sourcemap || args.s
 const commit = execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
@@ -33,12 +33,12 @@ execa(
       `COMMIT:${commit}`,
       `TARGET:${target}`,
       `FORMATS:${formats || 'global'}`,
-      sourceMap ? `SOURCE_MAP:true` : ``
+      sourceMap ? `SOURCE_MAP:true` : ``,
     ]
       .filter(Boolean)
-      .join(',')
+      .join(','),
   ],
   {
-    stdio: 'inherit'
+    stdio: 'inherit',
   }
 )

@@ -7,34 +7,27 @@ or "esm,cjs"):
 
 ```
 # name supports fuzzy match. will build all packages with name containing "dom":
-npm run build -- vue-quill
-
-# specify the format to output
-npm run build -- vue-quill --formats cjs
+npm run assets:build -- vue-quill
 ```
 */
 
 const fs = require('fs-extra')
 const path = require('path')
+const chalk = require('chalk')
 const execa = require('execa')
-const { buildTypes } = require('./build-types')
-const { buildAssets } = require('./build-assets')
 const {
-  targets: allTargets,
+  targetAssets: allTargets,
   fuzzyMatchTarget,
-  checkBuildSize,
+  checkAssetsSize,
   runParallel,
 } = require('./utils')
 
 const args = require('minimist')(process.argv.slice(2))
 const targets = args._
-const formats = args.formats || args.f
 const devOnly = args.devOnly || args.d
 const prodOnly = !devOnly && (args.prodOnly || args.p)
-const sourceMap = args.sourcemap || args.s
-const isRelease = args.release || (args.nextVersion && args.nextVersion !== '')
-const hasTypes = args.t || args.types || isRelease
-const hasAssets = args.assets || isRelease
+// const sourceMap = args.sourcemap || args.s
+const isRelease = args.release
 const buildAllMatching = args.all || args.a
 const nextVersion =
   args.nextVersion ||
@@ -59,51 +52,65 @@ async function run() {
 }
 
 async function buildAll(targets) {
-  await runParallel(require('os').cpus().length, targets, build)
+  await runParallel(require('os').cpus().length, targets, buildAssets)
 }
 
-async function build(target) {
+async function buildAssets(target) {
+  const rootDir = path.resolve(__dirname, '..')
   const pkgDir = path.resolve(__dirname, `../packages/${target}`)
-  const pkg = require(path.resolve(pkgDir, 'package.json'))
   const assetsConfig = require(path.resolve(pkgDir, 'assets.config.json'))
 
   // only build published packages for release
-  if (isRelease && pkg.private) return
+  if (isRelease && assetsConfig.private) return
 
-  // if building a specific format, do not remove dist.
-  if (!formats) await fs.remove(`${pkgDir}/dist`)
+  if (assetsConfig.css) {
+    assetsConfig.css.forEach((css) => {
+      const input = path.resolve(pkgDir, css.input)
+      const output = path.resolve(pkgDir, css.output)
+      const outputProd = path.resolve(
+        pkgDir,
+        path.dirname(output),
+        path.parse(output).name + '.prod.css'
+      )
+      const inputExt = path.extname(input)
 
-  const env =
-    (pkg.buildOptions && pkg.buildOptions.env) ||
-    (devOnly ? 'development' : 'production')
-  await execa(
-    'rollup',
-    [
-      '-c',
-      '--environment',
-      [
-        `COMMIT:${commit}`,
-        `NODE_ENV:${env}`,
-        `TARGET:${target}`,
-        formats ? `FORMATS:${formats}` : ``,
-        hasTypes ? `TYPES:true` : ``,
-        prodOnly ? `PROD_ONLY:true` : ``,
-        sourceMap ? `SOURCE_MAP:true` : ``,
-        nextVersion ? `NEXT_VERSION:${nextVersion}` : ``,
-      ]
-        .filter(Boolean)
-        .join(','),
-    ],
-    { stdio: 'inherit' }
-  )
+      if (inputExt === '.styl' || inputExt === '.css') {
+        console.log(
+          chalk.cyan(`${input} → ${path.relative(rootDir, output)}...`)
+        )
+        execa.sync('stylus', [input, '-o', output])
+        console.log(
+          chalk.green(
+            `created: ${chalk.bold(path.relative(rootDir, output))}\n`
+          )
+        )
 
-  if (hasTypes && pkg.types) buildTypes(target)
-  if (hasAssets && assetsConfig.css) buildAssets(target)
+        // create production build
+        console.log(
+          chalk.cyan(`${input} → ${path.relative(rootDir, outputProd)}...`)
+        )
+        execa.sync('stylus', [input, '-o', outputProd, '-c'])
+        console.log(
+          chalk.green(
+            `created: ${chalk.bold(path.relative(rootDir, outputProd))}\n`
+          )
+        )
+      } else {
+        console.log(chalk.redBright(`File extention not supported: ${input}`))
+      }
+    })
+  }
 }
 
 function checkAllSizes(targets) {
   if (devOnly) return
   console.log()
-  for (const target of targets) checkBuildSize(target)
+  for (const target of targets) {
+    checkAssetsSize(target)
+  }
   console.log()
+}
+
+module.exports = {
+  buildAssets,
 }

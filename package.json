@@ -18,21 +18,42 @@
     "type": "git",
     "url": "https://github.com/vueup/vue-quill.git"
   },
-  "types": "dist/vue-quill.d.ts",
+  "types": "test-dts/index.d.ts",
+  "tsd": {
+    "directory": "test-dts"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "eslint",
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
-    "dev": " npm run theme:dev && rollup -c rollup.config.ts -w",
-    "build": "npm run theme:build && rollup -c rollup.config.ts && npm run types",
-    "build2": "node scripts/build.js",
-    "types": "api-extractor run --local --verbose",
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "size": "node scripts/build.js vue runtime-dom size-check -p -f global",
+    "lint": "eslint --ext .ts packages/*/src/**",
+    "format": "prettier --write --parser typescript \"packages/**/*.ts?(x)\"",
+    "release": "node scripts/semantic-release.js",
+    "assets:dev": "node scripts/dev-assets.js",
+    "assets:build": "node scripts/build-assets.js",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
-    "docs:serve": "cd docs && npm run serve",
-    "theme:dev": "stylus -w ./src/themes/assets/snow.styl -o ./dist/vue-quill.snow.css",
-    "theme:build": "stylus ./src/themes/assets/snow.styl -o ./dist/vue-quill.snow.css"
+    "docs:serve": "cd docs && npm run serve"
   },
   "devDependencies": {
     "@babel/types": "^7.13.12",
-    "@microsoft/api-extractor": "^7.13.2",
+    "@microsoft/api-extractor": "^7.8.1",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",

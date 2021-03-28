@@ -15,13 +15,13 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "zip vue-quill-dist.zip -r dist"
+        "prepareCmd": "npm run build -- --nextVersion ${nextRelease.version}"
       }
     ],
+    "@semantic-release/npm",
     [
       "@semantic-release/github",
       {

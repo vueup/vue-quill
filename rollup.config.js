@@ -7,11 +7,12 @@ if (!process.env.TARGET) {
   throw new Error('TARGET package must be specified via --environment flag.')
 }
 
-const masterVersion = process.env.NEXT_VERSION || require('./package.json').version
+const masterVersion =
+  process.env.NEXT_VERSION || require('./package.json').version
 const packagesDir = path.resolve(__dirname, 'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET)
 const name = path.basename(packageDir)
-const resolve = p => path.resolve(packageDir, p)
+const resolve = (file) => path.resolve(packageDir, file)
 const pkg = require(resolve(`package.json`))
 const packageOptions = pkg.buildOptions || {}
 
@@ -19,10 +20,10 @@ const packageOptions = pkg.buildOptions || {}
 let hasTSChecked = false
 
 const banner = `/*!
- * Library ${pkg.name} v${pkg.version}
+ * ${pkg.buildOptions.name} ${pkg.name} v${masterVersion}
  * ${pkg.homepage}
  * 
- * Includes quill v${pkg.dependencies.quill}
+ * Includes quill v${pkg.dependencies.quill.match(/\d(.*)/)[0]}
  * https://quilljs.com/
  * 
  * Copyright (c) ${new Date().getFullYear()} ${pkg.author}
@@ -33,19 +34,19 @@ const banner = `/*!
 const outputConfigs = {
   'esm-bundler': {
     file: resolve(`dist/${name}.esm-bundler.js`),
-    format: `es`
+    format: `es`,
   },
   'esm-browser': {
     file: resolve(`dist/${name}.esm-browser.js`),
-    format: `es`
+    format: `es`,
   },
   cjs: {
     file: resolve(`dist/${name}.cjs.js`),
-    format: `cjs`
+    format: `cjs`,
   },
   global: {
     file: resolve(`dist/${name}.global.js`),
-    format: `iife`
+    format: `umd`,
   },
 }
 
@@ -54,10 +55,10 @@ const inlineFormats = process.env.FORMATS && process.env.FORMATS.split(',')
 const packageFormats = inlineFormats || packageOptions.formats || defaultFormats
 const packageConfigs = process.env.PROD_ONLY
   ? []
-  : packageFormats.map(format => createConfig(format, outputConfigs[format]))
+  : packageFormats.map((format) => createConfig(format, outputConfigs[format]))
 
 if (process.env.NODE_ENV === 'production') {
-  packageFormats.forEach(format => {
+  packageFormats.forEach((format) => {
     if (packageOptions.prod === false) {
       return
     }
@@ -78,7 +79,8 @@ function createConfig(format, output, plugins = []) {
     process.exit(1)
   }
 
-  const isProductionBuild = process.env.__DEV__ === 'false' || /\.prod\.js$/.test(output.file)
+  const isProductionBuild =
+    process.env.__DEV__ === 'false' || /\.prod\.js$/.test(output.file)
   const isBundlerESMBuild = /esm-bundler/.test(format)
   const isBrowserESMBuild = /esm-browser/.test(format)
   const isNodeBuild = format === 'cjs'
@@ -97,7 +99,7 @@ function createConfig(format, output, plugins = []) {
     // Node / esm-bundler builds. Externalize everything.
     external = [
       ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {})
+      ...Object.keys(pkg.peerDependencies || {}),
     ]
   }
 
@@ -109,15 +111,15 @@ function createConfig(format, output, plugins = []) {
   const nodePlugins =
     format !== 'cjs'
       ? [
-        require('@rollup/plugin-node-resolve').nodeResolve({
-          preferBuiltins: true
-        }),
-        require('@rollup/plugin-commonjs')({
-          sourceMap: false
-        }),
-        require('rollup-plugin-node-builtins')(),
-        require('rollup-plugin-node-globals')()
-      ]
+          require('@rollup/plugin-node-resolve').nodeResolve({
+            preferBuiltins: true,
+          }),
+          require('@rollup/plugin-commonjs')({
+            sourceMap: false,
+          }),
+          require('rollup-plugin-node-builtins')(),
+          require('rollup-plugin-node-globals')(),
+        ]
       : []
 
   const shouldEmitDeclarations = process.env.TYPES != null && !hasTSChecked
@@ -130,17 +132,17 @@ function createConfig(format, output, plugins = []) {
       compilerOptions: {
         sourceMap: output.sourcemap,
         declaration: shouldEmitDeclarations,
-        declarationMap: shouldEmitDeclarations
+        declarationMap: shouldEmitDeclarations,
       },
-      exclude: ['**/__tests__', 'test-dts']
-    }
+      exclude: ['**/__tests__', 'test-dts'],
+    },
   })
   // we only need to check TS and generate declarations once for each build.
   // it also seems to run into weird issues when checking multiple times
   // during a single build.
   hasTSChecked = true
 
-  const entryFile = `${packageDir}/src/index.ts`
+  const entryFile = path.resolve(packageDir, 'src/index.ts')
 
   return {
     input: resolve(entryFile),
@@ -149,7 +151,7 @@ function createConfig(format, output, plugins = []) {
     external,
     plugins: [
       json({
-        namedExports: false
+        namedExports: false,
       }),
       tsPlugin,
       createReplacePlugin(
@@ -157,12 +159,12 @@ function createConfig(format, output, plugins = []) {
         isBundlerESMBuild,
         isBrowserESMBuild,
         // isBrowserBuild?
-        (isGlobalBuild || isBrowserESMBuild || isBundlerESMBuild),
+        isGlobalBuild || isBrowserESMBuild || isBundlerESMBuild,
         isGlobalBuild,
         isNodeBuild
       ),
       ...nodePlugins,
-      ...plugins
+      ...plugins,
     ],
     output,
     onwarn: (msg, warn) => {
@@ -171,8 +173,8 @@ function createConfig(format, output, plugins = []) {
       }
     },
     treeshake: {
-      moduleSideEffects: false
-    }
+      moduleSideEffects: false,
+    },
   }
 }
 
@@ -189,9 +191,9 @@ function createReplacePlugin(
     __VERSION__: `"${masterVersion}"`,
     __DEV__: isBundlerESMBuild
       ? // preserve to be handled by bundlers
-      `(process.env.NODE_ENV !== 'production')`
+        `(process.env.NODE_ENV !== 'production')`
       : // hard coded dev/prod builds
-      !isProduction,
+        !isProduction,
     // this is only used during Vue's internal tests
     __TEST__: false,
     // If the build is expected to run directly in the browser (global / esm builds)
@@ -210,30 +212,30 @@ function createReplacePlugin(
       : false,
     ...(isProduction && isBrowserBuild
       ? {
-        'context.onError(': `/*#__PURE__*/ context.onError(`,
-        'emitError(': `/*#__PURE__*/ emitError(`,
-        'createCompilerError(': `/*#__PURE__*/ createCompilerError(`,
-        'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`
-      }
-      : {})
+          'context.onError(': `/*#__PURE__*/ context.onError(`,
+          'emitError(': `/*#__PURE__*/ emitError(`,
+          'createCompilerError(': `/*#__PURE__*/ createCompilerError(`,
+          'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`,
+        }
+      : {}),
   }
   // allow inline overrides like
   //__RUNTIME_COMPILE__=true yarn build runtime-core
-  Object.keys(replacements).forEach(key => {
+  Object.keys(replacements).forEach((key) => {
     if (key in process.env) {
       replacements[key] = process.env[key]
     }
   })
   return replace({
     values: replacements,
-    preventAssignment: true
+    preventAssignment: true,
   })
 }
 
 function createProductionConfig(format) {
   return createConfig(format, {
     file: resolve(`dist/${name}.${format}.prod.js`),
-    format: outputConfigs[format].format
+    format: outputConfigs[format].format,
   })
 }
 
@@ -243,17 +245,17 @@ function createMinifiedConfig(format) {
     format,
     {
       file: outputConfigs[format].file.replace(/\.js$/, '.prod.js'),
-      format: outputConfigs[format].format
+      format: outputConfigs[format].format,
     },
     [
       terser({
         module: /^esm/.test(format),
         compress: {
           ecma: 2015,
-          pure_getters: true
+          pure_getters: true,
         },
-        safari10: true
-      })
+        safari10: true,
+      }),
     ]
   )
 }

@@ -7,7 +7,7 @@ on:
       - beta
       - master
     paths: 
-      - packages/vue-quill
+      - 'packages/vue-quill/**'
 jobs: 
   release: 
     name: Build and release

@@ -18,7 +18,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "npm run build -- --nextVersion ${nextRelease.version}"
+        "prepareCmd": "node ../../scripts/build.js --nextVersion ${nextRelease.version}"
       }
     ],
     "@semantic-release/npm",

@@ -11,7 +11,7 @@ const QuillEditor = defineAsyncComponent({
   loader: () =>
     process.env.NODE_ENV === "production"
       ? import("@vueup/vue-quill").then((VueQuill) => VueQuill.QuillEditor)
-      : import("../../../../src/main").then((VueQuill) => VueQuill.QuillEditor)
+      : import("../../../../packages/vue-quill/src/index").then((VueQuill) => VueQuill.QuillEditor)
 })
 
 import './base.css'

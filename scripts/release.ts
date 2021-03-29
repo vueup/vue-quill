@@ -46,15 +46,20 @@
   }
 
   async function prepare(target: string, nextVersion: string) {
-    const buildScript = path.resolve(__dirname, 'build.ts')
-    console.log(chalk.bgCyan("Build package"))
-    await execa('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
-    console.log(chalk.bgCyan("Zipping distribution file"))
-    await execa('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
+    try {
+      const buildScript = path.resolve(__dirname, 'build.ts')
+      console.log(chalk.bgCyan("Build package"))
+      execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
+      console.log(chalk.bgCyan("Zipping distribution file"))
+      execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
+    } catch (err) {
+      console.log(`>>>>>>>>>>>>> ${err}`)
+    }
   }
 
   async function release() {
     try {
+      console.log(`>>>>>>>>>>>>> Semantic release`)
       const result = await semanticRelease({
         // Core options
         branches: releaserc.branches,
@@ -71,6 +76,7 @@
       });
 
       if (result) {
+        console.log(`>>>>>>>>>>>>> Result`)
         const { lastRelease, commits, nextRelease, releases } = result;
 
         console.log(`Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`);

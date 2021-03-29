@@ -46,7 +46,7 @@
   }
 
   async function prepare(target: string, nextVersion: string) {
-    const buildScript = path.resolve(__dirname, 'build.js')
+    const buildScript = path.resolve(__dirname, 'build.ts')
     execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
     execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
     execa.sync('npx', ['semantic-release'])

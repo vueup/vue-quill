@@ -23,7 +23,7 @@
     "directory": "test-dts"
   },
   "gitHooks": {
-    "pre-commit": "",
+    "pre-commit": "lint-staged",
     "commit-msg": "ts-node scripts/verifyCommit.ts"
   },
   "lint-staged": {

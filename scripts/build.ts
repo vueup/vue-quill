@@ -13,7 +13,7 @@ npm run build -- vue-quill
 npm run build -- vue-quill --formats cjs
 ```
 */
-(async () => {
+;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const execa = require('execa')
@@ -22,7 +22,7 @@ npm run build -- vue-quill --formats cjs
     fuzzyMatchTarget,
     checkBuildSize,
     runParallel,
-    generateTypes
+    generateTypes,
   } = require('./utils')
 
   const args = require('minimist')(process.argv.slice(2))
@@ -31,7 +31,8 @@ npm run build -- vue-quill --formats cjs
   const devOnly: boolean = args.devOnly || args.d
   const prodOnly: boolean = !devOnly && (args.prodOnly || args.p)
   const sourceMap: boolean = args.sourcemap || args.s
-  const isRelease: boolean = args.release || (args.nextVersion && args.nextVersion !== '')
+  const isRelease: boolean =
+    args.release || (args.nextVersion && args.nextVersion !== '')
   const hasTypes: boolean = args.t || args.types || isRelease
   const buildAssets: boolean = args.assets || isRelease
   const buildAllMatching: string[] = args.all || args.a
@@ -66,7 +67,11 @@ npm run build -- vue-quill --formats cjs
     const pkgDir = path.resolve(__dirname, `../packages/${target}`)
     const pkg = require(path.resolve(pkgDir, 'package.json'))
     let assets: any = {}
-    try { assets = require(path.resolve(pkgDir, 'assets.config.json')) } catch { }
+    try {
+      assets = require(path.resolve(pkgDir, 'assets.config.json'))
+    } catch {
+      console.log(`There's no assets.config.json`)
+    }
 
     // only build published packages for release
     if (isRelease && pkg.private) return
@@ -105,12 +110,7 @@ npm run build -- vue-quill --formats cjs
       const buildAssetsTs = await path.resolve(__dirname, 'buildAssets.ts')
       await execa(
         'npx',
-        [
-          'ts-node',
-          buildAssetsTs,
-          target,
-          isRelease ? '--release' : ''
-        ],
+        ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''],
         { stdio: 'inherit' }
       )
     }

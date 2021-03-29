@@ -21,23 +21,29 @@ const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
   return true
 })
 
-const targetAssets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
-  const pkgDir = path.resolve(__dirname, '..', 'packages', f)
-  if (!fs.statSync(pkgDir).isDirectory()) {
-    return false
-  }
-  const pkgPath = path.resolve(pkgDir, 'assets.config.json')
-  if (!fs.existsSync(pkgPath)) {
-    return false
-  }
-  const assets = require(pkgPath)
-  if (assets.private && !assets.css) {
-    return false
-  }
-  return true
-})
+const targetAssets: string[] = fs
+  .readdirSync(packagesDir)
+  .filter((f: string) => {
+    const pkgDir = path.resolve(__dirname, '..', 'packages', f)
+    if (!fs.statSync(pkgDir).isDirectory()) {
+      return false
+    }
+    const pkgPath = path.resolve(pkgDir, 'assets.config.json')
+    if (!fs.existsSync(pkgPath)) {
+      return false
+    }
+    const assets = require(pkgPath)
+    if (assets.private && !assets.css) {
+      return false
+    }
+    return true
+  })
 
-function fuzzyMatchTarget(partialTargets: string[], includeAllMatching?: string[], targets?: string[]) {
+function fuzzyMatchTarget(
+  partialTargets: string[],
+  includeAllMatching?: string[],
+  targets?: string[]
+) {
   const matched: string[] = []
   partialTargets.forEach((partialTarget) => {
     if (!targets) return
@@ -65,11 +71,15 @@ function fuzzyMatchTarget(partialTargets: string[], includeAllMatching?: string[
   }
 }
 
-async function runParallel(maxConcurrency: number, source: string[], iteratorFn: Function) {
+async function runParallel(
+  maxConcurrency: number,
+  source: string[],
+  iteratorFn: (target: string) => Promise<void>
+) {
   const ret = []
   const executing: any[] = []
   for (const item of source) {
-    const p = Promise.resolve().then(() => iteratorFn(item, source))
+    const p = Promise.resolve().then(() => iteratorFn(item))
     ret.push(p)
 
     if (maxConcurrency <= source.length) {
@@ -163,7 +173,7 @@ async function generateTypes(target: string) {
   } else {
     console.error(
       `API Extractor completed with ${extractorResult.errorCount} errors` +
-      ` and ${extractorResult.warningCount} warnings`
+        ` and ${extractorResult.warningCount} warnings`
     )
     process.exitCode = 1
   }
@@ -179,5 +189,5 @@ module.exports = {
   checkBuildSize,
   checkAssetsSize,
   checkFileSize,
-  generateTypes
+  generateTypes,
 }

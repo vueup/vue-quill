@@ -17,19 +17,19 @@ module.exports = {
         "vue",
         "@typescript-eslint"
     ],
+    "ignorePatterns": ["**/*.d.ts"],
     "rules": {
     },
     "overrides": [
         {
-            "files": ['**/__tests__/**', 'test-dts/**'],
+            "files": ["**/__tests__/**", "test-dts/**"],
             "rules": {
-                'no-restricted-globals': 'off',
-                'no-restricted-syntax': 'off'
+                "no-restricted-globals": "off",
+                "no-restricted-syntax": "off"
             }
         },
         {
             "files": ["packages/*/src/**/*.ts"],
-            "excludedFiles": "scripts/**/*.ts",
             "rules": {
                 "quotes": ["error", "single"]
             }

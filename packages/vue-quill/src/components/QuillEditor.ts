@@ -49,7 +49,7 @@ export const QuillEditor = defineComponent({
     toolbar: {
       type: [String, Array, Object],
       required: false,
-      validator: (value: string | object) => {
+      validator: (value: string | unknown) => {
         if (typeof value === 'string' && value !== '') {
           return value.charAt(0) === '#'
             ? true
@@ -226,7 +226,7 @@ export const QuillEditor = defineComponent({
 
     watch(
       () => props.content,
-      (newContent, oldContent) => {
+      (newContent) => {
         if (quill) {
           if (newContent && newContent !== props.content) {
             if (typeof newContent === 'string')
@@ -242,7 +242,7 @@ export const QuillEditor = defineComponent({
 
     watch(
       () => props.enable,
-      (newValue, oldValue) => {
+      (newValue) => {
         if (quill) quill.enable(newValue);
       }
     );

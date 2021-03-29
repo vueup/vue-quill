@@ -1,7 +1,5 @@
-import chalk from "chalk"
-
 (() => {
-  // const chalk = require('chalk')
+  const chalk = require('chalk')
   const execa = require('execa')
   const path = require('path')
   const semanticRelease = require('semantic-release')

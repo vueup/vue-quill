@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   const chalk = require('chalk')
   const execa = require('execa')
   const path = require('path')
@@ -37,7 +37,7 @@
     ]
   }
 
-  run()
+  await run()
 
   async function run() {
     const nextVersion = await getNextVersion()

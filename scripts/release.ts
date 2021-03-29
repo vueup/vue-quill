@@ -21,6 +21,12 @@
     plugins: [
       '@semantic-release/commit-analyzer',
       '@semantic-release/release-notes-generator',
+      [
+        "@semantic-release/exec",
+        {
+          prepareCmd: "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
+        }
+      ],
       '@semantic-release/npm',
       [
         '@semantic-release/github',
@@ -59,6 +65,7 @@
   }
 
   async function release() {
+    const rootDir = path.resolve(__dirname, '..')
     try {
       console.log(`>>>>>>>>>>>>> Semantic release`)
       const result = await semanticRelease({
@@ -68,7 +75,7 @@
         plugins: releaserc.plugins
       }, {
         // Run semantic-release from `/path/to/git/repo/root` without having to change local process `cwd` with `process.chdir()`
-        // cwd: '',
+        cwd: rootDir,
         // Pass the variable `MY_ENV_VAR` to semantic-release without having to modify the local `process.env`
         env: { ...process.env },
         // Store stdout and stderr to use later instead of writing to `process.stdout` and `process.stderr`

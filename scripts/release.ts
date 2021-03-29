@@ -1,11 +1,6 @@
 (async () => {
-  // const chalk = require('chalk')
-  // const execa = require('execa')
   const path = require('path')
   const semanticRelease = require('semantic-release')
-  // const { WritableStreamBuffer } = require('stream-buffers');
-  // const stdoutBuffer = WritableStreamBuffer();
-  // const stderrBuffer = WritableStreamBuffer();
 
   const args = require('minimist')(process.argv.slice(2))
   const target = args._[0]
@@ -24,8 +19,7 @@
       [
         '@semantic-release/exec',
         {
-          prepareCmd: 'npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}',
-          publishCmd: `zip ${target}-dist.zip -r dist`,
+          prepareCmd: `npx ts-node ../../scripts/build.ts --nextVersion \$\{nextRelease.version\} && zip ${target}-dist.zip -r dist`,
         }
       ],
       '@semantic-release/npm',
@@ -44,48 +38,23 @@
     ]
   }
 
-  await run()
+  run()
 
   async function run() {
-    // const nextVersion = await getNextVersion()
-    // console.log(nextVersion)
-    // await prepare(target)
-    await release()
-  }
-
-  // async function prepare(target: string/*, nextVersion: string*/) {
-  //   try {
-  //     // const buildScript = path.resolve(__dirname, 'build.ts')
-  //     // console.log(chalk.bgCyan("Build package"))
-  //     // execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
-  //     console.log(chalk.bgCyan("Zipping distribution file"))
-  //     execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
-  //   } catch (err) {
-  //     console.log(`>>>>>>>>>>>>> ${err}`)
-  //   }
-  // }
-
-  async function release() {
-    // const pkgDir = path.resolve(__dirname, '..')
+    const pkgDir = path.resolve(__dirname, `../packages/${target}`)
     try {
-      console.log(`>>>>>>>>>>>>> Semantic release`)
+      console.log(`\n>>>>>>>>>>>>>>>>>>>> SEMANTIC RELEASE <<<<<<<<<<<<<<<<<<<<\n`)
       const result = await semanticRelease({
-        // Core options
         branches: releaserc.branches,
         repositoryUrl: pkg.repository.url,
         plugins: releaserc.plugins
       }, {
-        // Run semantic-release from `/path/to/git/repo/root` without having to change local process `cwd` with `process.chdir()`
-        cwd: '',
-        // Pass the variable `MY_ENV_VAR` to semantic-release without having to modify the local `process.env`
-        env: { ...process.env },
-        // Store stdout and stderr to use later instead of writing to `process.stdout` and `process.stderr`
-        // stdout: stdoutBuffer,
-        // stderr: stderrBuffer
+        cwd: pkgDir,
+        env: { ...process.env }
       });
 
       if (result) {
-        console.log(`>>>>>>>>>>>>> Result`)
+        console.log(`\n>>>>>>>>>>>>>>>>>>>> RELEASE RESULT <<<<<<<<<<<<<<<<<<<<\n`)
         const { lastRelease, commits, nextRelease, releases } = result;
 
         console.log(`Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`);
@@ -101,40 +70,8 @@
         console.log('No release published.');
       }
 
-      // Get stdout and stderr content
-      // const logs = stdoutBuffer.getContentsAsString('utf8');
-      // const errors = stderrBuffer.getContentsAsString('utf8');
-      // console.log(logs, errors);
-
     } catch (err) {
       console.error('The automated release failed with %O', err)
     }
   }
-
-  // async function getNextVersion(): Promise<string> {
-  //   const rootDir = path.resolve(__dirname, '..')
-  //   try {
-  //     const { nextRelease } = await semanticRelease({
-  //       branches: releaserc.branches,
-  //       repositoryUrl: pkg.repository.url,
-  //       plugins: [
-  //         '@semantic-release/commit-analyzer',
-  //         [
-  //           "@semantic-release/exec",
-  //           {
-  //             prepareCmd: "npx ts-node scripts/build.ts --nextVersion ${nextRelease.version}"
-  //           }
-  //         ]
-  //       ]
-  //     }, {
-  //       cwd: rootDir,
-  //       env: { ...process.env }
-  //     })
-  //     if (nextRelease) return nextRelease.version
-  //     else console.log('No release will bepublished')
-  //   } catch (err) {
-  //     console.error('Failed to retrieve next version with %O', err)
-  //   }
-  //   return pkg.version
-  // }
 })()

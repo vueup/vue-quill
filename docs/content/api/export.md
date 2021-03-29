@@ -1,6 +1,6 @@
 # Export
 
-`QuillEditor` : The only component exposed.
+`QuillEditor` : The Quill Editor Component.
 
 `Quill` : The `Quill` namespace on which you can call `register`.
 

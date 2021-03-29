@@ -110,7 +110,6 @@
       const { nextRelease } = await semanticRelease({
         branches: releaserc.branches,
         repositoryUrl: pkg.repository.url,
-        ci: false,
         plugins: [
           '@semantic-release/commit-analyzer',
           [

@@ -19,6 +19,8 @@ jobs:
         with: 
           node-version: '14.x'
       - run: npm ci
+      - working-directory: packages/vue-quill
+        run: npm ci
       - name: Build docs
         working-directory: docs
         run: |

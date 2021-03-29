@@ -46,12 +46,12 @@
   await run()
 
   async function run() {
-    const nextVersion = await getNextVersion()
-    await prepare(target, nextVersion)
+    // const nextVersion = await getNextVersion()
+    // await prepare(target)
     await release()
   }
 
-  async function prepare(target: string, nextVersion: string) {
+  async function prepare(target: string/*, nextVersion: string*/) {
     try {
       // const buildScript = path.resolve(__dirname, 'build.ts')
       // console.log(chalk.bgCyan("Build package"))

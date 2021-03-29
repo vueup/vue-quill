@@ -62,6 +62,7 @@ npm run build -- vue-quill --formats cjs
   }
 
   async function build(target: string) {
+    const rollupConfig = path.resolve(__dirname, '../rollup.config.js')
     const pkgDir = path.resolve(__dirname, `../packages/${target}`)
     const pkg = require(path.resolve(pkgDir, 'package.json'))
     let assets: any = {}
@@ -77,9 +78,11 @@ npm run build -- vue-quill --formats cjs
       (pkg.buildOptions && pkg.buildOptions.env) ||
       (devOnly ? 'development' : 'production')
     await execa(
-      'rollup',
+      'npx',
       [
-        '-c',
+        'rollup',
+        '--config',
+        rollupConfig,
         '--environment',
         [
           `COMMIT:${commit}`,

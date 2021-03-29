@@ -59,7 +59,7 @@ npm run assets:build -- vue-quill
 
     // only build published packages for release
     if (isRelease && assets.private) return
-    if (!assets.css) return
+    if (!assets.css.length) return
 
     assets.css.forEach(async (css: any) => {
       const input = path.resolve(pkgDir, css.input)

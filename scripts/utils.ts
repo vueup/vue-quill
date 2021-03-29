@@ -84,14 +84,14 @@ async function runParallel(maxConcurrency: number, source: string[], iteratorFn:
 }
 
 function checkBuildSize(target: string) {
-  const pkgDir = path.resolve(`packages/${target}`)
+  const pkgDir = path.resolve(__dirname, `../packages/${target}`)
   checkFileSize(`${pkgDir}/dist/${target}.global.prod.js`)
 }
 
 function checkAssetsSize(target: string, ext = '.css') {
-  const pkgDir = path.resolve(`packages/${target}`)
+  const pkgDir = path.resolve(__dirname, `../packages/${target}`)
   const distDir = path.resolve(pkgDir, 'dist')
-  fs.readdir(distDir, function (err: string, files: string[]) {
+  fs.readdir(distDir, (err: string, files: string[]) => {
     if (err) console.log(chalk.redBright('Unable to scan directory: ' + err))
     files.forEach((file: string) => {
       if (file.includes(`prod${ext}`))

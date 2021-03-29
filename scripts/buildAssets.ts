@@ -58,10 +58,10 @@ npm run assets:build -- vue-quill
     if (isRelease && assets.private) return
     if (!assets.css.length) return
     console.log(
-      chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<`)
+      chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<\n`)
     )
 
-    await assets.css.forEach(async (css: any) => {
+    for (const css of assets.css) {
       const input = path.resolve(pkgDir, css.input)
       const inputExt = path.extname(input)
       const output = path.resolve(pkgDir, css.output)
@@ -78,7 +78,7 @@ npm run assets:build -- vue-quill
       } else {
         console.log(chalk.redBright(`File extention not supported: ${input}`))
       }
-    })
+    }
   }
 
   function checkAllSizes(targets: string[]) {

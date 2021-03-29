@@ -51,15 +51,17 @@ npm run assets:build -- vue-quill
   }
 
   async function buildAssets(target: string) {
-    const rootDir = path.resolve(__dirname, '..')
     const pkgDir = path.resolve(__dirname, `../packages/${target}`)
     const assets = require(path.resolve(pkgDir, 'assets.config.json'))
 
     // only build published packages for release
     if (isRelease && assets.private) return
     if (!assets.css.length) return
+    console.log(
+      chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<`)
+    )
 
-    assets.css.forEach(async (css: any) => {
+    await assets.css.forEach(async (css: any) => {
       const input = path.resolve(pkgDir, css.input)
       const inputExt = path.extname(input)
       const output = path.resolve(pkgDir, css.output)
@@ -70,30 +72,9 @@ npm run assets:build -- vue-quill
       )
 
       if (inputExt === '.styl' || inputExt === '.css') {
-        if (!prodOnly) {
-          console.log(
-            chalk.cyan(`${input} → ${path.relative(rootDir, output)}...`)
-          )
-          execa.sync('stylus', [input, '-o', output])
-          console.log(
-            chalk.green(
-              `created: ${chalk.bold(path.relative(rootDir, output))}\n`
-            )
-          )
-        }
-
+        if (!prodOnly) await execa('stylus', [input, '-o', output], { stdio: 'inherit' })
         // create production build
-        if (!devOnly) {
-          console.log(
-            chalk.cyan(`${input} → ${path.relative(rootDir, outputProd)}...`)
-          )
-          execa.sync('stylus', [input, '-o', outputProd, '-c'])
-          console.log(
-            chalk.green(
-              `created: ${chalk.bold(path.relative(rootDir, outputProd))}\n`
-            )
-          )
-        }
+        if (!devOnly) await execa('stylus', [input, '-o', outputProd, '-c'], { stdio: 'inherit' })
       } else {
         console.log(chalk.redBright(`File extention not supported: ${input}`))
       }

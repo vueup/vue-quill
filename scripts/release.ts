@@ -1,3 +1,5 @@
+import chalk from "chalk"
+
 (() => {
   // const chalk = require('chalk')
   const execa = require('execa')
@@ -37,9 +39,9 @@
     ]
   }
 
-  run(target)
+  run()
 
-  async function run(target: string) {
+  async function run() {
     const nextVersion = await getNextVersion()
     await prepare(target, nextVersion)
     await release()
@@ -47,9 +49,10 @@
 
   async function prepare(target: string, nextVersion: string) {
     const buildScript = path.resolve(__dirname, 'build.ts')
-    execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
-    execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
-    execa.sync('npx', ['semantic-release'])
+    console.log(chalk.bgCyan("Build package"))
+    await execa('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
+    console.log(chalk.bgCyan("Zipping distribution file"))
+    await execa('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
   }
 
   async function release() {
@@ -61,7 +64,7 @@
         plugins: releaserc.plugins
       }, {
         // Run semantic-release from `/path/to/git/repo/root` without having to change local process `cwd` with `process.chdir()`
-        cwd: '',
+        // cwd: '',
         // Pass the variable `MY_ENV_VAR` to semantic-release without having to modify the local `process.env`
         env: { ...process.env },
         // Store stdout and stderr to use later instead of writing to `process.stdout` and `process.stderr`

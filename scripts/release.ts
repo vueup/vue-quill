@@ -1,6 +1,6 @@
 (async () => {
-  const chalk = require('chalk')
-  const execa = require('execa')
+  // const chalk = require('chalk')
+  // const execa = require('execa')
   const path = require('path')
   const semanticRelease = require('semantic-release')
   // const { WritableStreamBuffer } = require('stream-buffers');

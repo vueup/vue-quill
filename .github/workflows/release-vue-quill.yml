@@ -24,7 +24,7 @@ jobs:
         run: npm ci
       - name: Release package
         working-directory: packages/vue-quill
-        run: node ../../scripts/release.js vue-quill
+        run: npx ts-node ../../scripts/release.ts vue-quill
         env: 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN}}

@@ -1,0 +1,16 @@
+{
+  "css": [
+    {
+      "input": "./node_modules/quill/assets/core.styl",
+      "output": "./dist/vue-quill.core.css"
+    },
+    {
+      "input": "./node_modules/quill/assets/bubble.styl",
+      "output": "./dist/vue-quill.bubble.css"
+    },
+    {
+      "input": "./src/assets/snow.styl",
+      "output": "./dist/vue-quill.snow.css"
+    }
+  ]
+}

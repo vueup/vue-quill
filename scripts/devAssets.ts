@@ -7,7 +7,7 @@ To specify the package to build, simply pass its name
 npm run assets:build -- vue-quill
 ```
 */
-(() => {
+(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
@@ -24,7 +24,7 @@ npm run assets:build -- vue-quill
   const isRelease: boolean = args.release
   const buildAllMatching: string[] = args.all || args.a
 
-  run()
+  await run()
 
   async function run() {
     if (isRelease) {

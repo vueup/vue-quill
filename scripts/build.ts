@@ -13,7 +13,7 @@ npm run build -- vue-quill
 npm run build -- vue-quill --formats cjs
 ```
 */
-(() => {
+(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const execa = require('execa')
@@ -41,7 +41,7 @@ npm run build -- vue-quill --formats cjs
   const commit =
     args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
-  run()
+  await run()
 
   async function run() {
     if (isRelease) {
@@ -102,8 +102,17 @@ npm run build -- vue-quill --formats cjs
 
     if (hasTypes && pkg.types) await generateTypes(target)
     if (buildAssets && assets.css) {
-      const buildAssetsRunner = path.resolve(__dirname, 'buildAssets.ts')
-      await execa('npx', ['ts-node', buildAssetsRunner, target])
+      const buildAssetsTs = await path.resolve(__dirname, 'buildAssets.ts')
+      await execa(
+        'npx',
+        [
+          'ts-node',
+          buildAssetsTs,
+          target,
+          isRelease ? '--release' : ''
+        ],
+        { stdio: 'inherit' }
+      )
     }
   }
 

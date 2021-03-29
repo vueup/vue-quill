@@ -19,7 +19,9 @@
       [
         '@semantic-release/exec',
         {
-          prepareCmd: `npx ts-node ../../scripts/build.ts --nextVersion \$\{nextRelease.version\} && zip ${target}-dist.zip -r dist`,
+          prepareCmd:
+            'npx ts-node ../../scripts/build.ts --nextVersion \$\{nextRelease.version\} && ' +
+            `zip ${target}-dist.zip -r dist`
         }
       ],
       '@semantic-release/npm',
@@ -38,7 +40,7 @@
     ]
   }
 
-  run()
+  await run()
 
   async function run() {
     const pkgDir = path.resolve(__dirname, `../packages/${target}`)

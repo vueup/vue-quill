@@ -15,7 +15,7 @@ npm run dev -- vue-quill --formats cjs
 __DEV__=false npm run dev
 ```
 */
-(() => {
+(async () => {
   const execa = require('execa')
   const { fuzzyMatchTarget } = require('./utils')
 
@@ -26,7 +26,7 @@ __DEV__=false npm run dev
   const sourceMap: boolean = args.sourcemap || args.s
   const commit = execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
-  execa(
+  await execa(
     'rollup',
     [
       '-wc',

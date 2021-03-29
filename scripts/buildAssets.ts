@@ -7,7 +7,7 @@ To specify the package assets to build, simply pass its name
 npm run assets:build -- vue-quill
 ```
 */
-(() => {
+(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
@@ -29,10 +29,8 @@ npm run assets:build -- vue-quill
   // const nextVersion: string =
   //   args.nextVersion ||
   //   require(path.resolve(__dirname, '..', 'package.json')).version
-  // const commit: string =
-  //   args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
-  run()
+  await run()
 
   async function run() {
     if (isRelease) {

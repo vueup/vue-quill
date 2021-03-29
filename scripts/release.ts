@@ -1,6 +1,6 @@
 (async () => {
-  // const chalk = require('chalk')
-  // const execa = require('execa')
+  const chalk = require('chalk')
+  const execa = require('execa')
   const path = require('path')
   const semanticRelease = require('semantic-release')
   // const { WritableStreamBuffer } = require('stream-buffers');
@@ -21,12 +21,6 @@
     plugins: [
       '@semantic-release/commit-analyzer',
       '@semantic-release/release-notes-generator',
-      [
-        "@semantic-release/exec",
-        {
-          prepareCmd: "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
-        }
-      ],
       '@semantic-release/npm',
       [
         '@semantic-release/github',
@@ -46,22 +40,23 @@
   await run()
 
   async function run() {
-    // const nextVersion = await getNextVersion()
-    // await prepare(target)
+    const nextVersion = await getNextVersion()
+    console.log(nextVersion)
+    await prepare(target)
     await release()
   }
 
-  // async function prepare(target: string/*, nextVersion: string*/) {
-  //   try {
-  //     // const buildScript = path.resolve(__dirname, 'build.ts')
-  //     // console.log(chalk.bgCyan("Build package"))
-  //     // execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
-  //     console.log(chalk.bgCyan("Zipping distribution file"))
-  //     execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
-  //   } catch (err) {
-  //     console.log(`>>>>>>>>>>>>> ${err}`)
-  //   }
-  // }
+  async function prepare(target: string/*, nextVersion: string*/) {
+    try {
+      // const buildScript = path.resolve(__dirname, 'build.ts')
+      // console.log(chalk.bgCyan("Build package"))
+      // execa.sync('npx', ['ts-node', buildScript, '--nextVersion', nextVersion])
+      console.log(chalk.bgCyan("Zipping distribution file"))
+      execa.sync('zip', ['-r', `${target}-dist.zip`, '.', '-i', 'dist'])
+    } catch (err) {
+      console.log(`>>>>>>>>>>>>> ${err}`)
+    }
+  }
 
   async function release() {
     try {
@@ -108,28 +103,31 @@
     }
   }
 
-  // async function getNextVersion(): Promise<string> {
-  //   try {
-  //     const { nextRelease } = await semanticRelease({
-  //       branches: releaserc.branches,
-  //       repositoryUrl: pkg.repository.url,
-  //       dryRun: true,
-  //       ci: false,
-  //       plugins: [
-  //         '@semantic-release/commit-analyzer',
-  //         [
-  //           "@semantic-release/exec",
-  //           {
-  //             prepareCmd: "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
-  //           }
-  //         ]
-  //       ]
-  //     })
-  //     if (nextRelease) return nextRelease.version
-  //     else console.log('No release will bepublished')
-  //   } catch (err) {
-  //     console.error('Failed to retrieve next version with %O', err)
-  //   }
-  //   return pkg.version
-  // }
+  async function getNextVersion(): Promise<string> {
+    try {
+      const { nextRelease } = await semanticRelease({
+        branches: releaserc.branches,
+        repositoryUrl: pkg.repository.url,
+        dryRun: true,
+        ci: false,
+        plugins: [
+          '@semantic-release/commit-analyzer',
+          [
+            "@semantic-release/exec",
+            {
+              prepareCmd: "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
+            }
+          ]
+        ]
+      }, {
+        cwd: '../../',
+        env: { ...process.env }
+      })
+      if (nextRelease) return nextRelease.version
+      else console.log('No release will bepublished')
+    } catch (err) {
+      console.error('Failed to retrieve next version with %O', err)
+    }
+    return pkg.version
+  }
 })()

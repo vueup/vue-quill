@@ -30,17 +30,17 @@ footer: MIT Licensed | Copyright © 2020-present Luthfi Masruri & VueQuill Contr
 </div>
 
 <div class="frontpage sponsors">
-  <h2>Sponsors</h2>
+  <!-- <h2>Sponsors</h2>
   <a v-for="{ href, src, name } of sponsors" :href="href" target="_blank" rel="noopener" aria-label="sponsor-img">
     <img :src="$withBase(src)" :alt="name">
   </a>
   <br>
-  <a href="https://paypal.me/bledex" target="_blank" rel="noopener">Buy me a cup of coffee</a>
+  <a href="https://paypal.me/bledex" target="_blank" rel="noopener">Buy me a cup of coffee</a> -->
 </div>
 
 <script setup>
 import DemoEditor from '../components/demo/DemoEditor.vue'
-import sponsors from './.vitepress/theme/sponsors.json'
+// import sponsors from './.vitepress/theme/sponsors.json'
 </script>
 
 

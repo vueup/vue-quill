@@ -21,6 +21,12 @@
     plugins: [
       '@semantic-release/commit-analyzer',
       '@semantic-release/release-notes-generator',
+      [
+        "@semantic-release/exec",
+        {
+          prepareCmd: "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
+        }
+      ],
       '@semantic-release/npm',
       [
         '@semantic-release/github',

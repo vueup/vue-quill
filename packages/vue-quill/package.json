@@ -4,8 +4,8 @@
   "description": "Vue 3 rich text editor based on Quill.",
   "main": "index.js",
   "module": "dist/vue-quill.esm-bundler.js",
-  "unpkg": "dist/vue-quill.global.js",
-  "jsdelivr": "dist/vue-quill.global.js",
+  "unpkg": "dist/vue-quill.global.prod.js",
+  "jsdelivr": "dist/vue-quill.global.prod.js",
   "types": "dist/vue-quill.d.ts",
   "files": [
     "index.js",

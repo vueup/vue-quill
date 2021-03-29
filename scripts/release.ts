@@ -22,9 +22,9 @@
       '@semantic-release/commit-analyzer',
       '@semantic-release/release-notes-generator',
       [
-        "@semantic-release/exec",
+        '@semantic-release/exec',
         {
-          prepareCmd: "npx ts-node scripts/build.ts --nextVersion ${nextRelease.version}",
+          prepareCmd: 'npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}',
           publishCmd: `zip ${target}-dist.zip -r dist`,
         }
       ],

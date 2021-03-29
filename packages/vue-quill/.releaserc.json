@@ -18,7 +18,8 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
+        "prepareCmd": "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}",
+        "publishCmd": "npx ts-node ../../scripts/build.ts --nextVersion ${nextRelease.version}"
       }
     ],
     "@semantic-release/npm",

@@ -1,6 +1,7 @@
 import Theme from 'vitepress/theme'
+import GoogleAnalytics from '../../../components/GoogleAnalytics.vue'
 import { defineAsyncComponent, h } from 'vue'
-import sponsors from './sponsors.json'
+// import sponsors from './sponsors.json'
 
 import '@tailwindcss/custom-forms/dist/custom-forms.min.css'
 import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles
@@ -27,6 +28,7 @@ export default {
     // custom router. `siteData`` is a `ref`` of current site-level metadata.
     app.component('QuillEditor', QuillEditor)
   },
+  GoogleAnalytics,
   // NotFound: () => 'custom 404', // <- this is a Vue 3 functional component
   ...Theme,
   Layout() {

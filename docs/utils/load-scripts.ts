@@ -58,12 +58,16 @@ onReady(() => {
     'https://www.googletagmanager.com/gtag/js?id=G-NKRWLJHDXL',
     true
   ).then(() => {
+    // @ts-ignore
     window.dataLayer = window.dataLayer || []
     function gtag() {
+      // @ts-ignore
       dataLayer.push(arguments)
     }
+    // @ts-ignore
     gtag('js', new Date())
 
+    // @ts-ignore
     gtag('config', 'G-NKRWLJHDXL')
   })
 })

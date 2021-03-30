@@ -76,14 +76,14 @@ async function runParallel(
   source: string[],
   iteratorFn: (target: string) => Promise<void>
 ) {
-  const ret = []
-  const executing: any[] = []
+  const ret: Promise<void>[] = []
+  const executing: Promise<void>[] = []
   for (const item of source) {
     const p = Promise.resolve().then(() => iteratorFn(item))
     ret.push(p)
 
     if (maxConcurrency <= source.length) {
-      const e: any = p.then(() => executing.splice(executing.indexOf(e), 1))
+      const e = p.then(() => executing.splice(executing.indexOf(e), 1))
       executing.push(e)
       if (executing.length >= maxConcurrency) {
         await Promise.race(executing)

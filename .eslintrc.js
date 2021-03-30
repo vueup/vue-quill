@@ -14,7 +14,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['vue', '@typescript-eslint'],
-  ignorePatterns: ['temp', '**/shims-vue.d.ts'],
+  ignorePatterns: ['docs', 'temp', '**/shims-vue.d.ts'],
   rules: {},
   overrides: [
     {

@@ -1,23 +1,7 @@
 import Theme from 'vitepress/theme'
 import { defineAsyncComponent, h } from 'vue'
-import { onReady, loadScript } from '../../../utils/load-scripts'
+import('../../../utils/load-scripts')
 // import sponsors from './sponsors.json'
-
-onReady(() => {
-  // Global site tag (gtag.js) - Google Analytics
-  loadScript(
-    'https://www.googletagmanager.com/gtag/js?id=G-NKRWLJHDXL',
-    true
-  ).then(() => {
-    window.dataLayer = window.dataLayer || []
-    function gtag() {
-      dataLayer.push(arguments)
-    }
-    gtag('js', new Date())
-
-    gtag('config', 'G-NKRWLJHDXL')
-  })
-})
 
 import '@tailwindcss/custom-forms/dist/custom-forms.min.css'
 import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles

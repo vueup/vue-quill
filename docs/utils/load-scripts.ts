@@ -52,4 +52,18 @@ function onReady(fn: () => void) {
   }
 }
 
-export { onReady, loadScript }
+onReady(() => {
+  // Global site tag (gtag.js) - Google Analytics
+  loadScript(
+    'https://www.googletagmanager.com/gtag/js?id=G-NKRWLJHDXL',
+    true
+  ).then(() => {
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
+
+    gtag('config', 'G-NKRWLJHDXL')
+  })
+})

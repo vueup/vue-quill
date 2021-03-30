@@ -1,7 +1,23 @@
 import Theme from 'vitepress/theme'
-import GoogleAnalytics from '../../../components/GoogleAnalytics.vue'
 import { defineAsyncComponent, h } from 'vue'
+import { onReady, loadScript } from '../../../utils/load-scripts'
 // import sponsors from './sponsors.json'
+
+onReady(() => {
+  // Global site tag (gtag.js) - Google Analytics
+  loadScript(
+    'https://www.googletagmanager.com/gtag/js?id=G-NKRWLJHDXL',
+    true
+  ).then(() => {
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
+
+    gtag('config', 'G-NKRWLJHDXL')
+  })
+})
 
 import '@tailwindcss/custom-forms/dist/custom-forms.min.css'
 import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles
@@ -28,35 +44,38 @@ export default {
     // custom router. `siteData`` is a `ref`` of current site-level metadata.
     app.component('QuillEditor', QuillEditor)
   },
-  GoogleAnalytics,
   // NotFound: () => 'custom 404', // <- this is a Vue 3 functional component
   ...Theme,
   Layout() {
-    return h(Theme.Layout, null, {
-      // 'sidebar-bottom': () =>
-      //   h('div', { class: 'sponsors' }, [
-      //     h(
-      //       'a',
-      //       {
-      //         href: 'https://github.com/sponsors/yyx990803',
-      //         target: '_blank',
-      //         rel: 'noopener'
-      //       },
-      //       [h('span', 'Sponsors')]
-      //     ),
-      //     ...sponsors.map(({ href, src, name }) =>
+    return h(
+      Theme.Layout,
+      null
+      // {
+      //   'sidebar-bottom': () =>
+      //     h('div', { class: 'sponsors' }, [
       //       h(
       //         'a',
       //         {
-      //           href,
+      //           href: 'https://github.com/sponsors/yyx990803',
       //           target: '_blank',
-      //           rel: 'noopener',
-      //           'aria-label': 'sponsor-img'
+      //           rel: 'noopener'
       //         },
-      //         [h('img', { src: `/vue-quill/${src}`, alt: name })]
+      //         [h('span', 'Sponsors')]
+      //       ),
+      //       ...sponsors.map(({ href, src, name }) =>
+      //         h(
+      //           'a',
+      //           {
+      //             href,
+      //             target: '_blank',
+      //             rel: 'noopener',
+      //             'aria-label': 'sponsor-img'
+      //           },
+      //           [h('img', { src: `/vue-quill/${src}`, alt: name })]
+      //         )
       //       )
-      //     )
-      //   ])
-    })
+      //     ])
+      // }
+    )
   },
 }

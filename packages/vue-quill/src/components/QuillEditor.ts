@@ -242,15 +242,10 @@ export const QuillEditor = defineComponent({
     watch(
       () => props.content,
       (newContent) => {
-        if (quill) {
-          if (newContent && newContent !== props.content) {
-            if (typeof newContent === 'string')
-              quill.setText(props.content as string)
-            else quill.setContents(newContent as Delta)
-          } else if (!newContent) {
-            quill.setText('')
-          }
-        }
+        if (!quill || !newContent || newContent === props.content) return
+        if (typeof newContent === 'string')
+          quill.setText(props.content as string)
+        else quill.setContents(newContent as Delta)
       }
     )
 

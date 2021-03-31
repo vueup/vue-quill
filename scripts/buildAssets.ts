@@ -23,7 +23,7 @@ npm run assets:build -- vue-quill
   const targets: string[] = args._
   const devOnly: boolean = args.devOnly || args.d
   const prodOnly: boolean = !devOnly && (args.prodOnly || args.p)
-  // const sourceMap = args.sourcemap || args.s
+  const sourceMap = args.sourcemap || args.s
   const isRelease: boolean = args.release
   const buildAllMatching: string[] = args.all || args.a
   // const nextVersion: string =
@@ -73,14 +73,29 @@ npm run assets:build -- vue-quill
 
       if (inputExt === '.styl' || inputExt === '.css') {
         if (!prodOnly)
-          await execa('npx', ['stylus', input, '-o', output], {
-            stdio: 'inherit',
-          })
+          await execa(
+            'npx',
+            ['stylus', input, '-o', output, sourceMap ? '--sourcemap' : ''],
+            {
+              stdio: 'inherit',
+            }
+          )
         // create production build
         if (!devOnly)
-          await execa('npx', ['stylus', input, '-o', outputProd, '-c'], {
-            stdio: 'inherit',
-          })
+          await execa(
+            'npx',
+            [
+              'stylus',
+              input,
+              '-o',
+              outputProd,
+              '-c',
+              sourceMap ? '--sourcemap' : '',
+            ],
+            {
+              stdio: 'inherit',
+            }
+          )
       } else {
         console.log(chalk.redBright(`File extention not supported: ${input}`))
       }

@@ -14,6 +14,7 @@
       'master',
       'next',
       'next-major',
+      { name: 'rc', prerelease: true },
       { name: 'beta', prerelease: true },
       { name: 'alpha', prerelease: true },
     ],

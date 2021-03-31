@@ -15,13 +15,15 @@ npm run dev -- vue-quill --formats cjs
 __DEV__=false npm run dev
 ```
 */
-(async () => {
+;(async () => {
   const execa = require('execa')
   const { fuzzyMatchTarget } = require('./utils')
 
   const args = require('minimist')(process.argv.slice(2))
   console.log(args)
-  const target: string = args._.length ? fuzzyMatchTarget(args._)[0] : 'vue-quill'
+  const target: string = args._.length
+    ? fuzzyMatchTarget(args._)[0]
+    : 'vue-quill'
   const formats: string[] = args.formats || args.f
   const sourceMap: boolean = args.sourcemap || args.s
   const commit = execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)

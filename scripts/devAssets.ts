@@ -7,7 +7,7 @@ To specify the package to build, simply pass its name
 npm run assets:build -- vue-quill
 ```
 */
-(async () => {
+;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
@@ -15,12 +15,12 @@ npm run assets:build -- vue-quill
   const {
     targetAssets: allTargets,
     fuzzyMatchTarget,
-    runParallel
+    runParallel,
   } = require('./utils')
 
   const args = require('minimist')(process.argv.slice(2))
   const targets: string[] = args._
-  // const sourceMap = args.sourcemap || args.s
+  const sourceMap = args.sourcemap || args.s
   const isRelease: boolean = args.release
   const buildAllMatching: string[] = args.all || args.a
 
@@ -55,7 +55,13 @@ npm run assets:build -- vue-quill
         const inputExt = path.extname(input)
 
         if (inputExt === '.styl' || inputExt === '.css') {
-          execa('stylus', ['-w', input, '-o', output])
+          execa('stylus', [
+            '-w',
+            input,
+            '-o',
+            output,
+            sourceMap ? '--sourcemap' : '',
+          ])
         } else {
           console.log(chalk.redBright(`File extention not supported: ${input}`))
         }

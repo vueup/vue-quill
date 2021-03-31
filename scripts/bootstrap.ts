@@ -1,5 +1,5 @@
 // create package.json, README, etc. for packages that don't have them yet
-(() => {
+;(() => {
   const fs = require('fs')
   const path = require('path')
 

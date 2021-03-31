@@ -44,4 +44,17 @@ See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more det
 </template>
 ~~~
 
+You can also put your toolbar outside `QuillEditor` component, just make sure to set `toolbar` prop with your custom toolbar `id`:
+
+~~~ vue
+<template>
+  <QuillEditor toolbar="#my-toolbar"></QuillEditor>
+  <div id="my-toolbar">
+    <!-- Add buttons as you would before -->
+    <button class="ql-bold"></button>
+    <button class="ql-italic"></button>
+  </div>
+</template>
+~~~
+
 See [Quill toolbar docs](https://quilljs.com/docs/modules/toolbar/) for more details.

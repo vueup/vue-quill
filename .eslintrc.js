@@ -7,7 +7,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
   ],
   parserOptions: {
     ecmaVersion: 12,
@@ -39,6 +38,7 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-empty-function': 'off',
+        '@typescript-eslint/no-extra-semi': 'off',
       },
     },
   ],

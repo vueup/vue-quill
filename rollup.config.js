@@ -7,14 +7,13 @@ if (!process.env.TARGET) {
   throw new Error('TARGET package must be specified via --environment flag.')
 }
 
-const masterVersion =
-  process.env.NEXT_VERSION || require('./package.json').version
 const packagesDir = path.resolve(__dirname, 'packages')
 const pkgDir = path.resolve(packagesDir, process.env.TARGET)
 const name = path.basename(pkgDir)
 const resolve = (file) => path.resolve(pkgDir, file)
 const pkg = require(resolve(`package.json`))
 const packageOptions = pkg.buildOptions || {}
+const masterVersion = process.env.NEXT_VERSION || pkg.version
 
 // ensure TS checks only once for each build
 let hasTSChecked = false
@@ -117,15 +116,15 @@ function createConfig(format, output, plugins = []) {
   const nodePlugins =
     format !== 'cjs'
       ? [
-        require('@rollup/plugin-node-resolve').nodeResolve({
-          preferBuiltins: true,
-        }),
-        require('@rollup/plugin-commonjs')({
-          sourceMap: false,
-        }),
-        require('rollup-plugin-node-builtins')(),
-        require('rollup-plugin-node-globals')(),
-      ]
+          require('@rollup/plugin-node-resolve').nodeResolve({
+            preferBuiltins: true,
+          }),
+          require('@rollup/plugin-commonjs')({
+            sourceMap: false,
+          }),
+          require('rollup-plugin-node-builtins')(),
+          require('rollup-plugin-node-globals')(),
+        ]
       : []
 
   const shouldEmitDeclarations = process.env.TYPES != null && !hasTSChecked
@@ -197,9 +196,9 @@ function createReplacePlugin(
     __VERSION__: `"${masterVersion}"`,
     __DEV__: isBundlerESMBuild
       ? // preserve to be handled by bundlers
-      `(process.env.NODE_ENV !== 'production')`
+        `(process.env.NODE_ENV !== 'production')`
       : // hard coded dev/prod builds
-      !isProduction,
+        !isProduction,
     // this is only used during Vue's internal tests
     __TEST__: false,
     // If the build is expected to run directly in the browser (global / esm builds)
@@ -218,11 +217,11 @@ function createReplacePlugin(
       : false,
     ...(isProduction && isBrowserBuild
       ? {
-        'context.onError(': `/*#__PURE__*/ context.onError(`,
-        'emitError(': `/*#__PURE__*/ emitError(`,
-        'createCompilerError(': `/*#__PURE__*/ createCompilerError(`,
-        'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`,
-      }
+          'context.onError(': `/*#__PURE__*/ context.onError(`,
+          'emitError(': `/*#__PURE__*/ emitError(`,
+          'createCompilerError(': `/*#__PURE__*/ createCompilerError(`,
+          'createDOMCompilerError(': `/*#__PURE__*/ createDOMCompilerError(`,
+        }
       : {}),
   }
   // allow inline overrides like

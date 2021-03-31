@@ -176,26 +176,34 @@ export const QuillEditor = defineComponent({
     })
 
     const handleEditorChange: EditorChangeHandler = (
-      name: 'text-change' | 'selection-change',
       ...args:
-        | [delta: Delta, oldContents: Delta, source: Sources]
-        | [range: RangeStatic, oldRange: RangeStatic, source: Sources]
+        | [
+            name: 'text-change',
+            delta: Delta,
+            oldContents: Delta,
+            source: Sources
+          ]
+        | [
+            name: 'selection-change',
+            range: RangeStatic,
+            oldRange: RangeStatic,
+            source: Sources
+          ]
     ) => {
-      if (name === 'text-change') {
+      if (args[0] === 'text-change')
         ctx.emit('editorChange', {
-          name,
-          delta: args[0],
-          oldContents: args[1],
-          source: args[2],
+          name: args[0],
+          delta: args[1],
+          oldContents: args[2],
+          source: args[3],
         })
-      } else if (name === 'selection-change') {
+      if (args[0] === 'selection-change')
         ctx.emit('editorChange', {
-          name,
-          range: args[0],
-          oldRange: args[1],
-          source: args[2],
+          name: args[0],
+          range: args[1],
+          oldRange: args[2],
+          source: args[3],
         })
-      }
     }
 
     const getEditor = (): Element => {

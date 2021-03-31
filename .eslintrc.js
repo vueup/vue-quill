@@ -15,7 +15,10 @@ module.exports = {
   },
   plugins: ['vue', '@typescript-eslint'],
   ignorePatterns: ['docs', 'temp', '**/shims-vue.d.ts'],
-  rules: {},
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+  },
   overrides: [
     {
       files: ['**/__tests__/**', 'test-dts/**'],

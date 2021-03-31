@@ -6,7 +6,7 @@ const { compress } = require('brotli')
 const packagesDir = path.resolve(__dirname, '../packages')
 
 const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
-  const pkgDir = path.resolve(__dirname, '..', 'packages', f)
+  const pkgDir = path.resolve(__dirname, '../packages', f)
   if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
@@ -24,7 +24,7 @@ const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
 const targetAssets: string[] = fs
   .readdirSync(packagesDir)
   .filter((f: string) => {
-    const pkgDir = path.resolve(__dirname, '..', 'packages', f)
+    const pkgDir = path.resolve(__dirname, '../packages', f)
     if (!fs.statSync(pkgDir).isDirectory()) {
       return false
     }

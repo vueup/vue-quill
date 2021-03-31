@@ -7,7 +7,7 @@ To specify the package assets to build, simply pass its name
 npm run assets:build -- vue-quill
 ```
 */
-(async () => {
+;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
@@ -28,7 +28,7 @@ npm run assets:build -- vue-quill
   const buildAllMatching: string[] = args.all || args.a
   // const nextVersion: string =
   //   args.nextVersion ||
-  //   require(path.resolve(__dirname, '..', 'package.json')).version
+  //   require(path.resolve(__dirname, '../package.json')).version
 
   await run()
 
@@ -72,9 +72,15 @@ npm run assets:build -- vue-quill
       )
 
       if (inputExt === '.styl' || inputExt === '.css') {
-        if (!prodOnly) await execa('npx', ['stylus', input, '-o', output], { stdio: 'inherit' })
+        if (!prodOnly)
+          await execa('npx', ['stylus', input, '-o', output], {
+            stdio: 'inherit',
+          })
         // create production build
-        if (!devOnly) await execa('npx', ['stylus', input, '-o', outputProd, '-c'], { stdio: 'inherit' })
+        if (!devOnly)
+          await execa('npx', ['stylus', input, '-o', outputProd, '-c'], {
+            stdio: 'inherit',
+          })
       } else {
         console.log(chalk.redBright(`File extention not supported: ${input}`))
       }

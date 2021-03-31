@@ -38,7 +38,7 @@ npm run build -- vue-quill --formats cjs
   const buildAllMatching: string[] = args.all || args.a
   const nextVersion: string =
     args.nextVersion ||
-    require(path.resolve(__dirname, '..', 'package.json')).version
+    require(path.resolve(__dirname, '../package.json')).version
   const commit =
     args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 

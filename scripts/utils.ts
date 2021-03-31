@@ -83,7 +83,9 @@ async function runParallel(
     ret.push(p)
 
     if (maxConcurrency <= source.length) {
-      const e = p.then(() => executing.splice(executing.indexOf(e), 1))
+      const e: Promise<any> = p.then(() =>
+        executing.splice(executing.indexOf(e), 1)
+      )
       executing.push(e)
       if (executing.length >= maxConcurrency) {
         await Promise.race(executing)

@@ -1,0 +1,1 @@
+import{o as a,a as n,i as s}from"./app.fd208343.js";const t='{"title":"#toolbar","description":"","frontmatter":{},"relativePath":"api/slots.md","lastUpdated":1617287261908}',p={},o=s('',3);p.render=function(s,t,p,l,c,e){return a(),n("div",null,[o])};export default p;export{t as __pageData};

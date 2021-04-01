@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">VueQuill</h1>
 <h3 align="center">
-  Vue 3 + Quill Component for your powerful text editor.
+  Rich Text Editor Framework for Vue 3.
 </h3>
 <p align="center">
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version">
@@ -24,7 +24,7 @@
  
 ## Overview
 
-**VueQuill** is a **Vue Component** for building rich text editors, this package is a thin wrapper around Quill, to make it easier to use in a Vue 3 application.
+**VueQuill** is a **Framework** for building rich text editors, powered by Vue 3 and Quill.
 
 - 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
 - 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.

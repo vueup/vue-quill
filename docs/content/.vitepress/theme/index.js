@@ -1,6 +1,6 @@
 import Theme from 'vitepress/theme'
 import { defineAsyncComponent, h } from 'vue'
-import('../../../utils/load-scripts')
+// import('../../../utils/load-scripts')
 // import sponsors from './sponsors.json'
 
 import '@tailwindcss/custom-forms/dist/custom-forms.min.css'

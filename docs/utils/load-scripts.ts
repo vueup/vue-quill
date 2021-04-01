@@ -10,7 +10,7 @@ const loadScript: any = (src: string, isAsync: boolean) => {
       // Load the next queue item
       loadScript.loading = true
       const item = loadScript.scripts[++loadScript.index]
-      const head = document.getElementsByTagName('head')[0]
+      const head = document.head
       const script = document.createElement('script')
       script.type = 'text/javascript'
       script.src = item.src

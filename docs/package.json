@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
-    "@vueup/vue-quill": "^1.0.0-alpha.35"
+    "@vueup/vue-quill": "^1.0.0-alpha.37"
   }
 }

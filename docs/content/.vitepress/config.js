@@ -7,8 +7,13 @@ module.exports = {
   base: '/vue-quill/',
   lang: 'en-US',
   title: 'VueQuill',
-  description: 'Vue 3 + Quill Component for your powerful text editor. ',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' }]],
+  description: 'Rich Text Editor Framework for Vue 3.',
+  head: [
+    [
+      'link',
+      { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' },
+    ],
+  ],
   themeConfig: {
     repo: 'vueup/vue-quill',
     logo: '/logo.svg',
@@ -67,63 +72,63 @@ module.exports = {
     sidebar: {
       '/config/': 'auto',
       '/plugins': 'auto',
-      // catch-all fallback 
+      // catch-all fallback
       '/': [
         {
           text: 'Guide',
           children: [
             {
               text: 'Introduction',
-              link: '/guide/'
+              link: '/guide/',
             },
             {
               text: 'Installation',
-              link: '/guide/installation'
+              link: '/guide/installation',
             },
             {
               text: 'Usage',
-              link: '/guide/usage'
+              link: '/guide/usage',
             },
             {
               text: 'Themes',
-              link: '/guide/themes'
+              link: '/guide/themes',
             },
             {
               text: 'Toolbar',
-              link: '/guide/toolbar'
+              link: '/guide/toolbar',
             },
             {
               text: 'Options',
-              link: '/guide/options'
+              link: '/guide/options',
             },
-          ]
+          ],
         },
         {
           text: 'APIs',
           children: [
             {
               text: 'Props',
-              link: '/api/'
+              link: '/api/',
             },
             {
               text: 'Events',
-              link: '/api/events'
+              link: '/api/events',
             },
             {
               text: 'Methods',
-              link: '/api/methods'
+              link: '/api/methods',
             },
             {
               text: 'Slots',
-              link: '/api/slots'
+              link: '/api/slots',
             },
             {
               text: 'Export',
-              link: '/api/export'
+              link: '/api/export',
             },
-          ]
-        }
-      ]
-    }
-  }
+          ],
+        },
+      ],
+    },
+  },
 }

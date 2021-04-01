@@ -72,30 +72,17 @@ npm run assets:build -- vue-quill
       )
 
       if (inputExt === '.styl' || inputExt === '.css') {
-        if (!prodOnly)
-          await execa(
-            'npx',
-            ['stylus', input, '-o', output, sourceMap ? '--sourcemap' : ''],
-            {
-              stdio: 'inherit',
-            }
-          )
+        if (!prodOnly) {
+          const args: string[] = ['stylus', input, '-o', output]
+          if (sourceMap) args.push('--sourcemap')
+          await execa('npx', args, { stdio: 'inherit' })
+        }
         // create production build
-        if (!devOnly)
-          await execa(
-            'npx',
-            [
-              'stylus',
-              input,
-              '-o',
-              outputProd,
-              '-c',
-              sourceMap ? '--sourcemap' : '',
-            ],
-            {
-              stdio: 'inherit',
-            }
-          )
+        if (!devOnly) {
+          const args: string[] = ['stylus', input, '-o', outputProd, '-c']
+          if (sourceMap) args.push('--sourcemap')
+          await execa('npx', args, { stdio: 'inherit' })
+        }
       } else {
         console.log(chalk.redBright(`File extention not supported: ${input}`))
       }

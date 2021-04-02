@@ -5,10 +5,10 @@ const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
 
 const rootDir = path.resolve(__dirname, '..')
-const packagesDir = path.resolve(__dirname, '../packages')
+const packagesDir = path.resolve(rootDir, 'packages')
 
-const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
-  const pkgDir = path.resolve(packagesDir, f)
+const targets: string[] = fs.readdirSync(packagesDir).filter((targetDir: string) => {
+  const pkgDir = path.resolve(packagesDir, targetDir)
   if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
@@ -23,16 +23,16 @@ const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
   return true
 })
 
-const targetAssets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
-  const pkgDir = path.resolve(packagesDir, f)
+const targetAssets: string[] = fs.readdirSync(packagesDir).filter((targetDir: string) => {
+  const pkgDir = path.resolve(packagesDir, targetDir)
   if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
-  const pkgPath = path.resolve(pkgDir, 'assets.config.json')
-  if (!fs.existsSync(pkgPath)) {
+  const assetsPath = path.resolve(pkgDir, 'assets.config.json')
+  if (!fs.existsSync(assetsPath)) {
     return false
   }
-  const assets = require(pkgPath)
+  const assets = require(assetsPath)
   if (assets.private && !assets.css) {
     return false
   }

@@ -14,11 +14,10 @@ function header(scopes: string | string[], msg: string) {
   const spacedHeader = getSpacedHeader(`✦ ${msg} [${formatScopes(scopes)}] ✦`)
   const printWidth =
     spacedHeader.length > PRINT_HEADER_WIDTH ? spacedHeader.length : PRINT_HEADER_WIDTH
-  const header = `
-${'┏' + '━'.repeat(printWidth) + '┓'}
-${'┃' + spacedHeader + '┃'}
-${'┗' + '━'.repeat(printWidth) + '┛'}
-  `.trim()
+  const header =
+    `┏${'━'.repeat(printWidth)}┓\n` +
+    `┃${spacedHeader}┃\n` +
+    `┗${'━'.repeat(printWidth)}┛`
   console.log()
   console.log(chalk.bold(chalk.cyan(header)))
   console.log()

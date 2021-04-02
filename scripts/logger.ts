@@ -10,22 +10,22 @@ const PRINT_LABEL_WIDTH = 10
 // info(['vue-quill', 'file-size'], `File assets input doesn't exist right now`)
 
 function header(scopes: string | string[], msg: string) {
-  const headerTitle = spacedHeader(`✦ ${msg} [${formatScopes(scopes)}] ✦`)
+  const spacedHeader = getSpacedHeader(`✦ ${msg} [${formatScopes(scopes)}] ✦`)
   const printWidth =
-    headerTitle.length > PRINT_HEADER_WIDTH ? headerTitle.length : PRINT_HEADER_WIDTH
-  const headerMsg = `
+    spacedHeader.length > PRINT_HEADER_WIDTH ? spacedHeader.length : PRINT_HEADER_WIDTH
+  const header = `
 ${'┏' + '━'.repeat(printWidth) + '┓'}
-${'┃' + headerTitle + '┃'}
+${'┃' + spacedHeader + '┃'}
 ${'┗' + '━'.repeat(printWidth) + '┛'}
   `.trim()
   console.log()
-  console.log(chalk.bold(chalk.cyan(headerMsg)))
+  console.log(chalk.bold(chalk.cyan(header)))
   console.log()
 }
 
 function info(scopes: string | string[], msg: string) {
   console.log(
-    `${chalk.bold(chalk.bgBlue(spacedLabel(' INFO')))}` +
+    `${chalk.bold(chalk.bgBlue(getSpacedLabel(' INFO')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
       `${chalk.bgBlue(' ')} ${chalk.blue(msg)}`
   )
@@ -34,7 +34,7 @@ function info(scopes: string | string[], msg: string) {
 
 function success(scopes: string | string[], msg: string) {
   console.log(
-    `${chalk.bold(chalk.bgGreen(spacedLabel(' SUCCESS')))}` +
+    `${chalk.bold(chalk.bgGreen(getSpacedLabel(' SUCCESS')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
       `${chalk.bgGreen(' ')} ${chalk.green(msg)}`
   )
@@ -43,7 +43,7 @@ function success(scopes: string | string[], msg: string) {
 
 function error(scopes: string | string[], msg: string) {
   console.error(
-    `${chalk.bold(chalk.bgRed(spacedLabel(' ERROR')))}` +
+    `${chalk.bold(chalk.bgRed(getSpacedLabel(' ERROR')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
       `${chalk.bgRed(' ')} ${chalk.red(msg)}`
   )
@@ -52,7 +52,7 @@ function error(scopes: string | string[], msg: string) {
 
 function warning(scopes: string | string[], msg: string) {
   console.log(
-    `${chalk.bold(chalk.bgYellow(spacedLabel(' WARNING')))}` +
+    `${chalk.bold(chalk.bgYellow(getSpacedLabel(' WARNING')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
       `${chalk.bgYellow(' ')} ${chalk.yellow(msg)}`
   )
@@ -66,12 +66,12 @@ function formatScopes(scopes: string | string[]) {
   return scopes
 }
 
-function spacedLabel(msg: string) {
+function getSpacedLabel(msg: string) {
   const countSpace = PRINT_LABEL_WIDTH - msg.length
   return msg + ' '.repeat(countSpace)
 }
 
-function spacedHeader(msg: string) {
+function getSpacedHeader(msg: string) {
   const printWidth =
     msg.length + 4 > PRINT_HEADER_WIDTH ? msg.length + 4 : PRINT_HEADER_WIDTH
   const countSpace: number = (printWidth - msg.length) / 2

@@ -3,6 +3,7 @@
   const fs = require('fs')
   const path = require('path')
   const { packagesDir, getPackageJson } = require('./utils')
+
   const args = require('minimist')(process.argv.slice(2))
   const version: string = getPackageJson().version
   const files: string[] = fs.readdirSync(packagesDir)

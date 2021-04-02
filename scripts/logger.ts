@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const PRINT_HEADER_WIDTH = 70
-const PRINT_LABEL_WIDTH = 10
+const PRINT_HEADER_WIDTH = 80
+const PRINT_LABEL_WIDTH = 9
 
 // // Test logger
 // header(['vue-quill', 'file-size', 'file-size', 'file-size'], 'THIS IS MY MESSA')
@@ -8,6 +8,7 @@ const PRINT_LABEL_WIDTH = 10
 // error(['vue-quill', 'file-size'], `File assets input doesn't exist right now`)
 // warning(['vue-quill', 'file-size'], `File assets input doesn't exist right now`)
 // info(['vue-quill', 'file-size'], `File assets input doesn't exist right now`)
+// debug(['vue-quill', 'file-size'], `File assets input doesn't exist right now`)
 
 function header(scopes: string | string[], msg: string) {
   const spacedHeader = getSpacedHeader(`✦ ${msg} [${formatScopes(scopes)}] ✦`)
@@ -59,6 +60,15 @@ function warning(scopes: string | string[], msg: string) {
   console.log()
 }
 
+function debug(scopes: string | string[], msg: string) {
+  console.log(
+    `${chalk.bold(chalk.bgMagenta(getSpacedLabel(' DEBUG')))}` +
+      `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
+      `${chalk.bgMagenta(' ')} ${chalk.magenta(msg)}`
+  )
+  console.log()
+}
+
 function formatScopes(scopes: string | string[]) {
   if (Array.isArray(scopes)) {
     return scopes.join(', ')
@@ -85,4 +95,5 @@ module.exports = {
   success,
   error,
   warning,
+  debug,
 }

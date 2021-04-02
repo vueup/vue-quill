@@ -1,6 +1,6 @@
 const fs = require('fs-extra')
-const chalk = require('chalk')
 const path = require('path')
+const logger = require('./logger')
 const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
 
@@ -55,6 +55,7 @@ function fuzzyMatchTarget(
   includeAllMatching?: string[],
   targets?: string[]
 ) {
+  const chalk = require('chalk')
   const matched: string[] = []
   partialTargets.forEach((partialTarget) => {
     if (!targets) return
@@ -71,13 +72,7 @@ function fuzzyMatchTarget(
     return matched
   } else {
     console.log()
-    console.error(
-      `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
-        `Target ${chalk.underline(partialTargets)} not found!`
-      )}`
-    )
-    console.log()
-
+    logger.error(partialTargets, `Target ${chalk.underline(partialTargets)} not found!`)
     process.exit(1)
   }
 }
@@ -113,7 +108,7 @@ function checkAssetsSize(target: string, ext = '.css') {
   const pkgDir = getPackageDir(target)
   const distDir = path.resolve(pkgDir, 'dist')
   fs.readdir(distDir, (err: string, files: string[]) => {
-    if (err) console.log(chalk.redBright('Unable to scan directory: ' + err))
+    if (err) logger.error(target, 'Unable to scan directory: ' + err)
     files.forEach((file: string) => {
       if (file.includes(`prod${ext}`)) checkFileSize(path.resolve(distDir, file))
     })
@@ -125,22 +120,19 @@ function checkFileSize(filePath: string) {
     return
   }
   const file = fs.readFileSync(filePath)
+  const filename = path.basename(filePath)
   const minSize = (file.length / 1024).toFixed(2) + 'kb'
   const gzipped = gzipSync(file)
   const gzippedSize = (gzipped.length / 1024).toFixed(2) + 'kb'
   const compressed = compress(file)
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb'
-  console.log(
-    `${chalk.gray(
-      chalk.bold(path.basename(filePath))
-    )} min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`
-  )
+  logger.info(filename, `min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`)
 }
 
 async function generateTypes(target: string) {
   const pkgDir = getPackageDir(target)
   console.log()
-  console.log(chalk.bold(chalk.yellow(`Rolling up type definitions for ${target}...`)))
+  logger.header(target, `Rolling up type definitions for`)
 
   // build types
   const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
@@ -167,13 +159,14 @@ async function generateTypes(target: string) {
         )
         await fs.writeFile(dtsPath, existing + '\n' + toAdd.join('\n'))
       })
-      console.log(chalk.bold(chalk.green(`API Extractor completed successfully.`)))
+      logger.success(target, `API Extractor completed successfully.`)
     } catch (err) {
       console.log()
-      console.log(chalk.yellow(`There's no additional .d.ts to roll-up with ${err}`))
+      logger.warning(target, `There's no additional .d.ts to roll-up with ${err}`)
     }
   } else {
-    console.error(
+    logger.error(
+      target,
       `API Extractor completed with ${extractorResult.errorCount} errors` +
         ` and ${extractorResult.warningCount} warnings`
     )

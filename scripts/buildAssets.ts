@@ -10,8 +10,8 @@ npm run assets:build -- vue-quill
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
-  const chalk = require('chalk')
   const execa = require('execa')
+  const logger = require('./logger')
   const {
     targetAssets: allTargets,
     getPackageDir,
@@ -54,17 +54,24 @@ npm run assets:build -- vue-quill
     // only build published packages for release
     if (isRelease && assets.private) return
     if (!assets.css.length) return
-    console.log(chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<\n`))
+
+    logger.header(target, 'BUILD ASSETS')
 
     for (const css of assets.css) {
-      const input = path.resolve(pkgDir, css.input)
-      const inputExt = path.extname(input)
-      const output = path.resolve(pkgDir, css.output)
-      const outputProd = path.resolve(
+      const input: string = path.resolve(pkgDir, css.input)
+      const inputExt: string = path.extname(input)
+      const output: string = path.resolve(pkgDir, css.output)
+      const outputProd: string = path.resolve(
         pkgDir,
         path.dirname(output),
         path.parse(output).name + '.prod.css'
       )
+
+      if (!fs.existsSync(input)) {
+        console.log()
+        logger.error(target, `Asset file input doesn't exist ${input}`)
+        process.exit(1)
+      }
 
       if (inputExt === '.styl' || inputExt === '.css') {
         if (!prodOnly) {
@@ -79,7 +86,7 @@ npm run assets:build -- vue-quill
           await execa('npx', args, { stdio: 'inherit' })
         }
       } else {
-        console.log(chalk.redBright(`File extention not supported: ${input}`))
+        logger.error(target, `File extention not supported: ${input}`)
       }
     }
   }

@@ -1,5 +1,6 @@
 ;(async () => {
   require('dotenv').config()
+  const logger = require('./logger')
   const semanticRelease = require('semantic-release')
   const { rootDir, getPackageDir, getPackageJson } = require('./utils')
 
@@ -7,6 +8,7 @@
   const preview = args.preview
   const target = args._[0]
 
+  // semantic-release configurations
   const releaserc = {
     branches: [
       'master',
@@ -44,23 +46,30 @@
   }
 
   if (!target) {
-    console.log('You must specify the target package e.g. npm run release -- vue-quill')
+    logger.warning(
+      'semantic-release',
+      'You must specify the target package e.g. npm run release -- vue-quill'
+    )
     return
   }
 
   if (!process.env.CI && !preview) {
-    console.log(
-      `You can't release ${target} locally, use --preview to get a preview of the pending release`
+    logger.warning(
+      'semantic-release',
+      `You can't release [${target}] locally, use --preview to get a preview of the pending release`
     )
     return
   }
 
   const pkgDir = getPackageDir(target)
   const pkg = getPackageJson(target)
-  if (pkg.private) return
+  if (pkg.private) {
+    logger.warning('semantic-release', `You can't release private package [${target}]`)
+    return
+  }
 
   try {
-    console.log(`\n>>>>>>>>>>>>>>>>>>>> SEMANTIC RELEASE <<<<<<<<<<<<<<<<<<<<\n`)
+    logger.header(target, 'SEMANTIC RELEASE')
     const result = await semanticRelease(
       {
         branches: releaserc.branches,
@@ -76,24 +85,24 @@
     )
 
     if (result) {
-      console.log(`\n>>>>>>>>>>>>>>>>>>>> RELEASE RESULT <<<<<<<<<<<<<<<<<<<<\n`)
+      logger.header(target, 'RELEASE RESULT')
       const { lastRelease, commits, nextRelease, releases } = result
 
-      console.log(
+      logger.success(
+        target,
         `Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`
       )
-
       if (lastRelease.version) {
-        console.log(`The last release was "${lastRelease.version}".`)
+        logger.info(target, `The last release was "${lastRelease.version}".`)
       }
 
       for (const release of releases) {
         console.log(`The release was published with plugin "${release.pluginName}".`)
       }
     } else {
-      console.log('No release published.')
+      logger.warning(target, 'No release published.')
     }
   } catch (err) {
-    console.error('The automated release failed with %O', err)
+    logger.error(target, `The automated release failed with ${err}`)
   }
 })()

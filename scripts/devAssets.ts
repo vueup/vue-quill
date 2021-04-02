@@ -10,10 +10,9 @@ npm run assets:build -- vue-quill
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
-  const chalk = require('chalk')
   const execa = require('execa')
+  const logger = require('./logger')
   const {
-    rootDir,
     targetAssets: allTargets,
     getPackageDir,
     fuzzyMatchTarget,
@@ -45,7 +44,7 @@ npm run assets:build -- vue-quill
     const assets = require(path.resolve(pkgDir, 'assets.config.json'))
 
     if (assets.css) {
-      console.log(chalk.cyan(`Waiting for changes...`))
+      logger.info(target, `Waiting for changes...`)
       assets.css.forEach((css: any) => {
         const input = path.resolve(pkgDir, css.input)
         const output = path.resolve(pkgDir, css.output)
@@ -56,7 +55,7 @@ npm run assets:build -- vue-quill
           if (sourceMap) args.push('--sourcemap')
           execa('npx', args)
         } else {
-          console.log(chalk.redBright(`File extention not supported: ${input}`))
+          logger.error(target, `File extention not supported: ${input}`)
         }
       })
     }

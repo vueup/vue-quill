@@ -16,8 +16,8 @@ npm run build -- vue-quill --formats cjs
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
-  const chalk = require('chalk')
   const execa = require('execa')
+  const logger = require('./logger')
   const {
     targets: allTargets,
     getPackageDir,
@@ -39,18 +39,26 @@ npm run build -- vue-quill --formats cjs
   const buildAssets: boolean = args.assets || isRelease
   const buildAllMatching: string[] = args.all || args.a
   const nextVersion: string = args.nextVersion || getPackageJson().version
-  const commit = args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+  const commit =
+    args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
   if (isRelease) {
     // remove build cache for release builds to avoid outdated enum values
     await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
   }
   if (!targets.length) {
+    logger.header(allTargets, 'BUILD PACKAGES')
     await buildAll(allTargets)
     checkAllSizes(allTargets)
   } else {
-    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-    checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
+    const matchedTargets: string[] = fuzzyMatchTarget(
+      targets,
+      buildAllMatching,
+      allTargets
+    )
+    logger.header(matchedTargets, 'BUILD PACKAGES')
+    await buildAll(matchedTargets)
+    checkAllSizes(matchedTargets)
   }
 
   async function buildAll(targets: string[]) {
@@ -63,7 +71,10 @@ npm run build -- vue-quill --formats cjs
     const pkg = getPackageJson(target)
 
     // only build published packages for release
-    if (isRelease && pkg.private) return
+    if (isRelease && pkg.private) {
+      logger.warning(target, `Skip private package (${target}) in release build`)
+      return
+    }
 
     // if building a specific format, do not remove dist.
     if (!formats) await fs.remove(`${pkgDir}/dist`)
@@ -72,11 +83,12 @@ npm run build -- vue-quill --formats cjs
     try {
       assets = require(path.resolve(pkgDir, 'assets.config.json'))
     } catch {
-      console.log(chalk.yellow(`${target} didn't have assets.config.json`))
+      logger.warning(target, `${target} didn't have assets.config.json`)
     }
 
     const env =
-      (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production')
+      (pkg.buildOptions && pkg.buildOptions.env) ||
+      (devOnly ? 'development' : 'production')
     await execa(
       'npx',
       [
@@ -103,9 +115,13 @@ npm run build -- vue-quill --formats cjs
     if (hasTypes && pkg.types) await generateTypes(target)
     if (buildAssets && assets.css) {
       const buildAssetsTs = await path.resolve(__dirname, 'buildAssets.ts')
-      await execa('npx', ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''], {
-        stdio: 'inherit',
-      })
+      await execa(
+        'npx',
+        ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''],
+        {
+          stdio: 'inherit',
+        }
+      )
     }
   }
 

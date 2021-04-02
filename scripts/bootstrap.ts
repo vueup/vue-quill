@@ -2,10 +2,9 @@
 ;(() => {
   const fs = require('fs')
   const path = require('path')
-
+  const { packagesDir, getPackageJson } = require('./utils')
   const args = require('minimist')(process.argv.slice(2))
-  const version: string = require('../package.json').version
-  const packagesDir: string = path.resolve(__dirname, '../packages')
+  const version: string = getPackageJson().version
   const files: string[] = fs.readdirSync(packagesDir)
 
   files.forEach((shortName) => {
@@ -52,11 +51,7 @@
       fs.writeFileSync(readmePath, `# ${name}`)
     }
 
-    const apiExtractorConfigPath = path.join(
-      packagesDir,
-      shortName,
-      `api-extractor.json`
-    )
+    const apiExtractorConfigPath = path.join(packagesDir, shortName, `api-extractor.json`)
     if (args.force || !fs.existsSync(apiExtractorConfigPath)) {
       fs.writeFileSync(
         apiExtractorConfigPath,
@@ -72,11 +67,7 @@
       )
     }
 
-    const assetsConfigPath = path.join(
-      packagesDir,
-      shortName,
-      `assets.config.json`
-    )
+    const assetsConfigPath = path.join(packagesDir, shortName, `assets.config.json`)
     if (args.force || !fs.existsSync(assetsConfigPath)) {
       fs.writeFileSync(
         assetsConfigPath,

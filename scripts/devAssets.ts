@@ -13,7 +13,9 @@ npm run assets:build -- vue-quill
   const chalk = require('chalk')
   const execa = require('execa')
   const {
+    rootDir,
     targetAssets: allTargets,
+    getPackageDir,
     fuzzyMatchTarget,
     runParallel,
   } = require('./utils')
@@ -24,18 +26,14 @@ npm run assets:build -- vue-quill
   const isRelease: boolean = args.release
   const buildAllMatching: string[] = args.all || args.a
 
-  await run()
-
-  async function run() {
-    if (isRelease) {
-      // remove build cache for release builds to avoid outdated enum values
-      await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
-    }
-    if (!targets.length) {
-      await buildAll(allTargets)
-    } else {
-      await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-    }
+  if (isRelease) {
+    // remove build cache for release builds to avoid outdated enum values
+    await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
+  }
+  if (!targets.length) {
+    await buildAll(allTargets)
+  } else {
+    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
   }
 
   async function buildAll(targets: string[]) {
@@ -43,8 +41,7 @@ npm run assets:build -- vue-quill
   }
 
   async function build(target: string) {
-    const rootDir = path.resolve(__dirname, '..')
-    const pkgDir = path.resolve(rootDir, `packages/${target}`)
+    const pkgDir = getPackageDir(target)
     const assets = require(path.resolve(pkgDir, 'assets.config.json'))
 
     if (assets.css) {
@@ -55,13 +52,9 @@ npm run assets:build -- vue-quill
         const inputExt = path.extname(input)
 
         if (inputExt === '.styl' || inputExt === '.css') {
-          execa('stylus', [
-            '-w',
-            input,
-            '-o',
-            output,
-            sourceMap ? '--sourcemap' : '',
-          ])
+          const args: string[] = ['stylus', '-w', input, '-o', output]
+          if (sourceMap) args.push('--sourcemap')
+          execa('npx', args)
         } else {
           console.log(chalk.redBright(`File extention not supported: ${input}`))
         }

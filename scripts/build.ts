@@ -16,9 +16,12 @@ npm run build -- vue-quill --formats cjs
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
+  const chalk = require('chalk')
   const execa = require('execa')
   const {
     targets: allTargets,
+    getPackageDir,
+    getPackageJson,
     fuzzyMatchTarget,
     checkBuildSize,
     runParallel,
@@ -31,31 +34,23 @@ npm run build -- vue-quill --formats cjs
   const devOnly: boolean = args.devOnly || args.d
   const prodOnly: boolean = !devOnly && (args.prodOnly || args.p)
   const sourceMap: boolean = args.sourcemap || args.s
-  const isRelease: boolean =
-    args.release || (args.nextVersion && args.nextVersion !== '')
+  const isRelease: boolean = args.release || (args.nextVersion && args.nextVersion !== '')
   const hasTypes: boolean = args.t || args.types || isRelease
   const buildAssets: boolean = args.assets || isRelease
   const buildAllMatching: string[] = args.all || args.a
-  const nextVersion: string =
-    args.nextVersion ||
-    require(path.resolve(__dirname, '../package.json')).version
-  const commit =
-    args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+  const nextVersion: string = args.nextVersion || getPackageJson().version
+  const commit = args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
-  await run()
-
-  async function run() {
-    if (isRelease) {
-      // remove build cache for release builds to avoid outdated enum values
-      await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
-    }
-    if (!targets.length) {
-      await buildAll(allTargets)
-      checkAllSizes(allTargets)
-    } else {
-      await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-      checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-    }
+  if (isRelease) {
+    // remove build cache for release builds to avoid outdated enum values
+    await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
+  }
+  if (!targets.length) {
+    await buildAll(allTargets)
+    checkAllSizes(allTargets)
+  } else {
+    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
+    checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
   }
 
   async function buildAll(targets: string[]) {
@@ -64,14 +59,8 @@ npm run build -- vue-quill --formats cjs
 
   async function build(target: string) {
     const rollupConfig = path.resolve(__dirname, '../rollup.config.js')
-    const pkgDir = path.resolve(__dirname, `../packages/${target}`)
-    const pkg = require(path.resolve(pkgDir, 'package.json'))
-    let assets: any = {}
-    try {
-      assets = require(path.resolve(pkgDir, 'assets.config.json'))
-    } catch {
-      console.log(`There's no assets.config.json`)
-    }
+    const pkgDir = getPackageDir(target)
+    const pkg = getPackageJson(target)
 
     // only build published packages for release
     if (isRelease && pkg.private) return
@@ -79,9 +68,15 @@ npm run build -- vue-quill --formats cjs
     // if building a specific format, do not remove dist.
     if (!formats) await fs.remove(`${pkgDir}/dist`)
 
+    let assets: any = {}
+    try {
+      assets = require(path.resolve(pkgDir, 'assets.config.json'))
+    } catch {
+      console.log(chalk.yellow(`${target} didn't have assets.config.json`))
+    }
+
     const env =
-      (pkg.buildOptions && pkg.buildOptions.env) ||
-      (devOnly ? 'development' : 'production')
+      (pkg.buildOptions && pkg.buildOptions.env) || (devOnly ? 'development' : 'production')
     await execa(
       'npx',
       [
@@ -108,11 +103,9 @@ npm run build -- vue-quill --formats cjs
     if (hasTypes && pkg.types) await generateTypes(target)
     if (buildAssets && assets.css) {
       const buildAssetsTs = await path.resolve(__dirname, 'buildAssets.ts')
-      await execa(
-        'npx',
-        ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''],
-        { stdio: 'inherit' }
-      )
+      await execa('npx', ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''], {
+        stdio: 'inherit',
+      })
     }
   }
 

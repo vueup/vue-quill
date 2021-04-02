@@ -14,6 +14,7 @@ npm run assets:build -- vue-quill
   const execa = require('execa')
   const {
     targetAssets: allTargets,
+    getPackageDir,
     fuzzyMatchTarget,
     checkAssetsSize,
     runParallel,
@@ -30,20 +31,16 @@ npm run assets:build -- vue-quill
   //   args.nextVersion ||
   //   require(path.resolve(__dirname, '../package.json')).version
 
-  await run()
-
-  async function run() {
-    if (isRelease) {
-      // remove build cache for release builds to avoid outdated enum values
-      await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
-    }
-    if (!targets.length) {
-      await buildAll(allTargets)
-      checkAllSizes(allTargets)
-    } else {
-      await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-      checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-    }
+  if (isRelease) {
+    // remove build cache for release builds to avoid outdated enum values
+    await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
+  }
+  if (!targets.length) {
+    await buildAll(allTargets)
+    checkAllSizes(allTargets)
+  } else {
+    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
+    checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
   }
 
   async function buildAll(targets: string[]) {
@@ -51,15 +48,13 @@ npm run assets:build -- vue-quill
   }
 
   async function buildAssets(target: string) {
-    const pkgDir = path.resolve(__dirname, `../packages/${target}`)
+    const pkgDir = getPackageDir(target)
     const assets = require(path.resolve(pkgDir, 'assets.config.json'))
 
     // only build published packages for release
     if (isRelease && assets.private) return
     if (!assets.css.length) return
-    console.log(
-      chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<\n`)
-    )
+    console.log(chalk.cyan(`\n>>>>>>>>>>>>>>>>>>>> BUILD ASSETS <<<<<<<<<<<<<<<<<<<<\n`))
 
     for (const css of assets.css) {
       const input = path.resolve(pkgDir, css.input)

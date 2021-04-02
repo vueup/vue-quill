@@ -3,10 +3,12 @@ const chalk = require('chalk')
 const path = require('path')
 const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
+
+const rootDir = path.resolve(__dirname, '..')
 const packagesDir = path.resolve(__dirname, '../packages')
 
 const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
-  const pkgDir = path.resolve(__dirname, '../packages', f)
+  const pkgDir = path.resolve(packagesDir, f)
   if (!fs.statSync(pkgDir).isDirectory()) {
     return false
   }
@@ -21,23 +23,32 @@ const targets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
   return true
 })
 
-const targetAssets: string[] = fs
-  .readdirSync(packagesDir)
-  .filter((f: string) => {
-    const pkgDir = path.resolve(__dirname, '../packages', f)
-    if (!fs.statSync(pkgDir).isDirectory()) {
-      return false
-    }
-    const pkgPath = path.resolve(pkgDir, 'assets.config.json')
-    if (!fs.existsSync(pkgPath)) {
-      return false
-    }
-    const assets = require(pkgPath)
-    if (assets.private && !assets.css) {
-      return false
-    }
-    return true
-  })
+const targetAssets: string[] = fs.readdirSync(packagesDir).filter((f: string) => {
+  const pkgDir = path.resolve(packagesDir, f)
+  if (!fs.statSync(pkgDir).isDirectory()) {
+    return false
+  }
+  const pkgPath = path.resolve(pkgDir, 'assets.config.json')
+  if (!fs.existsSync(pkgPath)) {
+    return false
+  }
+  const assets = require(pkgPath)
+  if (assets.private && !assets.css) {
+    return false
+  }
+  return true
+})
+
+function getPackageDir(target: string) {
+  return path.resolve(packagesDir, target)
+}
+
+function getPackageJson(target = '') {
+  if (target === '') {
+    return require(path.resolve(rootDir, 'package.json'))
+  }
+  return require(path.resolve(packagesDir, target, 'package.json'))
+}
 
 function fuzzyMatchTarget(
   partialTargets: string[],
@@ -83,9 +94,7 @@ async function runParallel(
     ret.push(p)
 
     if (maxConcurrency <= source.length) {
-      const e: Promise<any> = p.then(() =>
-        executing.splice(executing.indexOf(e), 1)
-      )
+      const e: Promise<any> = p.then(() => executing.splice(executing.indexOf(e), 1))
       executing.push(e)
       if (executing.length >= maxConcurrency) {
         await Promise.race(executing)
@@ -96,18 +105,17 @@ async function runParallel(
 }
 
 function checkBuildSize(target: string) {
-  const pkgDir = path.resolve(__dirname, `../packages/${target}`)
+  const pkgDir = getPackageDir(target)
   checkFileSize(`${pkgDir}/dist/${target}.global.prod.js`)
 }
 
 function checkAssetsSize(target: string, ext = '.css') {
-  const pkgDir = path.resolve(__dirname, `../packages/${target}`)
+  const pkgDir = getPackageDir(target)
   const distDir = path.resolve(pkgDir, 'dist')
   fs.readdir(distDir, (err: string, files: string[]) => {
     if (err) console.log(chalk.redBright('Unable to scan directory: ' + err))
     files.forEach((file: string) => {
-      if (file.includes(`prod${ext}`))
-        checkFileSize(path.resolve(distDir, file))
+      if (file.includes(`prod${ext}`)) checkFileSize(path.resolve(distDir, file))
     })
   })
 }
@@ -130,18 +138,14 @@ function checkFileSize(filePath: string) {
 }
 
 async function generateTypes(target: string) {
-  const pkgDir = path.resolve(__dirname, `../packages/${target}`)
+  const pkgDir = getPackageDir(target)
   console.log()
-  console.log(
-    chalk.bold(chalk.yellow(`Rolling up type definitions for ${target}...`))
-  )
+  console.log(chalk.bold(chalk.yellow(`Rolling up type definitions for ${target}...`)))
 
   // build types
   const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
   const extractorConfigPath = path.resolve(pkgDir, `api-extractor.json`)
-  const extractorConfig = ExtractorConfig.loadFileAndPrepare(
-    extractorConfigPath
-  )
+  const extractorConfig = ExtractorConfig.loadFileAndPrepare(extractorConfigPath)
   const extractorResult = Extractor.invoke(extractorConfig, {
     localBuild: true,
     showVerboseMessages: true,
@@ -149,7 +153,7 @@ async function generateTypes(target: string) {
 
   if (extractorResult.succeeded) {
     // concat additional d.ts to rolled-up dts
-    const pkg = require(`${pkgDir}/package.json`)
+    const pkg = getPackageJson(target)
     try {
       const typesDir = path.resolve(pkgDir, 'types')
       await fs.promises.access(typesDir).then(async () => {
@@ -163,14 +167,10 @@ async function generateTypes(target: string) {
         )
         await fs.writeFile(dtsPath, existing + '\n' + toAdd.join('\n'))
       })
-      console.log(
-        chalk.bold(chalk.green(`API Extractor completed successfully.`))
-      )
+      console.log(chalk.bold(chalk.green(`API Extractor completed successfully.`)))
     } catch (err) {
       console.log()
-      console.log(
-        chalk.yellow(`There's no additional .d.ts to roll-up with ${err}`)
-      )
+      console.log(chalk.yellow(`There's no additional .d.ts to roll-up with ${err}`))
     }
   } else {
     console.error(
@@ -184,8 +184,12 @@ async function generateTypes(target: string) {
 }
 
 module.exports = {
+  rootDir,
+  packagesDir,
   targets,
   targetAssets,
+  getPackageDir,
+  getPackageJson,
   fuzzyMatchTarget,
   runParallel,
   checkBuildSize,

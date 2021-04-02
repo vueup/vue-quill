@@ -141,12 +141,7 @@ export const QuillEditor = defineComponent({
           })(),
         }
       }
-      return Object.assign(
-        {},
-        props.globalOptions,
-        props.options,
-        clientOptions
-      )
+      return Object.assign({}, props.globalOptions, props.options, clientOptions)
     }
 
     const handleTextChange: TextChangeHandler = (
@@ -177,12 +172,7 @@ export const QuillEditor = defineComponent({
 
     const handleEditorChange: EditorChangeHandler = (
       ...args:
-        | [
-            name: 'text-change',
-            delta: Delta,
-            oldContents: Delta,
-            source: Sources
-          ]
+        | [name: 'text-change', delta: Delta, oldContents: Delta, source: Sources]
         | [
             name: 'selection-change',
             range: RangeStatic,
@@ -232,8 +222,7 @@ export const QuillEditor = defineComponent({
 
     const reinit = () => {
       nextTick(() => {
-        if (!ctx.slots.toolbar && quill)
-          quill.getModule('toolbar')?.container.remove()
+        if (!ctx.slots.toolbar && quill) quill.getModule('toolbar')?.container.remove()
         initialize()
         console.log('reinit call')
       })
@@ -243,8 +232,7 @@ export const QuillEditor = defineComponent({
       () => props.content,
       (newContent) => {
         if (!quill || !newContent || newContent === props.content) return
-        if (typeof newContent === 'string')
-          quill.setText(props.content as string)
+        if (typeof newContent === 'string') quill.setText(props.content as string)
         else quill.setContents(newContent as Delta)
       }
     )
@@ -268,9 +256,6 @@ export const QuillEditor = defineComponent({
   },
   inheritAttrs: false,
   render() {
-    return [
-      this.$slots.toolbar?.(),
-      h('div', { ref: 'editor', ...this.$attrs }),
-    ]
+    return [this.$slots.toolbar?.(), h('div', { ref: 'editor', ...this.$attrs })]
   },
 })

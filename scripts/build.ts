@@ -19,6 +19,7 @@ npm run build -- vue-quill --formats cjs
   const execa = require('execa')
   const logger = require('./logger')
   const {
+    rootDir,
     targets: allTargets,
     getPackageDir,
     getPackageJson,
@@ -66,7 +67,7 @@ npm run build -- vue-quill --formats cjs
   }
 
   async function build(target: string) {
-    const rollupConfig = path.resolve(__dirname, '../rollup.config.js')
+    const rollupConfig = path.resolve(rootDir, 'rollup.config.js')
     const pkgDir = getPackageDir(target)
     const pkg = getPackageJson(target)
 
@@ -115,13 +116,13 @@ npm run build -- vue-quill --formats cjs
     if (hasTypes && pkg.types) await generateTypes(target)
     if (buildAssets && assets.css) {
       const buildAssetsTs = await path.resolve(__dirname, 'buildAssets.ts')
-      await execa(
-        'npx',
-        ['ts-node', buildAssetsTs, target, isRelease ? '--release' : ''],
-        {
-          stdio: 'inherit',
-        }
-      )
+      const commands = ['ts-node', buildAssetsTs, target]
+      if (isRelease) commands.push('--release')
+      if (prodOnly) commands.push('--prodOnly')
+      if (devOnly) commands.push('--devOnly')
+      if (sourceMap) commands.push('--sourcemap')
+      if (buildAllMatching) commands.push('--all')
+      await execa('npx', commands, { stdio: 'inherit' })
     }
   }
 

@@ -25,7 +25,8 @@
         '@semantic-release/exec',
         {
           prepareCmd:
-            `npx ts-node ${rootDir}/scripts/build.ts --nextVersion \${nextRelease.version} && ` +
+            `npx ts-node ${rootDir}/scripts/build.ts ${target} --nextVersion \${nextRelease.version} && ` +
+            `npx ts-node ${rootDir}/scripts/verifyRelease.ts ${target} && ` +
             `zip ${target}-dist.zip -r dist`,
         },
       ],

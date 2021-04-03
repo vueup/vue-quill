@@ -101,21 +101,25 @@ async function runParallel(
 
 function checkBuildSize(target: string) {
   const pkgDir = getPackageDir(target)
-  checkFileSize(`${pkgDir}/dist/${target}.global.prod.js`)
+  logger.table([getTableSize(`${pkgDir}/dist/${target}.global.prod.js`)])
 }
 
 function checkAssetsSize(target: string, ext = '.css') {
   const pkgDir = getPackageDir(target)
   const distDir = path.resolve(pkgDir, 'dist')
+  const tableSizes: any[] = []
   fs.readdir(distDir, (err: string, files: string[]) => {
     if (err) logger.error(target, 'Unable to scan directory: ' + err)
     files.forEach((file: string) => {
-      if (file.includes(`prod${ext}`)) checkFileSize(path.resolve(distDir, file))
+      if (file.includes(`prod${ext}`) && path.extname(file) === ext) {
+        tableSizes.push(getTableSize(path.resolve(distDir, file)))
+      }
     })
+    logger.table(tableSizes)
   })
 }
 
-function checkFileSize(filePath: string) {
+function getTableSize(filePath: string) {
   if (!fs.existsSync(filePath)) {
     return
   }
@@ -126,7 +130,7 @@ function checkFileSize(filePath: string) {
   const gzippedSize = (gzipped.length / 1024).toFixed(2) + 'kb'
   const compressed = compress(file)
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb'
-  logger.info(filename, `min:${minSize} / gzip:${gzippedSize} / brotli:${compressedSize}`)
+  return { filename: filename, min: minSize, gzip: gzippedSize, brotli: compressedSize }
 }
 
 async function generateTypes(target: string) {
@@ -187,6 +191,6 @@ module.exports = {
   runParallel,
   checkBuildSize,
   checkAssetsSize,
-  checkFileSize,
+  getTableSize,
   generateTypes,
 }

@@ -51,9 +51,9 @@ npm run assets:build -- vue-quill
         const inputExt = path.extname(input)
 
         if (inputExt === '.styl' || inputExt === '.css') {
-          const args: string[] = ['stylus', '-w', input, '-o', output]
-          if (sourceMap) args.push('--sourcemap')
-          execa('npx', args)
+          const commands: string[] = ['stylus', '-w', input, '-o', output]
+          if (sourceMap) commands.push('--sourcemap')
+          execa('npx', commands)
         } else {
           logger.error(target, `File extention not supported: ${input}`)
         }

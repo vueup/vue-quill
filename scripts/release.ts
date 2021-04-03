@@ -30,7 +30,12 @@
             `zip ${target}-dist.zip -r dist`,
         },
       ],
-      '@semantic-release/changelog',
+      [
+        '@semantic-release/changelog',
+        {
+          changelogFile: `${rootDir}/CHANGELOG.md`,
+        },
+      ],
       '@semantic-release/npm',
       [
         '@semantic-release/github',

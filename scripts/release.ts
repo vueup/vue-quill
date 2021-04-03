@@ -30,6 +30,7 @@
             `zip ${target}-dist.zip -r dist`,
         },
       ],
+      '@semantic-release/changelog',
       '@semantic-release/npm',
       [
         '@semantic-release/github',

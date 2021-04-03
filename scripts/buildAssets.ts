@@ -26,7 +26,7 @@ npm run assets:build -- vue-quill
   const prodOnly: boolean = !devOnly && (args.prodOnly || args.p)
   const sourceMap = args.sourcemap || args.s
   const isRelease: boolean = args.release
-  const buildAllMatching: string[] = args.all || args.a
+  const buildAllMatching: boolean = args.all || args.a
   // const nextVersion: string =
   //   args.nextVersion ||
   //   require(path.resolve(__dirname, '../package.json')).version
@@ -39,8 +39,8 @@ npm run assets:build -- vue-quill
     await buildAll(allTargets)
     checkAllSizes(allTargets)
   } else {
-    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
-    checkAllSizes(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
+    await buildAll(fuzzyMatchTarget(allTargets, targets, buildAllMatching))
+    checkAllSizes(fuzzyMatchTarget(allTargets, targets, buildAllMatching))
   }
 
   async function buildAll(targets: string[]) {

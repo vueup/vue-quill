@@ -51,15 +51,14 @@ function getPackageJson(target = '') {
 }
 
 function fuzzyMatchTarget(
+  allTargets: string[],
   partialTargets: string[],
-  includeAllMatching?: string[],
-  targets?: string[]
+  includeAllMatching?: boolean
 ) {
-  const chalk = require('chalk')
   const matched: string[] = []
   partialTargets.forEach((partialTarget) => {
-    if (!targets) return
-    for (const target of targets) {
+    if (!allTargets) return
+    for (const target of allTargets) {
       if (target.match(partialTarget)) {
         matched.push(target)
         if (!includeAllMatching) {
@@ -72,6 +71,7 @@ function fuzzyMatchTarget(
     return matched
   } else {
     console.log()
+    const chalk = require('chalk')
     logger.error(partialTargets, `Target ${chalk.underline(partialTargets)} not found!`)
     process.exit(1)
   }

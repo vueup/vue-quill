@@ -23,7 +23,7 @@ npm run assets:build -- vue-quill
   const targets: string[] = args._
   const sourceMap = args.sourcemap || args.s
   const isRelease: boolean = args.release
-  const buildAllMatching: string[] = args.all || args.a
+  const buildAllMatching: boolean = args.all || args.a
 
   if (isRelease) {
     // remove build cache for release builds to avoid outdated enum values
@@ -32,7 +32,7 @@ npm run assets:build -- vue-quill
   if (!targets.length) {
     await buildAll(allTargets)
   } else {
-    await buildAll(fuzzyMatchTarget(targets, buildAllMatching, allTargets))
+    await buildAll(fuzzyMatchTarget(allTargets, targets, buildAllMatching))
   }
 
   async function buildAll(targets: string[]) {

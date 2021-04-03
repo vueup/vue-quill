@@ -37,7 +37,7 @@ npm run build -- vue-quill --formats cjs
   const isRelease: boolean = args.release || (args.nextVersion && args.nextVersion !== '')
   const hasTypes: boolean = args.t || args.types || isRelease
   const buildAssets: boolean = args.assets || isRelease
-  const buildAllMatching: string[] = args.all || args.a
+  const buildAllMatching: boolean = args.all || args.a
   const nextVersion: string = args.nextVersion || getPackageJson().version
   const commit =
     args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
@@ -52,9 +52,9 @@ npm run build -- vue-quill --formats cjs
     checkAllSizes(allTargets)
   } else {
     const matchedTargets: string[] = fuzzyMatchTarget(
+      allTargets,
       targets,
-      buildAllMatching,
-      allTargets
+      buildAllMatching
     )
     logger.header(matchedTargets, 'BUILD PACKAGES')
     await buildAll(matchedTargets)

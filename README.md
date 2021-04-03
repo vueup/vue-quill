@@ -43,12 +43,12 @@ You can support me by [**☕ buying me a cup of coffee ☕**](https://www.buymea
 
 ## To do list
 
-- [x] Release alpha version
-- [ ] Release beta version
+- [x] Release `alpha` version
+- [ ] Release `beta` version
 - [ ] Initial `v1.0.0` release
-- [ ] Enhance Typescript support with Vue 3
-- [ ] Update the Documentation with improved examples and more information
-- [ ] **vue-quill-plugin-api:** provide built-in API for quill modules
+- [x] Enhance Typescript support with Vue 3
+- [ ] Update the Documentation with more examples and more information
+- [ ] **vue-quill-custom-api:** provide built-in API for customization
 
 ### Our Dream Features
 Our next goal is to provide a first-class plugins ecosystem: 
@@ -83,9 +83,6 @@ Our next goal is to provide a first-class plugins ecosystem:
 
 ## Contributing
 Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first about what you would like to change.
-
-## Quill
-[Quill API document](https://quilljs.com/docs/quickstart/)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

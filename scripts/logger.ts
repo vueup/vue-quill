@@ -73,13 +73,7 @@ function debug(scopes: string | string[], msg: string) {
   console.log()
 }
 
-interface LoggerArgs {
-  scope: string
-  msg: string
-  type: 'info' | 'success' | 'error' | 'warning' | 'debug'
-}
-
-function list(scope: string, msg: string, list: LoggerArgs[]) {
+function list(scope: string, msg: string, list: any[]) {
   let headerType = 'success'
   for (const item of list) {
     if (item.type === 'error') {
@@ -94,7 +88,7 @@ function list(scope: string, msg: string, list: LoggerArgs[]) {
   else if (headerType === 'warning') warning(scope, '⚠  ' + msg)
   else success(scope, '✔  ' + msg)
 
-  list.forEach((item: LoggerArgs) => {
+  list.forEach((item: any) => {
     let subScope: string
     if (item.type === 'error') {
       subScope = chalk.red('✖  ' + chalk.bold(chalk.underline(item.scope)))

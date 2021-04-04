@@ -28,11 +28,6 @@
   checkBuildFile(`${target} main`, mainEntryPath)
 
   // verify package build
-  interface LoggerArgs {
-    scope: string
-    msg: string
-    type: 'info' | 'success' | 'error' | 'warning' | 'debug'
-  }
   const packageOptions = pkg.buildOptions
   const buildOutputPaths: string[] = []
   packageOptions.formats.forEach((format: string) => {
@@ -84,7 +79,7 @@
 
   function checkBuildFiles(target: string, buildPaths: string[]) {
     try {
-      const buildResults: LoggerArgs[] = []
+      const buildResults: any[] = []
       for (const outputPath of buildPaths) {
         if (fs.existsSync(outputPath)) {
           buildResults.push({

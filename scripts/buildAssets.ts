@@ -10,11 +10,13 @@ npm run assets:build -- vue-quill
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
+  const chalk = require('chalk')
   const execa = require('execa')
   const logger = require('./logger')
   const {
-    targetAssets: allTargets,
+    targets: allTargets,
     getPackageDir,
+    getAssetsConfigJson,
     fuzzyMatchTarget,
     checkAssetsSize,
     runParallel,
@@ -36,11 +38,14 @@ npm run assets:build -- vue-quill
     await fs.remove(path.resolve(__dirname, '../node_modules/.rts2_cache'))
   }
   if (!targets.length) {
+    logger.header(allTargets, 'BUILD ASSETS')
     await buildAll(allTargets)
     checkAllSizes(allTargets)
   } else {
-    await buildAll(fuzzyMatchTarget(allTargets, targets, buildAllMatching))
-    checkAllSizes(fuzzyMatchTarget(allTargets, targets, buildAllMatching))
+    const matchedTargets = fuzzyMatchTarget(allTargets, targets, buildAllMatching)
+    logger.header(matchedTargets, 'BUILD ASSETS')
+    await buildAll(matchedTargets)
+    checkAllSizes(matchedTargets)
   }
 
   async function buildAll(targets: string[]) {
@@ -49,13 +54,21 @@ npm run assets:build -- vue-quill
 
   async function buildAssets(target: string) {
     const pkgDir = getPackageDir(target)
-    const assets = require(path.resolve(pkgDir, 'assets.config.json'))
+    const assets = getAssetsConfigJson(target)
 
     // only build published packages for release
     if (isRelease && assets.private) return
-    if (!assets.css.length) return
+    if (!assets || !assets.css.length) {
+      logger.warning(
+        target,
+        `Can't find assets configuration or file configuration ${chalk.underline(
+          target + '/assets.config.json'
+        )}`
+      )
+      return
+    }
 
-    logger.header(target, 'BUILD ASSETS')
+    logger.info(target, 'Compiling assets...')
 
     for (const css of assets.css) {
       const input: string = path.resolve(pkgDir, css.input)

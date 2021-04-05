@@ -23,31 +23,24 @@ const targets: string[] = fs.readdirSync(packagesDir).filter((targetDir: string)
   return true
 })
 
-const targetAssets: string[] = fs.readdirSync(packagesDir).filter((targetDir: string) => {
-  const pkgDir = path.resolve(packagesDir, targetDir)
-  if (!fs.statSync(pkgDir).isDirectory()) {
-    return false
-  }
-  const assetsPath = path.resolve(pkgDir, 'assets.config.json')
-  if (!fs.existsSync(assetsPath)) {
-    return false
-  }
-  const assets = require(assetsPath)
-  if (assets.private && !assets.css) {
-    return false
-  }
-  return true
-})
-
 function getPackageDir(target: string) {
   return path.resolve(packagesDir, target)
 }
 
 function getPackageJson(target = '') {
-  if (target === '') {
-    return require(path.resolve(rootDir, 'package.json'))
-  }
-  return require(path.resolve(packagesDir, target, 'package.json'))
+  const pkgPath =
+    target === ''
+      ? path.resolve(rootDir, 'package.json')
+      : path.resolve(packagesDir, target, 'package.json')
+
+  if (!fs.existsSync(pkgPath)) return null
+  return require(pkgPath)
+}
+
+function getAssetsConfigJson(target = '') {
+  const pkgPath = path.resolve(packagesDir, target, 'assets.config.json')
+  if (!fs.existsSync(pkgPath)) return null
+  return require(pkgPath)
 }
 
 function fuzzyMatchTarget(
@@ -115,7 +108,7 @@ function checkAssetsSize(target: string, ext = '.css') {
         tableSizes.push(getTableSize(path.resolve(distDir, file)))
       }
     })
-    logger.table(tableSizes)
+    if (tableSizes.length) logger.table(tableSizes)
   })
 }
 
@@ -184,9 +177,9 @@ module.exports = {
   rootDir,
   packagesDir,
   targets,
-  targetAssets,
   getPackageDir,
   getPackageJson,
+  getAssetsConfigJson,
   fuzzyMatchTarget,
   runParallel,
   checkBuildSize,

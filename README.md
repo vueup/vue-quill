@@ -42,7 +42,7 @@
 
 - [x] Release `alpha` version
 - [ ] Release `beta` version
-- [ ] Initial `v1.0.0` release
+- [ ] Stable `v1.0.0` release
 - [x] Enhance Typescript support with Vue 3
 - [ ] Update the Documentation with more examples and more information
 

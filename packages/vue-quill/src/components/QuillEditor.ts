@@ -27,6 +27,13 @@ export const QuillEditor = defineComponent({
       type: [String, Object] as PropType<string | Delta>,
       default: {},
     },
+    contentType: {
+      type: String as PropType<'delta' | 'html' | 'text'>,
+      default: 'delta',
+      validator: (value: string) => {
+        return ['delta', 'html', 'text'].includes(value)
+      },
+    },
     enable: {
       type: Boolean,
       default: true,
@@ -40,7 +47,7 @@ export const QuillEditor = defineComponent({
       required: false,
     },
     theme: {
-      type: String,
+      type: String as PropType<'snow' | 'bubble' | ''>,
       default: 'snow',
       validator: (value: string) => {
         return ['snow', 'bubble', ''].includes(value)
@@ -96,12 +103,7 @@ export const QuillEditor = defineComponent({
         // Create new instance
         quill = new Quill(editor.value, options)
         // Set editor content
-        if (typeof props.content === 'string') {
-          quill.setText(props.content)
-          ctx.emit('update:content', quill.getContents())
-        } else {
-          quill.setContents(props.content as Delta)
-        }
+        setContents(props.content)
         // Set event handlers
         quill.on('text-change', handleTextChange)
         quill.on('selection-change', handleSelectionChange)
@@ -150,7 +152,7 @@ export const QuillEditor = defineComponent({
       source: Sources
     ) => {
       // Update v-model:content when text changes
-      ctx.emit('update:content', quill?.getContents())
+      ctx.emit('update:content', getContents())
       ctx.emit('textChange', { delta, oldContents, source })
     }
 
@@ -212,6 +214,33 @@ export const QuillEditor = defineComponent({
                   or use v-on:ready="onReady(quill)" event instead.`
     }
 
+    const getContents = () => {
+      if (props.contentType === 'html') {
+        return getHTML()
+      } else if (props.contentType === 'text') {
+        return getText()
+      }
+      return quill?.getContents()
+    }
+
+    const setContents = (content: string | Delta) => {
+      if (props.contentType === 'html') {
+        setHTML(content as string)
+      } else if (props.contentType === 'text') {
+        setText(content as string)
+      } else {
+        quill?.setContents(content as Delta)
+      }
+    }
+
+    const getText = (): string => {
+      return quill?.getText() ?? ''
+    }
+
+    const setText = (text: string) => {
+      quill?.setText(text)
+    }
+
     const getHTML = (): string => {
       return quill?.root.innerHTML ?? ''
     }
@@ -232,8 +261,7 @@ export const QuillEditor = defineComponent({
       () => props.content,
       (newContent) => {
         if (!quill || !newContent || newContent === props.content) return
-        if (typeof newContent === 'string') quill.setText(props.content as string)
-        else quill.setContents(newContent as Delta)
+        setContents(newContent)
       }
     )
 
@@ -249,8 +277,12 @@ export const QuillEditor = defineComponent({
       getEditor,
       getToolbar,
       getQuill,
+      getContents,
+      setContents,
       getHTML,
       setHTML,
+      getText,
+      setText,
       reinit,
     }
   },

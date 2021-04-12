@@ -18,8 +18,7 @@
     "types": ["jest", "puppeteer", "node"],
     "rootDir": ".",
     "paths": {
-      "@vueup/*": ["packages/*/src"],
-      "vue-quill": ["packages/vue-quill/src"]
+      "@vueup/*": ["packages/*/src"]
     }
   },
   "include": [

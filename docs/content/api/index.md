@@ -21,7 +21,7 @@
 - **Type:** `"delta" | "html" | "text"`
 - **Default:** `delta`
 
-  VueQuill supports three content type `delta`, `html`, and `text`, and make sure to set contentType if you want to use `html` or plain `text` as your content
+  VueQuill supports three content type `delta`, `html`, and `text`, and make sure to set contentType if you want to use `html` or plain `text` as your content.
 
 ## enable
 - **Type:** `Boolean`

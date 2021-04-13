@@ -8,7 +8,7 @@
   Two-way binding editor content, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
   
   ::: warning
-  Your content and content type must match, if you want to use `html` as your content you must set your contentType to `html`, as well as `text`.
+  Your content and content type must match, if you want to use `html` as your content you must set your `contentType` to `html`, as well as `text`.
   :::
 
 ## content

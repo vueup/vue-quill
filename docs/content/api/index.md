@@ -15,7 +15,13 @@
 - **Type:** `Delta | String`
 - **Default:** `{}`
 
-  Contents for the editor, can be plain `string` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+  Contents for the editor, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+
+## contentType
+- **Type:** `"delta" | "html" | "text"`
+- **Default:** `delta`
+
+  VueQuill supports three content type `delta`, `html`, and `text`, and make sure to set contentType if you want to use `html` or plain `text` as your content
 
 ## enable
 - **Type:** `Boolean`

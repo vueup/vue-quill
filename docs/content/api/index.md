@@ -5,10 +5,10 @@
 - **Default:** `{}`
 - **Return:** `Delta`
   
-  Two-way binding editor content, can be plain `string` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+  Two-way binding editor content, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
   
   ::: warning
-  If you use `string` as a value, it will be converted into `Delta` object immediately.
+  Your content and content type must match, if you want to use `html` as your content you must set your contentType to `html`, as well as `text`.
   :::
 
 ## content

@@ -41,7 +41,7 @@
 ## To do list
 
 - [x] Release `alpha` version
-- [ ] Release `beta` version
+- [x] Release `beta` version
 - [ ] Stable `v1.0.0` release
 - [x] Enhance Typescript support with Vue 3
 - [ ] Update the Documentation with more examples and more information

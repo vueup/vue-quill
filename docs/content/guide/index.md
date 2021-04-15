@@ -10,7 +10,7 @@
 
 ## What is VueQuill
 
-**VueQuill** is a **Framework** for building rich text editors, powered by Vue 3 and Quill.
+**VueQuill** is a **Component** for building rich text editors, powered by Vue 3 and Quill.
 
 ## What is Quill
 

@@ -7,13 +7,8 @@ module.exports = {
   base: '/vue-quill/',
   lang: 'en-US',
   title: 'VueQuill',
-  description: 'Rich Text Editor Framework for Vue 3.',
-  head: [
-    [
-      'link',
-      { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' },
-    ],
-  ],
+  description: 'Rich Text Editor Component for Vue 3.',
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' }]],
   themeConfig: {
     repo: 'vueup/vue-quill',
     logo: '/logo.svg',

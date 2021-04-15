@@ -3,7 +3,7 @@
 <div class="replaceable-area">
 
 ::: warning
-🚀 **VueQuill** is in **@alpha** version! Currently the focus is on making VueQuill stable and feature complete first. It is not recommended to use this for anything serious yet. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
+🚀 **VueQuill** is in **@beta** version! Currently the focus is on making VueQuill stable and feature complete first. It is not recommended to use this for anything serious yet. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
 :::
 
 </div>
@@ -32,7 +32,7 @@ If you have questions or need help, reach out to the community at [GitHub Discus
 <ClientOnly>
   <TextReplacer 
     container=".replaceable-area"
-    pattern="@alpha"
+    pattern="@beta"
     prefix="@"
     :replacement="latestReleaseVersion"
   ></TextReplacer>

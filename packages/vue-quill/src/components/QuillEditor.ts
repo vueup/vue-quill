@@ -22,10 +22,11 @@ import { toolbarOptions, ToolbarOptions } from './options'
 
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
+  inheritAttrs: false,
   props: {
     content: {
       type: [String, Object] as PropType<string | Delta>,
-      default: {},
+      default: () => {},
     },
     contentType: {
       type: String as PropType<'delta' | 'html' | 'text'>,
@@ -286,7 +287,6 @@ export const QuillEditor = defineComponent({
       reinit,
     }
   },
-  inheritAttrs: false,
   render() {
     return [this.$slots.toolbar?.(), h('div', { ref: 'editor', ...this.$attrs })]
   },

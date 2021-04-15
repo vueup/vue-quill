@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 module.exports = {
   env: {
     browser: true,
@@ -31,6 +32,7 @@ module.exports = {
       files: ['packages/*/src/**/*.ts'],
       rules: {
         quotes: ['error', 'single'],
+        'vue/require-default-prop': 'off',
       },
     },
     {

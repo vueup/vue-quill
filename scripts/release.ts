@@ -49,6 +49,12 @@
           ],
         },
       ],
+      [
+        '@semantic-release/git',
+        {
+          assets: [`${rootDir}/CHANGELOG.md`],
+        },
+      ],
     ],
   }
 

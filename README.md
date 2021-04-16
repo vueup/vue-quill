@@ -9,7 +9,7 @@
 </h3>
 <p align="center">
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version">
-    <img alt="npm (tag)" src="https://img.shields.io/npm/v/@vueup/vue-quill/alpha">
+    <img alt="npm (tag)" src="https://img.shields.io/npm/v/@vueup/vue-quill/beta">
   </a>
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License">
     <img src="https://img.shields.io/npm/l/@vueup/vue-quill" alt="License">
@@ -41,7 +41,7 @@
 ## To do list
 
 - [x] Release `alpha` version
-- [ ] Release `beta` version
+- [x] Release `beta` version
 - [ ] Stable `v1.0.0` release
 - [x] Enhance Typescript support with Vue 3
 - [ ] Update the Documentation with more examples and more information

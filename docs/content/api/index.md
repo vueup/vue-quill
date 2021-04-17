@@ -49,7 +49,13 @@
 ## toolbar
 - **Type:** `String | Array | Object`
 
-  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) seection for more details.
+  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) section for more details.
+
+## modules
+- **Type:** `[string, any, object] | [string, any, object][]`
+- **Type Description:** `[name, module, options]`
+
+  Options to register modules, see [Modules](../guide/modules.md) section for more details.
 
 ## options
 - **Type:** `Object`

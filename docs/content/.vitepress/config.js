@@ -8,7 +8,12 @@ module.exports = {
   lang: 'en-US',
   title: 'VueQuill',
   description: 'Rich Text Editor Component for Vue 3.',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' }]],
+  head: [
+    [
+      'link',
+      { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' },
+    ],
+  ],
   themeConfig: {
     repo: 'vueup/vue-quill',
     logo: '/logo.svg',
@@ -91,6 +96,10 @@ module.exports = {
             {
               text: 'Toolbar',
               link: '/guide/toolbar',
+            },
+            {
+              text: 'Modules',
+              link: '/guide/modules',
             },
             {
               text: 'Options',

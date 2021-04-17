@@ -1,15 +1,21 @@
 <template>
   <BasicExample />
+  <AddModules />
+  <ContentType />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import BasicExample from './components/BasicExample.vue'
+import BasicExample from './examples/BasicExample.vue'
+import AddModules from './examples/AddModules.vue'
+import ContentType from './examples/ContentType.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     BasicExample,
+    AddModules,
+    ContentType,
   },
 })
 </script>

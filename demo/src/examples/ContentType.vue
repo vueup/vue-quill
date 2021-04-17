@@ -1,5 +1,5 @@
 <template>
-  <h1>BasicEditor</h1>
+  <h1>Content Type</h1>
   <QuillEditor v-model:content="contentDelta" contentType="delta" />
   <pre>{{ contentDelta }}</pre>
   <QuillEditor v-model:content="contentHTML" contentType="html" />
@@ -27,9 +27,7 @@ export default defineComponent({
     )
     const contentHTML = ref('<h1>This is html header</h1>')
     const contentText = ref('This is just plain text')
-    setTimeout(() => {
-      contentText.value = 'COOOOOOOK'
-    }, 3000)
+
     return { contentDelta, contentHTML, contentText }
   },
 })

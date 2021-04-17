@@ -33,11 +33,8 @@
         ref="myEditor"
         class="h-64 sm:h-96"
         v-model:content="myContent"
-        @ready="handleReady"
-        @textChange="handleTextChange"
         :theme="selectedTheme"
         :toolbar="selectedToolbar"
-        :modules="myModules"
       >
       </QuillEditor>
     </div>
@@ -48,20 +45,12 @@
 import { defineComponent, watch, ref } from 'vue'
 import VOptions from '../VOptions.vue'
 import { deltaContent } from './delta-content'
-import BlotFormatter from 'quill-blot-formatter'
 
 export default defineComponent({
   components: { VOptions },
   setup: () => {
     const myEditor = ref()
     const myContent = ref(deltaContent)
-    const myModules = [
-      'blotFormatter',
-      BlotFormatter,
-      {
-        /* options */
-      },
-    ]
 
     // ============ OPTIONS =====================
     const selectedTheme = ref<string>('snow')
@@ -74,10 +63,10 @@ export default defineComponent({
     return {
       selectedTheme,
       selectedToolbar,
+      // handleReady,
       // ---------------
       myEditor,
       myContent,
-      myModules,
     }
   },
 })

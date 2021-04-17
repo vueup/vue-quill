@@ -21,7 +21,11 @@ export default defineComponent({
     QuillEditor,
   },
   setup: () => {
-    const modules = ['blotFormatter',  BlotFormatter, {/* options */},]
+    const modules = {
+      name: 'blotFormatter',  
+      module: BlotFormatter, 
+      options: {/* options */}
+    }
     return { modules }
   },
 })

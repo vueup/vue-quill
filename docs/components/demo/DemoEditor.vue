@@ -37,6 +37,7 @@
         @textChange="handleTextChange"
         :theme="selectedTheme"
         :toolbar="selectedToolbar"
+        :modules="myModules"
       >
       </QuillEditor>
     </div>
@@ -44,56 +45,42 @@
 </template>
 
 <script lang="ts">
-import { Quill } from "@vueup/vue-quill";
-import { Delta } from "types-quill-delta";
-import { defineComponent, watch, ref } from "vue";
-import VOptions from "../VOptions.vue";
-import { deltaContent } from "./delta-content";
+import { defineComponent, watch, ref } from 'vue'
+import VOptions from '../VOptions.vue'
+import { deltaContent } from './delta-content'
+import BlotFormatter from 'quill-blot-formatter'
 
 export default defineComponent({
   components: { VOptions },
   setup: () => {
-    const myEditor = ref();
-
-    const myContent = ref(deltaContent);
-
-    const myHTML = ref<string>("");
-    let myQuill: Quill | null = null;
-
-    const handleReady = (quill: Quill) => {
-      myQuill = quill;
-    };
-
-    const handleTextChange = (a: Delta, b: Delta, c: any) => {
-      myHTML.value = myQuill?.root.innerHTML as string;
-    };
-
-    const clickMe = () => {
-      myHTML.value = myQuill?.root.innerHTML as string;
-      console.log(myQuill?.root.innerHTML);
-    };
+    const myEditor = ref()
+    const myContent = ref(deltaContent)
+    const myModules = [
+      'blotFormatter',
+      BlotFormatter,
+      {
+        /* options */
+      },
+    ]
 
     // ============ OPTIONS =====================
-    const selectedTheme = ref<string>("snow");
-    const selectedToolbar = ref<string>("essential");
+    const selectedTheme = ref<string>('snow')
+    const selectedToolbar = ref<string>('essential')
 
     watch([selectedTheme, selectedToolbar], () => {
-      myEditor.value.reinit();
-    });
+      myEditor.value.reinit()
+    })
 
     return {
       selectedTheme,
       selectedToolbar,
       // ---------------
       myEditor,
-      clickMe,
       myContent,
-      myHTML,
-      handleReady,
-      handleTextChange,
-    };
+      myModules,
+    }
   },
-});
+})
 </script>
 
 <style>

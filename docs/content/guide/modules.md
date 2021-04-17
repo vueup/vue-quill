@@ -10,7 +10,7 @@ In this example I am gonna use [quill-blot-formatter](https://github.com/Fandom-
   <QuillEditor :modules="modules" toolbar="full" />
 </template>
 
-<script lang="ts">
+<script>
 import { ref, defineComponent } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import BlotFormatter from 'quill-blot-formatter'

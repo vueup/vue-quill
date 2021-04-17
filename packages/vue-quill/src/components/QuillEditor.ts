@@ -20,7 +20,7 @@ import {
 } from 'vue'
 import { toolbarOptions, ToolbarOptions } from './options'
 
-type Module = [string, any, object?]
+export type Module = { name: string; module: any; options?: object }
 
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
@@ -69,7 +69,7 @@ export const QuillEditor = defineComponent({
       },
     },
     modules: {
-      type: Array as PropType<Module | Module[]>,
+      type: Object as PropType<Module | Module[]>,
       required: false,
     },
     options: {
@@ -109,12 +109,12 @@ export const QuillEditor = defineComponent({
       options = composeOptions()
       // Register modules
       if (props.modules) {
-        if (Array.isArray(props.modules[0])) {
+        if (Array.isArray(props.modules)) {
           for (const module of props.modules) {
-            Quill.register(`modules/${module[0]}`, module[1])
+            Quill.register(`modules/${module.name}`, module.module)
           }
-        } else if (typeof props.modules[0] === 'string') {
-          Quill.register(`modules/${props.modules[0]}`, props.modules[1])
+        } else {
+          Quill.register(`modules/${props.modules.name}`, props.modules.module)
         }
       }
       // Create new Quill instance
@@ -162,12 +162,12 @@ export const QuillEditor = defineComponent({
       if (props.modules) {
         const modules = (() => {
           const modulesOption: { [key: string]: any } = {}
-          if (Array.isArray(props.modules[0])) {
+          if (Array.isArray(props.modules)) {
             for (const module of props.modules) {
-              modulesOption[module[0]] = module[2] ?? {}
+              modulesOption[module.name] = module.options ?? {}
             }
-          } else if (typeof props.modules[0] === 'string') {
-            modulesOption[props.modules[0]] = props.modules[2] ?? {}
+          } else {
+            modulesOption[props.modules.name] = props.modules.options ?? {}
           }
           return modulesOption
         })()
@@ -294,7 +294,6 @@ export const QuillEditor = defineComponent({
         if (!ctx.slots.toolbar && quill)
           quill.getModule('toolbar')?.container.remove()
         initialize()
-        console.log('reinit call')
       })
     }
 

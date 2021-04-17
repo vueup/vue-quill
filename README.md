@@ -58,6 +58,7 @@
   - [Usage](https://vueup.github.io/vue-quill/guide/usage.html)
   - [Themes](https://vueup.github.io/vue-quill/guide/themes.html)
   - [Toolbar](https://vueup.github.io/vue-quill/guide/toolbar.html)
+  - [Modules](https://vueup.github.io/vue-quill/guide/modules.html)
   - [Options](https://vueup.github.io/vue-quill/guide/options.html)
   
 - **[APIs](https://vueup.github.io/vue-quill/api/)**

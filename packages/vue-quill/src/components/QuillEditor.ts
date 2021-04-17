@@ -20,6 +20,8 @@ import {
 } from 'vue'
 import { toolbarOptions, ToolbarOptions } from './options'
 
+type Module = [string, any, object?]
+
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
   inheritAttrs: false,
@@ -66,6 +68,10 @@ export const QuillEditor = defineComponent({
         return true
       },
     },
+    modules: {
+      type: Array as PropType<Module | Module[]>,
+      required: false,
+    },
     options: {
       type: Object as PropType<QuillOptionsStatic>,
       required: false,
@@ -99,28 +105,37 @@ export const QuillEditor = defineComponent({
 
     // Initialize Quill
     const initialize = () => {
-      if (editor.value) {
-        options = composeOptions()
-        // Create new instance
-        quill = new Quill(editor.value, options)
-        // Set editor content
-        setContents(props.content)
-        // Set event handlers
-        quill.on('text-change', handleTextChange)
-        quill.on('selection-change', handleSelectionChange)
-        quill.on('editor-change', handleEditorChange)
-        // Remove editor class when theme changes
-        if (props.theme !== 'bubble') editor.value.classList.remove('ql-bubble')
-        if (props.theme !== 'snow') editor.value.classList.remove('ql-snow')
-        // Fix clicking the quill toolbar is detected as blur event
-        quill
-          .getModule('toolbar')
-          ?.container.addEventListener('mousedown', (e: MouseEvent) => {
-            e.preventDefault()
-          })
-        // Emit ready event
-        ctx.emit('ready', quill)
+      if (!editor.value) return
+      options = composeOptions()
+      // Register modules
+      if (props.modules) {
+        if (Array.isArray(props.modules[0])) {
+          for (const module of props.modules) {
+            Quill.register(`modules/${module[0]}`, module[1])
+          }
+        } else if (typeof props.modules[0] === 'string') {
+          Quill.register(`modules/${props.modules[0]}`, props.modules[1])
+        }
       }
+      // Create new Quill instance
+      quill = new Quill(editor.value, options)
+      // Set editor content
+      setContents(props.content)
+      // Set event handlers
+      quill.on('text-change', handleTextChange)
+      quill.on('selection-change', handleSelectionChange)
+      quill.on('editor-change', handleEditorChange)
+      // Remove editor class when theme changes
+      if (props.theme !== 'bubble') editor.value.classList.remove('ql-bubble')
+      if (props.theme !== 'snow') editor.value.classList.remove('ql-snow')
+      // Fix clicking the quill toolbar is detected as blur event
+      quill
+        .getModule('toolbar')
+        ?.container.addEventListener('mousedown', (e: MouseEvent) => {
+          e.preventDefault()
+        })
+      // Emit ready event
+      ctx.emit('ready', quill)
     }
 
     // Compose Options
@@ -144,7 +159,26 @@ export const QuillEditor = defineComponent({
           })(),
         }
       }
-      return Object.assign({}, props.globalOptions, props.options, clientOptions)
+      if (props.modules) {
+        const modules = (() => {
+          const modulesOption: { [key: string]: any } = {}
+          if (Array.isArray(props.modules[0])) {
+            for (const module of props.modules) {
+              modulesOption[module[0]] = module[2] ?? {}
+            }
+          } else if (typeof props.modules[0] === 'string') {
+            modulesOption[props.modules[0]] = props.modules[2] ?? {}
+          }
+          return modulesOption
+        })()
+        Object.assign(clientOptions.modules, modules)
+      }
+      return Object.assign(
+        {},
+        props.globalOptions,
+        props.options,
+        clientOptions
+      )
     }
 
     const handleTextChange: TextChangeHandler = (
@@ -175,7 +209,12 @@ export const QuillEditor = defineComponent({
 
     const handleEditorChange: EditorChangeHandler = (
       ...args:
-        | [name: 'text-change', delta: Delta, oldContents: Delta, source: Sources]
+        | [
+            name: 'text-change',
+            delta: Delta,
+            oldContents: Delta,
+            source: Sources
+          ]
         | [
             name: 'selection-change',
             range: RangeStatic,
@@ -252,7 +291,8 @@ export const QuillEditor = defineComponent({
 
     const reinit = () => {
       nextTick(() => {
-        if (!ctx.slots.toolbar && quill) quill.getModule('toolbar')?.container.remove()
+        if (!ctx.slots.toolbar && quill)
+          quill.getModule('toolbar')?.container.remove()
         initialize()
         console.log('reinit call')
       })
@@ -288,6 +328,9 @@ export const QuillEditor = defineComponent({
     }
   },
   render() {
-    return [this.$slots.toolbar?.(), h('div', { ref: 'editor', ...this.$attrs })]
+    return [
+      this.$slots.toolbar?.(),
+      h('div', { ref: 'editor', ...this.$attrs }),
+    ]
   },
 })

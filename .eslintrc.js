@@ -17,6 +17,7 @@ module.exports = {
   plugins: ['vue', '@typescript-eslint'],
   ignorePatterns: ['docs', 'temp', '**/shims-vue.d.ts'],
   rules: {
+    '@typescript-eslint/ban-types': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

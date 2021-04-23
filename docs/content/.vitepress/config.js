@@ -24,12 +24,12 @@ module.exports = {
 
     // algolia: {
     //   apiKey: 'b573aa848fd57fb47d693b531297403c',
-    //   indexName: 'vitejs'
+    //   indexName: 'vuequilldev'
     // },
 
     // carbonAds: {
     //   carbon: 'CEBIEK3N',
-    //   placement: 'vitejsdev'
+    //   placement: 'vuequilldev'
     // },
 
     nav: [
@@ -37,36 +37,19 @@ module.exports = {
       { text: 'API Reference', link: '/api/' },
       // { text: 'Config', link: '/config/' },
       // { text: 'Plugins', link: '/plugins/' },
-      // {
-      //   text: 'Links',
-      //   items: [
-      //     {
-      //       text: 'Twitter',
-      //       link: 'https://twitter.com/vite_js'
-      //     },
-      //     {
-      //       text: 'Discord Chat',
-      //       link: 'https://chat.vitejs.dev'
-      //     },
-      //     {
-      //       text: 'Awesome Vite',
-      //       link: 'https://github.com/vitejs/awesome-vite'
-      //     },
-      //     {
-      //       text: 'DEV Community',
-      //       link: 'https://dev.to/t/vite'
-      //     },
-      //     {
-      //       text: 'Rollup Plugins Compat',
-      //       link: 'https://vite-rollup-plugins.patak.dev/'
-      //     },
-      //     {
-      //       text: 'Changelog',
-      //       link:
-      //         'https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md'
-      //     }
-      //   ]
-      // }
+      {
+        text: 'Support VueQuill',
+        items: [
+          {
+            text: 'Patreon',
+            link: 'https://www.patreon.com/luthfimasruri',
+          },
+          {
+            text: 'Buy me a coffee',
+            link: 'https://www.buymeacoffee.com/luthfimasruri',
+          },
+        ],
+      },
     ],
 
     sidebar: {

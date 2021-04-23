@@ -5,6 +5,16 @@ Modules allow Quill’s behavior and functionality to be customized. To enable a
 
 In this example I am gonna use [quill-blot-formatter](https://github.com/Fandom-OSS/quill-blot-formatter), a module for resizing and realigning images and iframe video.
 
+**Installation:**
+
+``` bash
+npm install --save quill-blot-formatter
+# OR
+yarn add quill-blot-formatter
+```
+
+**Usage:**
+
 ~~~ vue
 <template>
   <QuillEditor :modules="modules" toolbar="full" />

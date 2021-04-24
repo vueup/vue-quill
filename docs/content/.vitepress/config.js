@@ -18,7 +18,7 @@ module.exports = {
     repo: 'vueup/vue-quill',
     logo: '/logo.svg',
     docsDir: 'docs/content',
-    docsBranch: 'master',
+    docsBranch: 'beta',
     editLinks: true,
     editLinkText: 'Suggest changes to this page',
 

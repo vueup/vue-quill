@@ -1,1 +1,0 @@
-import{o as a,a as n,i as s}from"./app.48ac182a.js";const t='{"title":"#toolbar","description":"","frontmatter":{},"relativePath":"api/slots.md","lastUpdated":1619232380138}',p={},o=s('',3);p.render=function(s,t,p,l,c,e){return a(),n("div",null,[o])};export default p;export{t as __pageData};

@@ -22,10 +22,10 @@ module.exports = {
     editLinks: true,
     editLinkText: 'Suggest changes to this page',
 
-    // algolia: {
-    //   apiKey: 'b573aa848fd57fb47d693b531297403c',
-    //   indexName: 'vuequilldev'
-    // },
+    algolia: {
+      apiKey: '05a276b73b9dd064f0788b9669751f46',
+      indexName: 'vue-quill',
+    },
 
     // carbonAds: {
     //   carbon: 'CEBIEK3N',

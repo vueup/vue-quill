@@ -254,10 +254,7 @@ export const QuillEditor = defineComponent({
                   or use v-on:ready="onReady(quill)" event instead.`
     }
 
-    const getContents = (
-      index?: number | undefined,
-      length?: number | undefined
-    ) => {
+    const getContents = (index?: number, length?: number) => {
       if (props.contentType === 'html') {
         return getHTML()
       } else if (props.contentType === 'text') {
@@ -276,10 +273,7 @@ export const QuillEditor = defineComponent({
       }
     }
 
-    const getText = (
-      index?: number | undefined,
-      length?: number | undefined
-    ): string => {
+    const getText = (index?: number, length?: number): string => {
       return quill?.getText(index, length) ?? ''
     }
 

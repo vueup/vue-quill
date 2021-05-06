@@ -5,22 +5,21 @@
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
-import { QuillEditor, Delta, Module } from '@vueup/vue-quill'
+import { QuillEditor, Delta } from '@vueup/vue-quill'
 import BlotFormatter from 'quill-blot-formatter'
-import '@vueup/vue-quill/../dist/vue-quill.snow.css'
 
 export default defineComponent({
   components: {
     QuillEditor,
   },
   setup: () => {
-    const modules: Module = [
-      'blotFormatter',
-      BlotFormatter,
-      {
+    const modules = {
+      name: 'blotFormatter',
+      module: BlotFormatter,
+      options: {
         /* options */
       },
-    ]
+    }
     const content = ref<Delta>(
       new Delta([
         { insert: 'Gandalf', attributes: { bold: true } },

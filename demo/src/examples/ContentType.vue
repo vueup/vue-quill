@@ -11,7 +11,6 @@
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 import { QuillEditor, Delta } from '@vueup/vue-quill'
-import '@vueup/vue-quill/../dist/vue-quill.snow.css'
 
 export default defineComponent({
   components: {

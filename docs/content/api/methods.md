@@ -22,15 +22,16 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   Returns the Quill instance that backs the editor. While you can freely use this to access methods such as `getText()`, `focus()`, and much [more](https://quilljs.com/docs/api/).
 
-## getContents()
-  
+## getContents(index, length)
+
+- **Parameter:** `index?: number, length?: number`
 - **Return:** `content: string | Delta`
 
   Returns the contents of the editor.
 
-## setContents(content)
+## setContents(content, source)
 
-- **Parameter** `content: string | Delta`
+- **Parameter:** `content: string | Delta, source: 'api' | 'user' | 'silent'`
 
   To set the contents of the editor.
 
@@ -40,20 +41,21 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   Returns the full HTML contents of the editor.
 
-## setHTML(html)
+## setHTML(html, source)
 
-- **Parameter** `html: string`
+- **Parameter:** `html: string, source: 'api' | 'user' | 'silent'`
 
   To set the HTML contents of the editor.
   
-## getText()
+## getText(index, length)
   
+- **Parameter:** `index?: number, length?: number`
 - **Return:** `text: string`
 
   Returns the full text contents of the editor.
 
 ## setText(text)
 
-- **Parameter** `text: string`
+- **Parameter:** `text: string, source: 'api' | 'user' | 'silent'`
 
   To set the text contents of the editor.

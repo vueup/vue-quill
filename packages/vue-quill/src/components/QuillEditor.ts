@@ -254,39 +254,46 @@ export const QuillEditor = defineComponent({
                   or use v-on:ready="onReady(quill)" event instead.`
     }
 
-    const getContents = () => {
+    const getContents = (
+      index?: number | undefined,
+      length?: number | undefined
+    ) => {
       if (props.contentType === 'html') {
         return getHTML()
       } else if (props.contentType === 'text') {
-        return getText()
+        return getText(index, length)
       }
-      return quill?.getContents()
+      return quill?.getContents(index, length)
     }
 
-    const setContents = (content: string | Delta) => {
+    const setContents = (content: string | Delta, source: Sources = 'api') => {
       if (props.contentType === 'html') {
-        setHTML(content as string)
+        setHTML(content as string, source)
       } else if (props.contentType === 'text') {
-        setText(content as string)
+        setText(content as string, source)
       } else {
-        quill?.setContents(content as Delta)
+        quill?.setContents(content as Delta, source)
       }
     }
 
-    const getText = (): string => {
-      return quill?.getText() ?? ''
+    const getText = (
+      index?: number | undefined,
+      length?: number | undefined
+    ): string => {
+      return quill?.getText(index, length) ?? ''
     }
 
-    const setText = (text: string) => {
-      quill?.setText(text)
+    const setText = (text: string, source: Sources = 'api') => {
+      quill?.setText(text, source)
     }
 
     const getHTML = (): string => {
       return quill?.root.innerHTML ?? ''
     }
 
-    const setHTML = (html: string) => {
-      quill?.clipboard.dangerouslyPasteHTML(html)
+    const setHTML = (html: string, source: Sources = 'api') => {
+      const delta = quill?.clipboard.convert(html as {})
+      if (delta) quill?.setContents(delta, source)
     }
 
     const reinit = () => {

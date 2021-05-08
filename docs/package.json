@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
-    "@vueup/vue-quill": "^1.0.0-alpha.1",
+    "@vueup/vue-quill": "^1.0.0-beta.4",
     "quill-blot-formatter": "^1.0.5"
   }
 }

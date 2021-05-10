@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:vue/base',
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
@@ -34,6 +35,7 @@ module.exports = {
       rules: {
         quotes: ['error', 'single'],
         'vue/require-default-prop': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
       },
     },
     {

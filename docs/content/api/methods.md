@@ -41,12 +41,18 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   Returns the full HTML contents of the editor.
 
-## setHTML(html, source)
+## setHTML(html)
 
-- **Parameter:** `html: string, source: 'api' | 'user' | 'silent'`
+- **Parameter:** `html: string`
 
   To set the HTML contents of the editor.
   
+## pasteHTML(html, source)
+
+- **Parameter:** `html: string, source: 'api' | 'user' | 'silent'`
+
+  To import raw HTML from a non-Quill environment.
+
 ## getText(index, length)
   
 - **Parameter:** `index?: number, length?: number`

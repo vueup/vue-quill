@@ -265,7 +265,7 @@ export const QuillEditor = defineComponent({
 
     const setContents = (content: string | Delta, source: Sources = 'api') => {
       if (props.contentType === 'html') {
-        setHTML(content as string, source)
+        setHTML(content as string)
       } else if (props.contentType === 'text') {
         setText(content as string, source)
       } else {
@@ -285,7 +285,11 @@ export const QuillEditor = defineComponent({
       return quill?.root.innerHTML ?? ''
     }
 
-    const setHTML = (html: string, source: Sources = 'api') => {
+    const setHTML = (html: string) => {
+      if (quill) quill.root.innerHTML = html
+    }
+
+    const pasteHTML = (html: string, source: Sources = 'api') => {
       const delta = quill?.clipboard.convert(html as {})
       if (delta) quill?.setContents(delta, source)
     }
@@ -322,6 +326,7 @@ export const QuillEditor = defineComponent({
       setContents,
       getHTML,
       setHTML,
+      pasteHTML,
       getText,
       setText,
       reinit,

@@ -8,25 +8,26 @@
   Rich Text Editor Component for Vue 3.
 </h3>
 <p align="center">
-  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version">
+  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version" target="_blank" rel="noopener noreferrer">
     <img alt="npm (tag)" src="https://img.shields.io/npm/v/@vueup/vue-quill/beta">
   </a>
-  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License">
+  <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/npm/l/@vueup/vue-quill" alt="License">
   </a>
-  <a href="https://github.com/vueup/vue-quill" title="Checks">
+  <a href="https://github.com/vueup/vue-quill" title="Checks" target="_blank" rel="noopener noreferrer">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/vueup/vue-quill/Release%20package?logo=github">
   </a>
-  <a href="https://github.com/vueup/vue-quill" title="Last commit">
+  <a href="https://github.com/vueup/vue-quill" title="Last commit" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/github/last-commit/vueup/vue-quill?logo=github" alt="Last commit">
   </a>
- </p>
-
- [![Screenshot VueQuill Editor](https://user-images.githubusercontent.com/6185447/111898684-33761b00-8a5a-11eb-9458-372c0185f576.png)](https://vueup.github.io/vue-quill/#demo)
-
- <p align="center">
-  <a href="https://vueup.github.io/vue-quill/#demo" target="_blank" rel="noopener noreferrer">👀 See a Live Demo</a>
- </p>
+</p>
+<p align="center">
+  <a href="https://vueup.github.io/vue-quill/#demo" title="VueQuill Demo" target="_blank" rel="noopener noreferrer">
+    <img src="https://user-images.githubusercontent.com/6185447/111898684-33761b00-8a5a-11eb-9458-372c0185f576.png" alt="VueQuill Editor">
+  </a>
+  <br>
+  <a href="https://vueup.github.io/vue-quill/#demo" title="Live Demo" target="_blank" rel="noopener noreferrer">👀 See a Live Demo</a>
+</p>
 
 ## 🔎 Overview
 

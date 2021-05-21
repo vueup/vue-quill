@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+**Version**
+@vueup/vue-quill version [e.g. 1.0.0-beta.5]
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -20,8 +23,8 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Reproduction link**
+If available, add a link to the source code to help explain your problem.
 
 **Browser (please complete the following information):**
  - Browser [e.g. chrome, safari]

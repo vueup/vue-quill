@@ -51,7 +51,10 @@
     "assets:build": "npx ts-node scripts/buildAssets.ts",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
-    "docs:serve": "cd docs && npm run serve"
+    "docs:serve": "cd docs && npm run serve",
+    "demo:dev": "cd demo && npm run dev",
+    "demo:build": "cd demo && npm run build",
+    "demo:serve": "cd demo && npm run serve"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.8.1",

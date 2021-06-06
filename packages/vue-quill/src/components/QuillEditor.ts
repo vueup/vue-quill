@@ -302,13 +302,13 @@ export const QuillEditor = defineComponent({
       })
     }
 
-    watch(
-      () => props.content,
-      (newContent, oldContents) => {
-        if (!quill || !newContent || newContent === oldContents) return
-        setContents(newContent)
-      }
-    )
+    // watch(
+    //   () => props.content,
+    //   (newContent, oldContents) => {
+    //     if (!quill || !newContent || newContent === oldContents) return
+    //     setContents(newContent)
+    //   }
+    // )
 
     watch(
       () => props.enable,

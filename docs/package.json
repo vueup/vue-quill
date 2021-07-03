@@ -14,14 +14,14 @@
   "devDependencies": {
     "autoprefixer": "^10.2.6",
     "cross-env": "^7.0.3",
-    "postcss": "^8.3.0",
-    "tailwindcss": "^2.1.4",
+    "postcss": "^8.3.5",
+    "tailwindcss": "^2.2.4",
     "types-quill-delta": "^1.0.0",
-    "vitepress": "^0.14.0"
+    "vitepress": "^0.15.6"
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
-    "@vueup/vue-quill": "^1.0.0-beta.5",
+    "@vueup/vue-quill": "^1.0.0-beta.7",
     "quill-blot-formatter": "^1.0.5"
   }
 }

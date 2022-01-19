@@ -17,7 +17,7 @@
     "postcss": "^8.3.5",
     "tailwindcss": "^2.2.4",
     "types-quill-delta": "^1.0.0",
-    "vitepress": "^0.20.0"
+    "vitepress": "^0.21.6"
   },
   "dependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",

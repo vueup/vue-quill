@@ -15,7 +15,7 @@
     "removeComments": false,
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
-    "types": ["jest", "puppeteer", "node"],
+    "types": ["jest", "node"],
     "rootDir": ".",
     "paths": {
       "@vueup/*": ["packages/*/src"]

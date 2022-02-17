@@ -31,9 +31,13 @@
   const packageOptions = pkg.buildOptions
   const buildOutputPaths: string[] = []
   packageOptions.formats.forEach((format: string) => {
-    buildOutputPaths.push(path.resolve(pkgDir, 'dist', `${target}.${format}.js`))
+    buildOutputPaths.push(
+      path.resolve(pkgDir, 'dist', `${target}.${format}.js`)
+    )
     if (packageOptions.prod === false) return
-    buildOutputPaths.push(path.resolve(pkgDir, 'dist', `${target}.${format}.prod.js`))
+    buildOutputPaths.push(
+      path.resolve(pkgDir, 'dist', `${target}.${format}.prod.js`)
+    )
   })
   checkBuildFiles(`${target} builds`, buildOutputPaths)
 
@@ -63,7 +67,10 @@
   function checkBuildFile(target: string, buildPath: string) {
     try {
       if (fs.existsSync(buildPath)) {
-        logger.success(target, `✔  The file ${chalk.underline(buildPath)} exists.`)
+        logger.success(
+          target,
+          `✔  The file ${chalk.underline(buildPath)} exists.`
+        )
       } else {
         logger.error(
           target,
@@ -71,9 +78,9 @@
         )
         errors.push(`Missing file: ${buildPath}`)
       }
-    } catch (err) {
+    } catch (err: any) {
       logger.error(target, err)
-      errors.push(err)
+      errors.push(err.message || 'Unknown error')
     }
   }
 
@@ -97,9 +104,9 @@
         }
       }
       logger.list(target, `BUILD FILES`, buildResults)
-    } catch (err) {
+    } catch (err: any) {
       logger.error(target, err)
-      errors.push(err)
+      errors.push(err.message || 'Unknown error')
     }
   }
 })()

@@ -12,10 +12,6 @@
       "url": "https://www.buymeacoffee.com/luthfimasruri"
     }
   ],
-  "workspaces": [
-    "packages/*",
-    "demo"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/vueup/vue-quill.git"

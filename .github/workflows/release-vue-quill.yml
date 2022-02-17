@@ -27,4 +27,4 @@ jobs:
         run: npx ts-node ../../scripts/release.ts vue-quill
         env: 
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN}}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -171,7 +171,11 @@ export const QuillEditor = defineComponent({
           }
           return modulesOption
         })()
-        Object.assign(clientOptions.modules, modules)
+        clientOptions.modules = Object.assign(
+          {},
+          clientOptions.modules,
+          modules
+        )
       }
       return Object.assign(
         {},

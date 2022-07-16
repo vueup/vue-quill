@@ -1,9 +1,6 @@
-// @ts-check
+import { defineConfig } from 'vitepress'
 
-/**
- * @type {import('vitepress').UserConfig}
- */
-module.exports = {
+export default defineConfig({
   base: '/vue-quill/',
   lang: 'en-US',
   title: 'VueQuill',
@@ -15,22 +12,32 @@ module.exports = {
     ],
   ],
   themeConfig: {
-    repo: 'vueup/vue-quill',
     logo: '/logo.svg',
-    docsDir: 'docs/content',
-    docsBranch: 'beta',
-    editLinks: true,
-    editLinkText: 'Suggest changes to this page',
+    editLink: {
+      pattern:
+        'https://github.com/vueup/vue-quill/edit/beta/docs/content/:path',
+      text: 'Edit this page on GitHub',
+    },
 
     algolia: {
-      apiKey: '05a276b73b9dd064f0788b9669751f46',
+      appId: 'RG6O6WKY7G',
+      apiKey: '627e271ff72d4d685d49f21f5f25d425',
       indexName: 'vue-quill',
+      searchParameters: {
+        facetFilters: ['tags:en'],
+      },
     },
 
     // carbonAds: {
     //   carbon: 'CEBIEK3N',
     //   placement: 'vuequilldev'
     // },
+
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright:
+        'Copyright © 2020-present Luthfi Masruri & VueQuill Contributors',
+    },
 
     nav: [
       { text: 'Guide', link: '/guide/' },
@@ -53,13 +60,13 @@ module.exports = {
     ],
 
     sidebar: {
-      '/config/': 'auto',
-      '/plugins': 'auto',
+      // '/config/': 'auto',
+      // '/plugins': 'auto',
       // catch-all fallback
       '/': [
         {
           text: 'Guide',
-          children: [
+          items: [
             {
               text: 'Introduction',
               link: '/guide/',
@@ -92,7 +99,7 @@ module.exports = {
         },
         {
           text: 'APIs',
-          children: [
+          items: [
             {
               text: 'Props',
               link: '/api/',
@@ -118,4 +125,4 @@ module.exports = {
       ],
     },
   },
-}
+})

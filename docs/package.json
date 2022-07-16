@@ -8,20 +8,20 @@
     "build": "cross-env NODE_ENV=production vitepress build content",
     "serve": "cross-env NODE_ENV=production vitepress serve content"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.2",
+    "@tailwindcss/forms": "^0.5.2",
+    "autoprefixer": "^10.4.7",
     "cross-env": "^7.0.3",
-    "postcss": "^8.4.6",
-    "tailwindcss": "^2.2.4",
+    "postcss-import": "^14.1.0",
+    "tailwindcss": "^3.1.6",
     "types-quill-delta": "^1.0.0",
-    "vitepress": "^0.22.2"
+    "vitepress": "^1.0.0-alpha.4",
+    "vue": "^3.2.37"
   },
   "dependencies": {
-    "@tailwindcss/custom-forms": "^0.2.1",
-    "@vueup/vue-quill": "^1.0.0-beta.7",
+    "@vueup/vue-quill": "^1.0.0-beta.9",
     "quill-blot-formatter": "^1.0.5"
   }
 }

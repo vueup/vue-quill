@@ -41,39 +41,28 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, watch, ref } from 'vue'
-import VOptions from '../VOptions.vue'
+import VOptions from './VOptions.vue'
 import { deltaContent } from './delta-content'
 
-export default defineComponent({
-  components: { VOptions },
-  setup: () => {
-    const myEditor = ref()
-    const myContent = ref(deltaContent)
+const myEditor = ref()
+const myContent = ref(deltaContent)
 
-    // ============ OPTIONS =====================
-    const selectedTheme = ref<string>('snow')
-    const selectedToolbar = ref<string>('essential')
+// ============ OPTIONS =====================
+const selectedTheme = ref<string>('snow')
+const selectedToolbar = ref<string>('essential')
 
-    watch([selectedTheme, selectedToolbar], () => {
-      myEditor.value.reinit()
-    })
-
-    return {
-      selectedTheme,
-      selectedToolbar,
-      // handleReady,
-      // ---------------
-      myEditor,
-      myContent,
-    }
-  },
+watch([selectedTheme, selectedToolbar], () => {
+  myEditor.value.reinit()
 })
 </script>
 
 <style>
 .ql-editor h2 {
   border: none;
+}
+img {
+  display: inline-block !important; 
 }
 </style>

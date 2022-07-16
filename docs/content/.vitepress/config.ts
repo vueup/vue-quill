@@ -19,14 +19,14 @@ export default defineConfig({
       text: 'Edit this page on GitHub',
     },
 
-    algolia: {
-      appId: 'RG6O6WKY7G',
-      apiKey: '627e271ff72d4d685d49f21f5f25d425',
-      indexName: 'vue-quill',
-      searchParameters: {
-        facetFilters: ['tags:en'],
-      },
-    },
+    // algolia: {
+    //   appId: 'RG6O6WKY7G',
+    //   apiKey: '627e271ff72d4d685d49f21f5f25d425',
+    //   indexName: 'vue-quill',
+    //   searchParameters: {
+    //     facetFilters: ['tags:en'],
+    //   },
+    // },
 
     // carbonAds: {
     //   carbon: 'CEBIEK3N',

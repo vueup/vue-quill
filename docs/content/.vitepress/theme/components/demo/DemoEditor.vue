@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { defineComponent, watch, ref } from 'vue'
+import VOptions from './VOptions.vue'
+import { deltaContent } from './delta-content'
+
+const myEditor = ref()
+const myContent = ref(deltaContent)
+
+// ============ OPTIONS =====================
+const selectedTheme = ref<string>('snow')
+const selectedToolbar = ref<string>('essential')
+
+watch([selectedTheme, selectedToolbar], () => {
+  myEditor.value.reinit()
+})
+</script>
+
 <template>
   <div class="flex flex-col md:flex-row md:gap-3">
     <!-- Theme and Toolbar menu -->
@@ -40,23 +57,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { defineComponent, watch, ref } from 'vue'
-import VOptions from './VOptions.vue'
-import { deltaContent } from './delta-content'
-
-const myEditor = ref()
-const myContent = ref(deltaContent)
-
-// ============ OPTIONS =====================
-const selectedTheme = ref<string>('snow')
-const selectedToolbar = ref<string>('essential')
-
-watch([selectedTheme, selectedToolbar], () => {
-  myEditor.value.reinit()
-})
-</script>
 
 <style>
 .ql-editor h2 {

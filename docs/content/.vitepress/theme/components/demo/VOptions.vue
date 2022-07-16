@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+const props = defineProps({
+  selected: {
+    type: String,
+  },
+  name: {
+    type: String,
+    required: true,
+    default: 'option',
+  },
+  options: {
+    type: Array,
+    default: [{ value: '1', label: 'Option 1' }],
+  },
+})
+
+const emit = defineEmits(['update:selected'])
+
+const localValue = computed({
+  get: () => props.selected,
+  set: (value) => emit('update:selected', value),
+})
+</script>
+
 <template>
   <div v-for="(option, index) in options" :key="index">
     <label class="inline-flex items-center cursor-pointer w-full">
@@ -10,37 +35,7 @@
         :checked="option.value === localValue"
         v-model="localValue"
       />
-      <span class="ml-1">{{ option.label }}</span>
+      <span class="ml-2">{{ option.label }}</span>
     </label>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from "vue";
-export default defineComponent({
-  props: {
-    selected: {
-      type: String,
-    },
-    name: {
-      type: String,
-      required: true,
-      default: "option",
-    },
-    options: {
-      type: Array,
-      default: [{ value: "1", label: "Option 1" }],
-    },
-  },
-  emits: ["update:selected"],
-  setup: (props, ctx) => {
-    const localValue = computed({
-      get: () => props.selected,
-      set: (value) => ctx.emit("update:selected", value),
-    });
-    return {
-      localValue,
-    };
-  },
-});
-</script>

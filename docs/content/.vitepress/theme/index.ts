@@ -7,9 +7,8 @@ import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles
 import '@vueup/vue-quill/dist/vue-quill.bubble.css' // for bubble theme
 import '@vueup/vue-quill/dist/vue-quill.snow.css' // for snow theme
 
-import './styles/base.css'
 import './styles/tailwind.css'
-import './styles/sponsors.css'
+import './styles/vars.css'
 // import './styles/custom.css'
 
 export default {
@@ -18,7 +17,6 @@ export default {
     // custom router. `siteData`` is a `ref`` of current site-level metadata.
     app.component('QuillEditor', QuillEditor)
   },
-  // NotFound: () => 'custom 404', // <- this is a Vue 3 functional component
   ...Theme,
   Layout() {
     return h(Theme.Layout, null, {

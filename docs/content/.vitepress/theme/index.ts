@@ -1,15 +1,20 @@
-import { h } from 'vue'
+import { h, defineAsyncComponent } from 'vue'
 import Theme from 'vitepress/theme'
 import HomeDemo from './components/HomeDemo.vue'
-
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles
-import '@vueup/vue-quill/dist/vue-quill.bubble.css' // for bubble theme
-import '@vueup/vue-quill/dist/vue-quill.snow.css' // for snow theme
+import Loading from './components/Loading.vue'
 
 import './styles/tailwind.css'
 import './styles/vars.css'
-// import './styles/custom.css'
+
+const QuillEditor = defineAsyncComponent({
+  loader: () =>
+    import('@vueup/vue-quill').then((VueQuill) => VueQuill.QuillEditor),
+  loadingComponent: Loading,
+})
+
+import '@vueup/vue-quill/dist/vue-quill.core.css' // import styles
+import '@vueup/vue-quill/dist/vue-quill.bubble.css' // for bubble theme
+import '@vueup/vue-quill/dist/vue-quill.snow.css' // for snow theme
 
 export default {
   enhanceApp({ app, router, siteData }) {

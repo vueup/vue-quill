@@ -1,1 +1,0 @@
-import{_ as e,c as s,o as t,a}from"./app.cc4bae79.js";const k='{"title":"Themes","description":"","frontmatter":{},"headers":[],"relativePath":"guide/themes.md"}',n={},o=a("",7),p=[o];function l(c,i,u,r,d,h){return t(),s("div",null,p)}var _=e(n,[["render",l]]);export{k as __pageData,_ as default};

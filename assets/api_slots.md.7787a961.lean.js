@@ -1,1 +1,0 @@
-import{_ as a,c as n,o as s,a as t}from"./app.cc4bae79.js";const _='{"title":"#toolbar","description":"","frontmatter":{},"headers":[],"relativePath":"api/slots.md"}',p={},o=t("",3),c=[o];function e(l,u,k,i,r,g){return s(),n("div",null,c)}var m=a(p,[["render",e]]);export{_ as __pageData,m as default};

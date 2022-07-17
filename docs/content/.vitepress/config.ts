@@ -23,9 +23,7 @@ export default defineConfig({
       appId: 'RG6O6WKY7G',
       apiKey: 'ba3e7aed5d4dbfaca6d0d1c427af79dc',
       indexName: 'vue-quill',
-      searchParameters: {
-        facetFilters: ['tags:en'],
-      },
+      searchParameters: {},
     },
 
     // carbonAds: {

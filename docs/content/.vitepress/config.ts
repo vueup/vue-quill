@@ -21,7 +21,7 @@ export default defineConfig({
 
     algolia: {
       appId: 'RG6O6WKY7G',
-      apiKey: '627e271ff72d4d685d49f21f5f25d425',
+      apiKey: 'ba3e7aed5d4dbfaca6d0d1c427af79dc',
       indexName: 'vue-quill',
       searchParameters: {
         facetFilters: ['tags:en'],

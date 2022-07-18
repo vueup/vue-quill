@@ -41,8 +41,6 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API Reference', link: '/api/' },
-      // { text: 'Config', link: '/config/' },
-      // { text: 'Plugins', link: '/plugins/' },
       {
         text: 'Support VueQuill',
         items: [

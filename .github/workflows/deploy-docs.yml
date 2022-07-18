@@ -26,6 +26,9 @@ jobs:
         run: |
           npm ci
           npm run build
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:

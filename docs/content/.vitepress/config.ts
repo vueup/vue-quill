@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
@@ -20,8 +21,8 @@ export default defineConfig({
     },
 
     algolia: {
-      appId: 'RG6O6WKY7G',
-      apiKey: 'ba3e7aed5d4dbfaca6d0d1c427af79dc',
+      appId: process.env.ALGOLIA_APP_ID as string,
+      apiKey: process.env.ALGOLIA_SEARCH_KEY as string,
       indexName: 'vue-quill',
       searchParameters: {},
     },

@@ -1,8 +1,10 @@
-node_modules
-.DS_Store
-.debug
 dist
-dist-ssr
-*.local
-dummy/assets
-src/themes/css
+.DS_Store
+node_modules
+coverage
+temp
+explorations
+TODOs.md
+*.log
+.env
+.nuxt

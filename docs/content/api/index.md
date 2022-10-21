@@ -5,17 +5,27 @@
 - **Default:** `{}`
 - **Return:** `Delta`
   
-  Two-way binding editor content, can be plain `string` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+  Two-way binding editor content, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
   
   ::: warning
-  If you use `string` as a value, it will be converted into `Delta` object immediately.
+  Your content and content type must match, if you want to use `html` as your content you must set your `contentType` to `html`, as well as `text`.
   :::
 
 ## content
 - **Type:** `Delta | String`
 - **Default:** `{}`
 
-  Contents for the editor, can be plain `string` or `Delta` object, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+  Contents for the editor, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+
+## contentType
+- **Type:** `"delta" | "html" | "text"`
+- **Default:** `delta`
+
+  VueQuill supports three content type `delta`, `html`, and `text`, and make sure to set contentType if you want to use `html` or plain `text` as your content.
+
+  ::: tip
+  Use `delta` (default value) content type to prevent issues and is the best practice.
+  :::
 
 ## enable
 - **Type:** `Boolean`
@@ -43,7 +53,12 @@
 ## toolbar
 - **Type:** `String | Array | Object`
 
-  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) seection for more details.
+  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) section for more details.
+
+## modules
+- **Type:** `Object | Object[]`
+
+  Options to register modules, see [Modules](../guide/modules.md) section for more details.
 
 ## options
 - **Type:** `Object`
@@ -63,7 +78,7 @@
 
   ~~~ js
   import { createApp } from 'vue'
-  import QuillEditor from '@vueup/vue-quill'
+  import { QuillEditor } from '@vueup/vue-quill'
 
   const app = createApp()
   // define your options

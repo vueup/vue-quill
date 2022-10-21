@@ -1,34 +1,30 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "sourceMap": false,
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": false,
     "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    // "declaration": true,
-    // "declarationMap": true,
-    // "emitDeclarationOnly": true,
-    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types",
-    ],
-    "types": [
-      "vite/client",
-      "node"
-    ]
+    "removeComments": false,
+    "jsx": "preserve",
+    "lib": ["ESNext", "DOM"],
+    "types": ["jest", "node"],
+    "rootDir": ".",
+    "paths": {
+      "@vueup/*": ["packages/*/src"]
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "packages/global.d.ts",
+    "packages/*/src",
+    "packages/*/__tests__",
+    "test-dts"
   ]
 }

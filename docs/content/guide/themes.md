@@ -14,13 +14,10 @@ import '@vueup/vue-quill/dist/vue-quill.bubble.css';
 
 These stylesheets can be found in the Quill distribution, but for convenience, they are also linked in VueQuill's `dist` folder.
 
-Then, pass the name of the theme to the [`theme prop`](../api/props.md).
+Then, pass the name of the theme to the [`theme prop`](../api/index.md).
 
 ~~~ vue
 <template>
   <QuillEditor theme="snow" .../>
-
-  <!-- you can bind :theme and it will automatically re render when its value change -->
-  <QuillEditor :theme="value" .../>
 </template>
 ~~~

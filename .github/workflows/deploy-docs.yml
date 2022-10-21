@@ -4,6 +4,8 @@ on:
   push: 
     branches: 
       - master
+      - beta
+      - alpha
     paths:
       - 'docs/**'
 
@@ -12,16 +14,21 @@ jobs:
     name: Build and deploy
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with: 
           node-version: '14.x'
       - run: npm ci
+      - working-directory: packages/vue-quill
+        run: npm ci
       - name: Build docs
         working-directory: docs
         run: |
           npm ci
           npm run build
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:

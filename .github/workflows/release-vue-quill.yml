@@ -1,5 +1,5 @@
 name: Release @vueup/vue-quill
-# test on push to beta branch
+
 on: 
   push: 
     branches: 

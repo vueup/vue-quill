@@ -16,11 +16,12 @@ import {
   PropType,
   watch,
   ref,
+  shallowRef,
   h,
 } from 'vue'
 import { toolbarOptions, ToolbarOptions } from './options'
 
-export type Module = { name: string; module: any; options?: object }
+export type Module = { name: string; module: unknown; options?: object }
 
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
@@ -161,7 +162,7 @@ export const QuillEditor = defineComponent({
       }
       if (props.modules) {
         const modules = (() => {
-          const modulesOption: { [key: string]: any } = {}
+          const modulesOption: { [key: string]: unknown } = {}
           if (Array.isArray(props.modules)) {
             for (const module of props.modules) {
               modulesOption[module.name] = module.options ?? {}
@@ -185,13 +186,32 @@ export const QuillEditor = defineComponent({
       )
     }
 
+    const internalModel = shallowRef(props.content)
+    const internalModelEquals = (against: Delta | String | undefined) => {
+      if (typeof internalModel.value === typeof against) {
+        if (against === internalModel.value) {
+          return true
+        }
+        if (against instanceof Delta && internalModel.value instanceof Delta) {
+          return internalModel.value.diff(against).length() > 0
+        }
+      }
+      return false
+    }
     const handleTextChange: TextChangeHandler = (
       delta: Delta,
       oldContents: Delta,
       source: Sources
     ) => {
-      // Update v-model:content when text changes
-      ctx.emit('update:content', getContents())
+      const content = getContents()
+      if (content) {
+        // Quill should never be null at this point, so content should not be undefined but let's make ts happy
+        internalModel.value = content
+        // Update v-model:content when text changes
+        if (!internalModelEquals(props.content)) {
+          ctx.emit('update:content', internalModel.value)
+        }
+      }
       ctx.emit('textChange', { delta, oldContents, source })
     }
 
@@ -202,7 +222,7 @@ export const QuillEditor = defineComponent({
       source: Sources
     ) => {
       // Set isEditorFocus if quill.hasFocus()
-      isEditorFocus.value = quill?.hasFocus() ? true : false
+      isEditorFocus.value = !!quill?.hasFocus()
       ctx.emit('selectionChange', { range, oldRange, source })
     }
 
@@ -306,13 +326,20 @@ export const QuillEditor = defineComponent({
       })
     }
 
-    // watch(
-    //   () => props.content,
-    //   (newContent, oldContents) => {
-    //     if (!quill || !newContent || newContent === oldContents) return
-    //     setContents(newContent)
-    //   }
-    // )
+    watch(
+      () => props.content,
+      (newContent) => {
+        if (!quill || !newContent || internalModelEquals(newContent)) return
+
+        internalModel.value = newContent
+        // Restore the selection and cursor position after updating the content
+        const selection = quill.getSelection()
+        if (selection) {
+          nextTick(() => quill?.setSelection(selection))
+        }
+        setContents(newContent)
+      }
+    )
 
     watch(
       () => props.enable,

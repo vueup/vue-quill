@@ -16,7 +16,6 @@ import {
   PropType,
   watch,
   ref,
-  shallowRef,
   h,
 } from 'vue'
 import { toolbarOptions, ToolbarOptions } from './options'
@@ -186,18 +185,29 @@ export const QuillEditor = defineComponent({
       )
     }
 
-    const internalModel = shallowRef(props.content)
+    const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
+      return Object.values(delta).some((v) => !v.retain)
+    }
+
+    const internalModel = ref(props.content)
     const internalModelEquals = (against: Delta | String | undefined) => {
       if (typeof internalModel.value === typeof against) {
         if (against === internalModel.value) {
           return true
         }
-        if (against instanceof Delta && internalModel.value instanceof Delta) {
-          return internalModel.value.diff(against).length() > 0
+        // Ref/Proxy does not support instanceof, so do a loose check
+        if (
+          typeof against === 'object' &&
+          typeof internalModel.value === 'object'
+        ) {
+          return !deltaHasValuesOtherThanRetain(
+            internalModel.value.diff(against as Delta)
+          )
         }
       }
       return false
     }
+
     const handleTextChange: TextChangeHandler = (
       delta: Delta,
       oldContents: Delta,

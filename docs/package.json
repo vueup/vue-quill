@@ -15,7 +15,7 @@
     "autoprefixer": "^10.4.7",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
-    "postcss-import": "^14.1.0",
+    "postcss-import": "^15.0.1",
     "tailwindcss": "^3.1.6",
     "types-quill-delta": "^1.0.0",
     "vitepress": "^1.0.0-alpha.4",

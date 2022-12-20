@@ -9,16 +9,19 @@
 </h3>
 <p align="center">
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version" target="_blank" rel="noopener noreferrer">
-    <img alt="npm (tag)" src="https://img.shields.io/npm/v/@vueup/vue-quill/beta">
+    <img alt="npm (tag)" src="https://img.shields.io/npm/v/@vueup/vue-quill">
   </a>
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="License" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/npm/l/@vueup/vue-quill" alt="License">
   </a>
-  <a href="https://github.com/vueup/vue-quill" title="Checks" target="_blank" rel="noopener noreferrer">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/vueup/vue-quill/Release%20package?logo=github">
+  <a href="https://github.com/vueup/vue-quill/actions" title="Checks" target="_blank" rel="noopener noreferrer">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/vueup/vue-quill/release-vue-quill.yml?branch=master&logo=github">
   </a>
   <a href="https://github.com/vueup/vue-quill" title="Last commit" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/github/last-commit/vueup/vue-quill?logo=github" alt="Last commit">
+  </a>
+  <a href="https://github.com/vueup/vue-quill" title="Github Repo Stars" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/github/stars/vueup/vue-quill?style=social" alt="Github Repo Stars">
   </a>
 </p>
 <p align="center">

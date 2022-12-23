@@ -1,6 +1,11 @@
 import 'dotenv/config'
 import { defineConfig } from 'vitepress'
 
+const ogDescription = 'VueQuill Rich Text Editor for Vue 3'
+const ogImage = 'https://vueup.github.io/vue-quill/og-image.png'
+const ogTitle = 'VueQuill'
+const ogUrl = 'https://vueup.github.io/vue-quill/'
+
 export default defineConfig({
   base: '/vue-quill/',
   lang: 'en-US',
@@ -11,6 +16,13 @@ export default defineConfig({
       'link',
       { rel: 'icon', type: 'image/svg+xml', href: '/vue-quill/logo.svg' },
     ],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:title', content: ogTitle }],
+    ['meta', { property: 'og:image', content: ogImage }],
+    ['meta', { property: 'og:url', content: ogUrl }],
+    ['meta', { property: 'og:description', content: ogDescription }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'theme-color', content: '#6279f4' }],
   ],
   themeConfig: {
     logo: '/logo.svg',

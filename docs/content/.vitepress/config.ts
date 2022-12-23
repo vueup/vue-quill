@@ -14,11 +14,16 @@ export default defineConfig({
   ],
   themeConfig: {
     logo: '/logo.svg',
+
     editLink: {
       pattern:
         'https://github.com/vueup/vue-quill/edit/beta/docs/content/:path',
       text: 'Edit this page on GitHub',
     },
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/vueup/vue-quill' },
+    ],
 
     algolia: {
       appId: process.env.ALGOLIA_APP_ID as string,

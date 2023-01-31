@@ -13,15 +13,10 @@ export default defineComponent({
   },
   setup: () => {
     const content = ref<Delta>(
-      new Delta([
-        { insert: 'Gandalf', attributes: { bold: true } },
-        { insert: ' the ' },
-        { insert: 'Grey', attributes: { color: '#ccc' } },
-      ])
+      new Delta()
     )
 
     return { content }
   },
 })
 </script>
-

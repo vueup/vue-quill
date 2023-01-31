@@ -186,7 +186,7 @@ export const QuillEditor = defineComponent({
     }
 
     const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
-      return Object.values(delta).some((v) => !v.retain)
+      return Object.values(delta.ops).some((v) => !v.retain)
     }
 
     // eslint-disable-next-line vue/no-setup-props-destructure

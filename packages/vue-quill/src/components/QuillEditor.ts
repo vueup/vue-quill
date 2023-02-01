@@ -215,10 +215,7 @@ export const QuillEditor = defineComponent({
       oldContents: Delta,
       source: Sources
     ) => {
-      // Quill should never be null at this point because we receive an event
-      // so content should not be undefined but let's make ts and eslint happy
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      internalModel = maybeClone(getContents()!)
+      internalModel = maybeClone(getContents() as string | Delta)
       // Update v-model:content when text changes
       if (!internalModelEquals(props.content)) {
         ctx.emit('update:content', internalModel)

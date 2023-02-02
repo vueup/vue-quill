@@ -190,7 +190,9 @@ export const QuillEditor = defineComponent({
     }
 
     const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
-      return Object.values(delta.ops).some((v) => !v.retain)
+      return Object.values(delta.ops).some(
+        (v) => !v.retain || Object.keys(v).length !== 1
+      )
     }
 
     // Doesn't need reactivity, but does need to be cloned to avoid deep mutations always registering as equal

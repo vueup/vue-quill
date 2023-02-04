@@ -50,10 +50,12 @@ export default defineComponent({
       ]);
       contentHTML.value = '<h3>This is a different HTML header</h3>';
       contentText.value = 'This is some more plain text';
+
+      setTimeout(() =>
+          contentDelta.value.insert('\n I am also deeply reactive and a ref update works'), 200)
     }
 
     return { contentDelta, contentHTML, contentText, update }
   },
 })
 </script>
-

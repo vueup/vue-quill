@@ -185,12 +185,18 @@ export const QuillEditor = defineComponent({
       )
     }
 
-    const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
-      return Object.values(delta).some((v) => !v.retain)
+    const maybeClone = (delta: Delta | string) => {
+      return typeof delta === 'object' ? delta.slice() : delta
     }
 
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    let internalModel = props.content // Doesn't need reactivity
+    const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
+      return Object.values(delta.ops).some(
+        (v) => !v.retain || Object.keys(v).length !== 1
+      )
+    }
+
+    // Doesn't need reactivity, but does need to be cloned to avoid deep mutations always registering as equal
+    let internalModel: typeof props.content
     const internalModelEquals = (against: Delta | String | undefined) => {
       if (typeof internalModel === typeof against) {
         if (against === internalModel) {
@@ -211,10 +217,7 @@ export const QuillEditor = defineComponent({
       oldContents: Delta,
       source: Sources
     ) => {
-      // Quill should never be null at this point because we receive an event
-      // so content should not be undefined but let's make ts and eslint happy
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      internalModel = getContents()!
+      internalModel = maybeClone(getContents() as string | Delta)
       // Update v-model:content when text changes
       if (!internalModelEquals(props.content)) {
         ctx.emit('update:content', internalModel)
@@ -302,6 +305,7 @@ export const QuillEditor = defineComponent({
       } else {
         quill?.setContents(content as Delta, source)
       }
+      internalModel = maybeClone(content)
     }
 
     const getText = (index?: number, length?: number): string => {
@@ -338,14 +342,14 @@ export const QuillEditor = defineComponent({
       (newContent) => {
         if (!quill || !newContent || internalModelEquals(newContent)) return
 
-        internalModel = newContent
         // Restore the selection and cursor position after updating the content
         const selection = quill.getSelection()
         if (selection) {
           nextTick(() => quill?.setSelection(selection))
         }
         setContents(newContent)
-      }
+      },
+      { deep: true }
     )
 
     watch(

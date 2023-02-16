@@ -22,13 +22,14 @@ import { toolbarOptions, ToolbarOptions } from './options'
 
 export type Module = { name: string; module: unknown; options?: object }
 
+type ContentPropType = string | Delta | undefined | null
+
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
   inheritAttrs: false,
   props: {
     content: {
-      type: [String, Object] as PropType<string | Delta>,
-      default: () => {},
+      type: [String, Object] as PropType<ContentPropType>,
     },
     contentType: {
       type: String as PropType<'delta' | 'html' | 'text'>,
@@ -185,8 +186,8 @@ export const QuillEditor = defineComponent({
       )
     }
 
-    const maybeClone = (delta: Delta | string) => {
-      return typeof delta === 'object' ? delta.slice() : delta
+    const maybeClone = (delta: ContentPropType) => {
+      return typeof delta === 'object' && delta ? delta.slice() : delta
     }
 
     const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
@@ -197,13 +198,18 @@ export const QuillEditor = defineComponent({
 
     // Doesn't need reactivity, but does need to be cloned to avoid deep mutations always registering as equal
     let internalModel: typeof props.content
-    const internalModelEquals = (against: Delta | String | undefined) => {
+    const internalModelEquals = (against: ContentPropType) => {
       if (typeof internalModel === typeof against) {
         if (against === internalModel) {
           return true
         }
         // Ref/Proxy does not support instanceof, so do a loose check
-        if (typeof against === 'object' && typeof internalModel === 'object') {
+        if (
+          typeof against === 'object' &&
+          against &&
+          typeof internalModel === 'object' &&
+          internalModel
+        ) {
           return !deltaHasValuesOtherThanRetain(
             internalModel.diff(against as Delta)
           )
@@ -297,15 +303,20 @@ export const QuillEditor = defineComponent({
       return quill?.getContents(index, length)
     }
 
-    const setContents = (content: string | Delta, source: Sources = 'api') => {
+    const setContents = (content: ContentPropType, source: Sources = 'api') => {
+      const normalizedContent = !content
+        ? props.contentType === 'delta'
+          ? new Delta()
+          : ''
+        : content
       if (props.contentType === 'html') {
-        setHTML(content as string)
+        setHTML(normalizedContent as string)
       } else if (props.contentType === 'text') {
-        setText(content as string, source)
+        setText(normalizedContent as string, source)
       } else {
-        quill?.setContents(content as Delta, source)
+        quill?.setContents(normalizedContent as Delta, source)
       }
-      internalModel = maybeClone(content)
+      internalModel = maybeClone(normalizedContent)
     }
 
     const getText = (index?: number, length?: number): string => {

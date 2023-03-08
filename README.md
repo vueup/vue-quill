@@ -40,8 +40,6 @@
 - 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
 
-> 🚀 **VueQuill** is in **@beta** version! Currently the focus is on making VueQuill stable and feature complete first. Some of its features are not "finalized" and will have breaking changes over time as we discover better solutions.
-
 ## 📚 Documentation
 
 - **[📘 Guide](https://vueup.github.io/vue-quill/guide/)**
@@ -64,7 +62,7 @@
 
 - [x] Release `alpha` version
 - [x] Release `beta` version
-- [ ] Stable `v1.0.0` release
+- [x] Stable `v1.0.0` release
 - [x] Enhance Typescript support with Vue 3
 - [ ] Update the Documentation with more examples and more information
 

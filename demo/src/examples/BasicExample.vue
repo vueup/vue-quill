@@ -12,9 +12,7 @@ export default defineComponent({
     QuillEditor,
   },
   setup: () => {
-    const content = ref<Delta>(
-      new Delta()
-    )
+    const content = ref<Delta | null>(null)
 
     return { content }
   },

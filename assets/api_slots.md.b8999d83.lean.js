@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as l,a as n}from"./app.ba9adc2e.js";const C=JSON.parse('{"title":"#toolbar","description":"","frontmatter":{},"headers":[],"relativePath":"api/slots.md"}'),o={name:"api/slots.md"},p=n("",3),t=[p];function e(c,r,D,F,y,i){return a(),l("div",null,t)}const d=s(o,[["render",e]]);export{C as __pageData,d as default};

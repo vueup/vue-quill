@@ -62,6 +62,6 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
 ## setText(text)
 
-- **Parameter:** `text: string, source: 'api' | 'user' | 'silent'`
+- **Parameter:** `text: string`
 
   To set the text contents of the editor.

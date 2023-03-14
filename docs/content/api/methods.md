@@ -60,8 +60,8 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   Returns the full text contents of the editor.
 
-## setText(text)
+## setText(text, source)
 
-- **Parameter:** `text: string`
+- **Parameter:** `text: string, source?: 'api' | 'user' | 'silent'`
 
   To set the text contents of the editor.

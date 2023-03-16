@@ -2,7 +2,6 @@
 
 ## v-model:content
 - **Type:** `Delta | String`
-- **Default:** `{}`
 - **Return:** `Delta`
   
   Two-way binding editor content, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
@@ -13,7 +12,6 @@
 
 ## content
 - **Type:** `Delta | String`
-- **Default:** `{}`
 
   Contents for the editor, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
 

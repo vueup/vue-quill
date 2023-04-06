@@ -104,6 +104,14 @@ export const QuillEditor = defineComponent({
     let options: QuillOptionsStatic
     const editor = ref<Element>()
 
+    // Register Module if not already registered
+    const registerModule = (moduleName: string, module: unknown) => {
+      if (Quill?.imports && moduleName in Quill.imports) {
+        return
+      }
+      Quill.register(moduleName, module)
+    }
+
     // Initialize Quill
     const initialize = () => {
       if (!editor.value) return
@@ -112,10 +120,10 @@ export const QuillEditor = defineComponent({
       if (props.modules) {
         if (Array.isArray(props.modules)) {
           for (const module of props.modules) {
-            Quill.register(`modules/${module.name}`, module.module)
+            registerModule(`modules/${module.name}`, module.module)
           }
         } else {
-          Quill.register(`modules/${props.modules.name}`, props.modules.module)
+          registerModule(`modules/${props.modules.name}`, props.modules.module)
         }
       }
       // Create new Quill instance

@@ -289,7 +289,7 @@ export const QuillEditor = defineComponent({
     const getQuill = (): Quill => {
       if (quill) return quill
       else
-        throw `The quill editor hasn't been instantiated yet, 
+        throw `The quill editor hasn't been instantiated yet,
                   make sure to call this method when the editor ready
                   or use v-on:ready="onReady(quill)" event instead.`
     }
@@ -340,6 +340,10 @@ export const QuillEditor = defineComponent({
       if (delta) quill?.setContents(delta, source)
     }
 
+    const focus = () => {
+      quill?.focus()
+    }
+
     const reinit = () => {
       nextTick(() => {
         if (!ctx.slots.toolbar && quill)
@@ -380,6 +384,7 @@ export const QuillEditor = defineComponent({
       getHTML,
       setHTML,
       pasteHTML,
+      focus,
       getText,
       setText,
       reinit,

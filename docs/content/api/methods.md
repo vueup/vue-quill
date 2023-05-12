@@ -53,6 +53,10 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   To import raw HTML from a non-Quill environment.
 
+  ## focus()
+
+  Focuses the editor.
+
 ## getText(index, length)
   
 - **Parameter:** `index?: number, length?: number`

@@ -1,0 +1,1 @@
+import{_ as s,o,c as a,R as l}from"./chunks/framework.ddd7a9a9.js";const d=JSON.parse('{"title":"Toolbar","description":"","frontmatter":{},"headers":[],"relativePath":"guide/toolbar.md","filePath":"guide/toolbar.md"}'),n={name:"guide/toolbar.md"},t=l("",15),p=[t];function e(r,c,D,F,y,i){return o(),a("div",null,p)}const C=s(n,[["render",e]]);export{d as __pageData,C as default};

@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as l,R as o}from"./chunks/framework.ddd7a9a9.js";const C=JSON.parse('{"title":"#toolbar","description":"","frontmatter":{},"headers":[],"relativePath":"api/slots.md","filePath":"api/slots.md"}'),n={name:"api/slots.md"},p=o("",3),t=[p];function e(c,r,D,F,y,i){return a(),l("div",null,t)}const d=s(n,[["render",e]]);export{C as __pageData,d as default};

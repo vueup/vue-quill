@@ -318,7 +318,7 @@ export const QuillEditor = defineComponent({
           : ''
         : content
       if (props.contentType === 'html') {
-        setHTML(normalizedContent as string)
+        pasteHTML(normalizedContent as string)
       } else if (props.contentType === 'text') {
         setText(normalizedContent as string, source)
       } else {

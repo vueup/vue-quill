@@ -143,6 +143,7 @@ export const QuillEditor = defineComponent({
         ?.container.addEventListener('mousedown', (e: MouseEvent) => {
           e.preventDefault()
         })
+      quill.enable(props.enable)
       // Emit ready event
       ctx.emit('ready', quill)
     }

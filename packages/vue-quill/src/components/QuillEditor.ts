@@ -186,6 +186,9 @@ export const QuillEditor = defineComponent({
           modules
         )
       }
+      if (props.options?.modules) {
+        clientOptions.modules = Object.assign({}, clientOptions.modules, props.options.modules)
+      }
       return Object.assign(
         {},
         props.globalOptions,

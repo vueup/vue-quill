@@ -363,7 +363,12 @@ export const QuillEditor = defineComponent({
     watch(
       () => props.content,
       (newContent) => {
-        if (!quill || !newContent || internalModelEquals(newContent)) return
+        if (
+          quill == null ||
+          newContent == null ||
+          internalModelEquals(newContent)
+        )
+          return
 
         // Restore the selection and cursor position after updating the content
         const selection = quill.getSelection()

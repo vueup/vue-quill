@@ -8,3 +8,4 @@ TODOs.md
 *.log
 .env
 .nuxt
+.idea/

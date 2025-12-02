@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import '@vueup/vue-quill/../dist/vue-quill.bubble.css'
-import '@vueup/vue-quill/../dist/vue-quill.snow.css'
+// Import the combined style.css from the built package
+import '@vueup/vue-quill/style.css'
 
 createApp(App).mount('#app')

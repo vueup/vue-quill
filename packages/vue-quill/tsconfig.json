@@ -9,13 +9,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "noEmit": true,
 
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
@@ -24,15 +26,19 @@
 
     "baseUrl": ".",
     "paths": {
-      "@vueup/vue-quill": ["./packages/vue-quill/src"],
-      "@vueup/vue-quill/*": ["./packages/vue-quill/src/*"]
+      "@vueup/vue-quill": ["./src"],
+      "@vueup/vue-quill/*": ["./src/*"]
     },
 
     "types": ["vitest/globals", "node"]
   },
-  "references": [
-    { "path": "./packages/vue-quill" }
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.d.ts"
   ],
-  "include": [],
-  "exclude": ["node_modules", "**/dist/**"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

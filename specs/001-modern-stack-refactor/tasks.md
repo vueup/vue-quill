@@ -27,14 +27,14 @@ Based on plan.md project structure:
 
 **Purpose**: Migrate build system from Rollup to Vite 6, update dependencies
 
-- [ ] T001 Update root `package.json` with pnpm workspace config and modern scripts
-- [ ] T002 Update `packages/vue-quill/package.json` with Vue 3.5+, Quill 2.x, Vite 6 dependencies and modern `exports` field
-- [ ] T003 [P] Create `packages/vue-quill/vite.config.ts` with library mode configuration per research.md
-- [ ] T004 [P] Create `packages/vue-quill/tsconfig.json` with TypeScript 5.x strict configuration
-- [ ] T005 [P] Create `packages/vue-quill/vitest.config.ts` with Vue Test Utils setup
-- [ ] T006 [P] Create `eslint.config.js` with ESLint 9+ flat config for Vue/TypeScript
-- [ ] T007 Remove legacy files: `rollup.config.js`, `api-extractor.json`, old build scripts
-- [ ] T008 Run `pnpm install` and verify dependency resolution
+- [x] T001 Update root `package.json` with pnpm workspace config and modern scripts
+- [x] T002 Update `packages/vue-quill/package.json` with Vue 3.5+, Quill 2.x, Vite 6 dependencies and modern `exports` field
+- [x] T003 [P] Create `packages/vue-quill/vite.config.ts` with library mode configuration per research.md
+- [x] T004 [P] Create `packages/vue-quill/tsconfig.json` with TypeScript 5.x strict configuration
+- [x] T005 [P] Create `packages/vue-quill/vitest.config.ts` with Vue Test Utils setup
+- [x] T006 [P] Create `eslint.config.js` with ESLint 9+ flat config for Vue/TypeScript
+- [x] T007 Remove legacy files: `rollup.config.js`, `api-extractor.json`, old build scripts
+- [x] T008 Run `pnpm install` and verify dependency resolution
 
 ---
 
@@ -44,13 +44,13 @@ Based on plan.md project structure:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T009 Create `packages/vue-quill/src/types.ts` with all TypeScript interfaces from data-model.md (ContentType, EditorTheme, ToolbarOption, QuillModule, EditorEvents)
-- [ ] T010 Create `packages/vue-quill/src/Editor.ts` implementing Editor interface (TipTap-style wrapper around Quill)
-- [ ] T011 Create `packages/vue-quill/src/EditorCommandChain.ts` implementing chainable commands pattern
-- [ ] T012 [P] Create `packages/vue-quill/src/toolbar-presets.ts` with minimal, essential, full toolbar configurations
-- [ ] T013 [P] Create `packages/vue-quill/src/utils.ts` with helper functions (content conversion, SSR detection)
-- [ ] T014 Implement `packages/vue-quill/src/useEditor.ts` composable (PRIMARY API) per contracts/component-api.ts
-- [ ] T015 Verify TypeScript compilation with `pnpm type-check`
+- [x] T009 Create `packages/vue-quill/src/types.ts` with all TypeScript interfaces from data-model.md (ContentType, EditorTheme, ToolbarOption, QuillModule, EditorEvents)
+- [x] T010 Create `packages/vue-quill/src/Editor.ts` implementing Editor interface (TipTap-style wrapper around Quill)
+- [x] T011 Create `packages/vue-quill/src/EditorCommandChain.ts` implementing chainable commands pattern
+- [x] T012 [P] Create `packages/vue-quill/src/toolbar-presets.ts` with minimal, essential, full toolbar configurations
+- [x] T013 [P] Create `packages/vue-quill/src/utils.ts` with helper functions (content conversion, SSR detection)
+- [x] T014 Implement `packages/vue-quill/src/useEditor.ts` composable (PRIMARY API) per contracts/component-api.ts
+- [x] T015 Verify TypeScript compilation with `pnpm type-check`
 
 **Checkpoint**: Foundation ready - Editor class and useEditor composable functional
 
@@ -64,12 +64,12 @@ Based on plan.md project structure:
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Create `packages/vue-quill/src/components/QuillEditor.vue` with `<script setup>` using defineProps, defineEmits, defineExpose
-- [ ] T017 [US1] Create `packages/vue-quill/src/components/EditorContent.vue` for TipTap-style rendering separation
-- [ ] T018 [US1] Create `packages/vue-quill/src/index.ts` with public exports (QuillEditor, EditorContent, useEditor, types)
-- [ ] T019 [US1] Import and bundle Quill CSS in `packages/vue-quill/src/style.css`
-- [ ] T020 [US1] Build package with `pnpm build` and verify output files (ESM, CJS, CSS, .d.ts)
-- [ ] T021 [US1] Test import in demo app: update `demo/src/App.vue` to use new component
+- [x] T016 [US1] Create `packages/vue-quill/src/components/QuillEditor.vue` with `<script setup>` using defineProps, defineEmits, defineExpose
+- [x] T017 [US1] Create `packages/vue-quill/src/components/EditorContent.vue` for TipTap-style rendering separation
+- [x] T018 [US1] Create `packages/vue-quill/src/index.ts` with public exports (QuillEditor, EditorContent, useEditor, types)
+- [x] T019 [US1] Import and bundle Quill CSS in `packages/vue-quill/src/style.css`
+- [x] T020 [US1] Build package with `pnpm build` and verify output files (ESM, CJS, CSS, .d.ts)
+- [x] T021 [US1] Test import in demo app: update `demo/src/App.vue` to use new component
 
 **Checkpoint**: User Story 1 complete - basic editor renders with styling
 

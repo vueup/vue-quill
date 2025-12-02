@@ -1,51 +1,80 @@
 {
   "name": "@vueup/vue-quill",
-  "version": "0.0.0-development",
-  "description": "Vue 3 rich text editor based on Quill.",
-  "main": "index.js",
-  "module": "dist/vue-quill.esm-bundler.js",
-  "unpkg": "dist/vue-quill.global.prod.js",
-  "jsdelivr": "dist/vue-quill.global.prod.js",
-  "types": "dist/vue-quill.d.ts",
-  "files": [
-    "index.js",
-    "dist"
-  ],
-  "buildOptions": {
-    "name": "VueQuill",
-    "formats": [
-      "esm-bundler",
-      "esm-browser",
-      "cjs",
-      "global"
-    ]
-  },
+  "version": "2.0.0-alpha.0",
+  "type": "module",
+  "description": "Vue 3.5+ Rich Text Editor powered by Quill 2.x",
+  "author": "Ahmad Luthfi Masruri",
+  "license": "MIT",
+  "homepage": "https://vueup.github.io/vue-quill/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vueup/vue-quill.git"
   },
-  "keywords": [
-    "vue-quill",
-    "vue 3 quill component",
-    "vue 3 quill editor",
-    "vue 3 text editor",
-    "vue 3 rich text editor",
-    "vue 3 web editor",
-    "vue 3 editor",
-    "vue 3 wysiwyg",
-    "vue 3 wysiwyg editor"
-  ],
-  "author": "Ahmad Luthfi Masruri",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/vueup/vue-quill/issues"
   },
-  "homepage": "https://vueup.github.io/vue-quill/",
-  "dependencies": {
-    "quill": "^1.3.7",
-    "quill-delta": "^4.2.2"
+  "keywords": [
+    "vue",
+    "vue3",
+    "vue-quill",
+    "quill",
+    "quill2",
+    "rich-text-editor",
+    "wysiwyg",
+    "text-editor",
+    "editor",
+    "vue-component"
+  ],
+  "sideEffects": [
+    "*.css",
+    "*.vue"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/vue-quill.es.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/vue-quill.cjs.js"
+      }
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "main": "./dist/vue-quill.cjs.js",
+  "module": "./dist/vue-quill.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "preview": "vite preview"
   },
   "peerDependencies": {
-    "vue": "^3.2.41"
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "quill": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vite-plugin-dts": "^4.3.0",
+    "vitest": "^2.1.8",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.1.10"
   }
 }

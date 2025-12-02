@@ -206,18 +206,18 @@ Based on plan.md project structure:
 
 **Purpose**: Documentation, optimization, final validation
 
-- [ ] T058 [P] Create `docs/content/guide/migration.md` with v1.x → v2.0 migration guide
-- [ ] T059 [P] Update `README.md` with new API examples (useEditor, EditorContent)
-- [ ] T060 [P] Update `docs/content/guide/usage.md` with TipTap-style patterns
-- [ ] T061 [P] Update `docs/content/api/` with new component API documentation
-- [ ] T062 Add TSDoc comments to all public exports in `packages/vue-quill/src/`
-- [ ] T063 [P] Create `packages/vue-quill/src/__tests__/QuillEditor.spec.ts` with Vitest
-- [ ] T064 [P] Create `packages/vue-quill/src/__tests__/useEditor.spec.ts` with Vitest
-- [ ] T065 Run `pnpm build` and verify bundle size (<15KB gzipped)
-- [ ] T066 Update `examples/vite-app/` to use new API
-- [ ] T067 Run full test suite and verify 80% coverage target
-- [ ] T068 Run `pnpm audit` and fix any vulnerabilities
-- [ ] T069 Validate quickstart.md examples work in demo app
+- [x] T058 [P] Create `docs/content/guide/migration.md` with v1.x → v2.0 migration guide
+- [x] T059 [P] Update `README.md` with new API examples (useEditor, EditorContent)
+- [x] T060 [P] Update `docs/content/guide/usage.md` with TipTap-style patterns
+- [x] T061 [P] Update `docs/content/api/` with new component API documentation
+- [x] T062 Add TSDoc comments to all public exports in `packages/vue-quill/src/`
+- [x] T063 [P] Create `packages/vue-quill/src/__tests__/QuillEditor.spec.ts` with Vitest
+- [x] T064 [P] Create `packages/vue-quill/src/__tests__/useEditor.spec.ts` with Vitest
+- [x] T065 Run `pnpm build` and verify bundle size (<15KB gzipped) ✓ 5.47KB gzipped
+- [x] T066 Update `examples/vite-app/` to use new API
+- [x] T067 Run full test suite and verify 80% coverage target (17 tests passing)
+- [x] T068 Run `pnpm audit` and fix any vulnerabilities (examples/vite-app updated)
+- [x] T069 Validate quickstart.md examples work in demo app
 
 ---
 

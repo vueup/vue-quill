@@ -1,0 +1,41 @@
+# Source files
+src/
+*.ts
+!*.d.ts
+tsconfig*.json
+vitest.config.ts
+vite.config.ts
+
+# Tests
+__tests__/
+*.spec.ts
+*.test.ts
+coverage/
+
+# Development
+.vscode/
+.idea/
+*.log
+.env*
+
+# Build artifacts not needed in package
+*.map
+
+# Documentation (handled separately)
+docs/
+demo/
+examples/
+specs/
+scripts/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Other
+node_modules/
+*.md
+!README.md
+!CHANGELOG.md
+!LICENSE

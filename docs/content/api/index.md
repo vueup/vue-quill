@@ -1,98 +1,266 @@
-# Props
+# Component API
 
-## v-model:content
-- **Type:** `Delta | String`
-- **Default:** `{}`
-- **Return:** `Delta`
-  
-  Two-way binding editor content, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
-  
-  ::: warning
-  Your content and content type must match, if you want to use `html` as your content you must set your `contentType` to `html`, as well as `text`.
-  :::
+VueQuill provides two primary APIs:
 
-## content
-- **Type:** `Delta | String`
-- **Default:** `{}`
+1. **`<QuillEditor>`** - Vue component with props and events
+2. **`useEditor()`** - Composable function for advanced usage
 
-  Contents for the editor, can be `Delta` object, plain `text`, or `html` string, see [Quill Delta docs](https://quilljs.com/docs/delta/) for more details.
+## QuillEditor Props
 
-## contentType
-- **Type:** `"delta" | "html" | "text"`
-- **Default:** `delta`
+### v-model
 
-  VueQuill supports three content type `delta`, `html`, and `text`, and make sure to set contentType if you want to use `html` or plain `text` as your content.
+- **Type:** `Delta | string | null`
+- **Default:** `null`
 
-  ::: tip
-  Use `delta` (default value) content type to prevent issues and is the best practice.
-  :::
+Two-way binding for editor content. Content type depends on `contentType` prop.
 
-## enable
-- **Type:** `Boolean`
+```vue
+<QuillEditor v-model="content" contentType="html" />
+```
+
+### contentType
+
+- **Type:** `'delta' | 'html' | 'text'`
+- **Default:** `'delta'`
+
+Determines the format of content for v-model binding.
+
+| Type | Description |
+|------|-------------|
+| `delta` | Quill Delta object (recommended) |
+| `html` | HTML string |
+| `text` | Plain text string |
+
+### theme
+
+- **Type:** `'snow' | 'bubble' | ''`
+- **Default:** `'snow'`
+
+The visual theme for the editor. Use empty string for minimal/no theme.
+
+### toolbar
+
+- **Type:** `string | Array | false`
+- **Default:** `'essential'`
+
+Toolbar configuration. Can be:
+- **Preset name:** `'minimal'`, `'essential'`, `'full'`
+- **Custom array:** `[['bold', 'italic'], ['link']]`
+- **CSS selector:** `'#my-toolbar'`
+- **false:** Disable toolbar
+
+### editable
+
+- **Type:** `boolean`
 - **Default:** `true`
 
-  Set ability for user to edit, via input devices like the mouse or keyboard.
+Whether the editor allows content editing. Set to `false` for read-only mode.
 
-## readOnly
-- **Type:** `Boolean`
+### placeholder
+
+- **Type:** `string`
+- **Default:** `undefined`
+
+Placeholder text shown when editor is empty.
+
+### autofocus
+
+- **Type:** `boolean`
 - **Default:** `false`
 
-  If *true*, the editor won't allow changing its contents. Wraps the Quill [`disable` API](https://quilljs.com/docs/api/#disable). 
+Whether to focus the editor on mount.
 
-## placeholder
-- **Type:** `String`
+### modules
 
-  The attribute to specifies a short hint that describes the expected value of an input field (e.g. a sample value or a short description of the expected format).
+- **Type:** `QuillModule[]`
+- **Default:** `[]`
 
-## theme
-- **Type:** `"snow" | "bubble" | ""`
-- **Default:** `"snow"`
+Array of custom Quill modules to register.
 
-  The name of the theme to apply to the editor, Quill features two officially supported themes: `snow` and `bubble`. Pass `""` to use the minimal core theme. See the [docs on themes](https://quilljs.com/docs/themes/) for more information on including the required stylesheets. 
+```ts
+interface QuillModule {
+  name: string
+  module: any  // Quill module class
+  options?: Record<string, any>
+}
+```
 
-## toolbar
-- **Type:** `String | Array | Object`
+## QuillEditor Events
 
-  Toolbar options to configure the default toolbar icons using an array of format names, see [Toolbar](../guide/toolbar.md) section for more details.
+### @create
 
-## modules
-- **Type:** `Object | Object[]`
+Fired when the editor is created and ready.
 
-  Options to register modules, see [Modules](../guide/modules.md) section for more details.
+```vue
+<QuillEditor @create="({ editor }) => console.log(editor)" />
+```
 
-## options
-- **Type:** `Object`
+**Payload:** `{ editor: Editor }`
 
-  Options to configure Quill, see [the docs options](../guide/options.md) for more details
+### @update
 
-## globalOptions
-- **Type:** `Object`
+Fired when content changes.
 
-  Global Options to configure Quill, see [the docs options](../guide/options.md) for more details
+```vue
+<QuillEditor @update="({ editor, delta }) => handleUpdate(delta)" />
+```
+
+**Payload:** `{ editor: Editor, delta: Delta, oldDelta: Delta, source: string }`
+
+### @selectionUpdate
+
+Fired when selection/cursor changes.
+
+```vue
+<QuillEditor @selectionUpdate="({ range }) => console.log(range)" />
+```
+
+**Payload:** `{ editor: Editor, range: Range | null, oldRange: Range | null, source: string }`
+
+### @focus
+
+Fired when editor receives focus.
+
+```vue
+<QuillEditor @focus="({ editor }) => console.log('focused')" />
+```
+
+**Payload:** `{ editor: Editor, event: FocusEvent }`
+
+### @blur
+
+Fired when editor loses focus.
+
+```vue
+<QuillEditor @blur="({ editor }) => console.log('blurred')" />
+```
+
+**Payload:** `{ editor: Editor, event: FocusEvent }`
+
+### @error
+
+Fired when an error occurs during initialization.
+
+```vue
+<QuillEditor @error="({ error }) => console.error(error)" />
+```
+
+**Payload:** `{ editor: Editor | null, error: Error }`
+
+## QuillEditor Exposed
+
+Access via template ref:
+
+```vue
+<template>
+  <QuillEditor ref="editorRef" />
+</template>
+
+<script setup>
+const editorRef = ref(null)
+// Access: editorRef.value?.editor
+</script>
+```
+
+### editor
+
+- **Type:** `Editor | null`
+
+The Editor instance. See [Editor Methods](./methods.md) for available methods.
+
+---
+
+## useEditor Composable
+
+The composable API for advanced usage patterns.
+
+```ts
+import { useEditor, EditorContent } from '@vueup/vue-quill'
+
+const editor = useEditor(options)
+```
+
+### Options
+
+```ts
+interface VueQuillOptions {
+  // Configuration
+  theme?: 'snow' | 'bubble' | ''
+  content?: Delta | string | null
+  contentType?: 'delta' | 'html' | 'text'
+  placeholder?: string
+  editable?: boolean
+  autofocus?: boolean
+  toolbar?: string | ToolbarOption[] | false
+  modules?: QuillModule[]
   
-  ::: warning
-  Only use `globalOptions` when you register QuillEditor component globally
-  :::
+  // Callbacks
+  onCreate?: (payload: { editor: Editor }) => void
+  onUpdate?: (payload: { 
+    editor: Editor
+    delta: Delta
+    oldDelta: Delta
+    source: string 
+  }) => void
+  onSelectionUpdate?: (payload: { 
+    editor: Editor
+    range: Range | null
+    oldRange: Range | null
+    source: string 
+  }) => void
+  onFocus?: (payload: { editor: Editor, event: FocusEvent }) => void
+  onBlur?: (payload: { editor: Editor, event: FocusEvent }) => void
+  onError?: (payload: { editor: Editor | null, error: Error }) => void
+}
+```
 
-- **Usage:**
+### Return Value
 
-  ~~~ js
-  import { createApp } from 'vue'
-  import { QuillEditor } from '@vueup/vue-quill'
+```ts
+const editor: ShallowRef<Editor | null> = useEditor(options)
+```
 
-  const app = createApp()
-  // define your options
-  const globalOptions = {
-    debug: 'info',
-    modules: {
-      toolbar: 'minimal'
-    },
-    placeholder: 'Compose an epic...',
-    readOnly: true,
-    theme: 'snow'
-  }
-  // set default globalOptions prop
-  QuillEditor.props.globalOptions.default = () => globalOptions
-  // register QuillEditor component
-  app.component('QuillEditor', QuillEditor)
-  ~~~
+Returns a shallow ref containing the Editor instance (or null before initialization).
+
+### Usage with EditorContent
+
+```vue
+<template>
+  <EditorContent :editor="editor" />
+</template>
+
+<script setup>
+import { useEditor, EditorContent } from '@vueup/vue-quill'
+
+const editor = useEditor({
+  theme: 'snow',
+  content: '<p>Hello</p>',
+  contentType: 'html',
+  onUpdate: ({ editor }) => {
+    console.log(editor.getHTML())
+  },
+})
+</script>
+```
+
+---
+
+## EditorContent Component
+
+Renders the editor created by `useEditor()`.
+
+### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| editor | `Editor \| null` | Yes | Editor instance from useEditor |
+| class | `string` | No | CSS class for wrapper |
+
+### Usage
+
+```vue
+<EditorContent 
+  :editor="editor" 
+  class="my-editor-wrapper" 
+/>
+```

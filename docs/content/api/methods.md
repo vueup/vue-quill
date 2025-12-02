@@ -1,71 +1,305 @@
-# Methods
+# Editor Methods
 
-::: warning
-We highly recommend to call method when the quill editor ready, use @ready event
-:::
+The `Editor` class wraps Quill with a modern API. Access it via component ref or the `useEditor` composable.
 
-## getEditor()
-  
-- **Return:** `editor: Element`
+## Content Methods
 
-  Returns the Editor Element.
+### getHTML()
 
-## getToolbar()
-  
-- **Return:** `toolbar: Element`
+Returns content as HTML string.
 
-  Returns the Toolbar Element.
+```ts
+const html = editor.getHTML()
+// '<p>Hello <strong>World</strong></p>'
+```
 
-## getQuill()
+### getText()
 
-- **Return:** `quill: Quill`
+Returns content as plain text.
 
-  Returns the Quill instance that backs the editor. While you can freely use this to access methods such as `getText()`, `focus()`, and much [more](https://quilljs.com/docs/api/).
+```ts
+const text = editor.getText()
+// 'Hello World\n'
+```
 
-## getContents(index, length)
+### getJSON()
 
-- **Parameter:** `index?: number, length?: number`
-- **Return:** `content: string | Delta`
+Returns content as Quill Delta object.
 
-  Returns the contents of the editor.
+```ts
+const delta = editor.getJSON()
+// { ops: [{ insert: 'Hello World\n' }] }
+```
 
-## setContents(content, source)
+### setContent(content, source?)
 
-- **Parameter:** `content: string | Delta, source: 'api' | 'user' | 'silent'`
+Sets editor content. Content type is auto-detected.
 
-  To set the contents of the editor.
+```ts
+// Set HTML
+editor.setContent('<p>New content</p>')
 
-## getHTML()
-  
-- **Return:** `html: string`
+// Set Delta
+editor.setContent({ ops: [{ insert: 'Text\n' }] })
 
-  Returns the full HTML contents of the editor.
+// Set plain text
+editor.setContent('Plain text')
 
-## setHTML(html)
+// With source (default: 'api')
+editor.setContent('<p>New</p>', 'user')
+```
 
-- **Parameter:** `html: string`
+### insertText(text, index?, source?)
 
-  To set the HTML contents of the editor.
-  
-## pasteHTML(html, source)
+Inserts text at specified position (default: current cursor).
 
-- **Parameter:** `html: string, source: 'api' | 'user' | 'silent'`
+```ts
+// Insert at cursor
+editor.insertText('Hello')
 
-  To import raw HTML from a non-Quill environment.
+// Insert at position
+editor.insertText('World', 5)
+```
 
-  ## focus()
+### insertContent(content, index?)
 
-  Focuses the editor.
+Inserts Delta or HTML content.
 
-## getText(index, length)
-  
-- **Parameter:** `index?: number, length?: number`
-- **Return:** `text: string`
+```ts
+editor.insertContent('<strong>Bold</strong>')
+editor.insertContent({ ops: [{ insert: 'Text' }] }, 0)
+```
 
-  Returns the full text contents of the editor.
+### deleteContent(index, length, source?)
 
-## setText(text)
+Deletes content from specified position.
 
-- **Parameter:** `text: string, source: 'api' | 'user' | 'silent'`
+```ts
+editor.deleteContent(0, 5) // Delete first 5 characters
+```
 
-  To set the text contents of the editor.
+### getLength()
+
+Returns content length (including trailing newline).
+
+```ts
+const length = editor.getLength() // e.g., 12
+```
+
+## Selection Methods
+
+### getSelection(focus?)
+
+Returns current selection range.
+
+```ts
+const range = editor.getSelection()
+// { index: 0, length: 5 } or null
+```
+
+### setSelection(index, length?, source?)
+
+Sets selection/cursor position.
+
+```ts
+// Set cursor position
+editor.setSelection(5)
+
+// Set selection range
+editor.setSelection(0, 10)
+
+// From Range object
+editor.setSelection({ index: 0, length: 5 })
+```
+
+## Formatting Methods
+
+### format(name, value, source?)
+
+Applies format at current selection.
+
+```ts
+editor.format('bold', true)
+editor.format('color', '#ff0000')
+editor.format('link', 'https://example.com')
+```
+
+### formatText(index, length, format, value, source?)
+
+Formats text in range.
+
+```ts
+editor.formatText(0, 5, 'bold', true)
+editor.formatText(0, 10, 'color', '#ff0000')
+```
+
+### removeFormat(index, length, source?)
+
+Removes all formatting from range.
+
+```ts
+editor.removeFormat(0, 10)
+```
+
+### getFormat(index?, length?)
+
+Gets format at position or selection.
+
+```ts
+const format = editor.getFormat()
+// { bold: true, italic: false }
+```
+
+## Focus Methods
+
+### focus()
+
+Focuses the editor.
+
+```ts
+editor.focus()
+```
+
+### blur()
+
+Removes focus from editor.
+
+```ts
+editor.blur()
+```
+
+### hasFocus()
+
+Returns whether editor is focused.
+
+```ts
+if (editor.hasFocus()) {
+  // Editor is focused
+}
+```
+
+## State Methods
+
+### setEditable(editable)
+
+Enables or disables editing.
+
+```ts
+editor.setEditable(false) // Read-only
+editor.setEditable(true)  // Editable
+```
+
+### isEditable()
+
+Returns whether editor is editable.
+
+```ts
+if (editor.isEditable()) {
+  // Can edit
+}
+```
+
+### isDestroyed()
+
+Returns whether editor has been destroyed.
+
+```ts
+if (!editor.isDestroyed()) {
+  // Safe to use
+}
+```
+
+## Command Chain
+
+### chain()
+
+Creates a chainable command sequence.
+
+```ts
+editor.chain()
+  .focus()
+  .insertText('Hello ')
+  .format('bold', true)
+  .insertText('World')
+  .format('bold', false)
+  .blur()
+  .run()
+```
+
+**Available chain methods:**
+- `focus()` - Focus editor
+- `blur()` - Blur editor
+- `insertText(text)` - Insert text
+- `insertContent(content)` - Insert Delta/HTML
+- `deleteContent(index, length)` - Delete content
+- `setContent(content)` - Replace all content
+- `format(name, value)` - Apply format
+- `setSelection(index, length?)` - Set selection
+- `run()` - Execute the chain
+
+### can()
+
+Check if commands can be executed.
+
+```ts
+if (editor.can().format('bold', true)) {
+  // Bold formatting is available
+}
+
+if (editor.can().insertText('Hello')) {
+  // Can insert text
+}
+```
+
+## Lifecycle Methods
+
+### destroy()
+
+Destroys the editor instance and cleans up.
+
+```ts
+editor.destroy()
+```
+
+> Note: This is called automatically when using the component or composable.
+
+## Properties
+
+### quill
+
+Direct access to the underlying Quill instance.
+
+```ts
+const quill = editor.quill
+quill.scrollIntoView() // Use Quill methods directly
+```
+
+### element
+
+The DOM element containing the editor.
+
+```ts
+const el = editor.element
+el.classList.add('custom-class')
+```
+
+## Event Methods
+
+### on(event, handler)
+
+Subscribes to editor events.
+
+```ts
+editor.on('update', ({ delta }) => {
+  console.log('Content changed', delta)
+})
+```
+
+### off(event, handler?)
+
+Unsubscribes from events.
+
+```ts
+editor.off('update', myHandler)
+editor.off('update') // Remove all update handlers
+```

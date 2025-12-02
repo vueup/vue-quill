@@ -10,7 +10,7 @@ export default defineConfig({
       // CSS must come before the main package alias to avoid incorrect resolution
       {
         find: '@vueup/vue-quill/style.css',
-        replacement: path.resolve(__dirname, '../packages/vue-quill/dist/vue-quill.css'),
+        replacement: path.resolve(__dirname, '../packages/vue-quill/dist/style.css'),
       },
       {
         find: '@vueup/vue-quill',

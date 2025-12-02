@@ -59,10 +59,11 @@ import { isSSR } from './utils'
 export function useEditor(
   options: Partial<VueQuillOptions> = {}
 ): UseEditorReturn {
-  const editor: ShallowRef<IEditor | null> = shallowRef(null)
-
-  // Create editor instance (but don't initialize yet)
+  // Create editor instance (but don't initialize Quill yet)
   const editorInstance = new Editor(options)
+  
+  // Expose editor instance immediately so EditorContent can access _initElement
+  const editor: ShallowRef<IEditor | null> = shallowRef(editorInstance)
 
   // Element ref will be provided by EditorContent or manually
   let editorElement: HTMLElement | null = null
@@ -77,13 +78,14 @@ export function useEditor(
       return
     }
 
-    if (editor.value) {
+    if (editorInstance.isReady) {
       console.warn('[VueQuill] Editor is already initialized')
       return
     }
 
     editorElement = element
     editorInstance.init(element)
+    // Trigger reactivity update
     editor.value = editorInstance
   }
 
@@ -101,7 +103,7 @@ export function useEditor(
   // Lifecycle hooks
   onMounted(() => {
     // If element is already set (via EditorContent), initialize
-    if (editorElement && !editor.value) {
+    if (editorElement && !editorInstance.isReady) {
       initEditor(editorElement)
     }
   })

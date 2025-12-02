@@ -1,18 +1,24 @@
 /**
- * VueQuill Component API Contract
- * 
- * This file defines the complete TypeScript interface for the QuillEditor component
- * and useQuill composable. It serves as the contract for implementation.
- * 
+ * VueQuill Component API Contract (TipTap-Inspired)
+ *
+ * This file defines the complete TypeScript interface for VueQuill v2.0,
+ * following industry best practices from TipTap and other modern editors.
+ *
+ * Design Principles:
+ * 1. Composable-First: useEditor() is the primary API
+ * 2. Event-Driven: Callback options instead of template events
+ * 3. Chainable Commands: Fluent API for complex operations
+ * 4. Reactive State: Built-in reactivity for UI bindings
+ *
  * @packageDocumentation
  */
 
-import type { VNode, Ref, ShallowRef, MaybeRefOrGetter } from 'vue'
+import type { VNode, ShallowRef } from 'vue'
 import type Quill from 'quill'
 import type { QuillOptions, Range, Delta, EmitterSource } from 'quill'
 
 // =============================================================================
-// Content Types
+// Content & Theme Types
 // =============================================================================
 
 /**
@@ -38,11 +44,12 @@ export type ToolbarPreset = 'minimal' | 'essential' | 'full'
 
 /**
  * Toolbar configuration options
- * - ToolbarPreset: Use a built-in preset
- * - `#${string}`: CSS selector for custom toolbar element
- * - unknown[][]: Custom toolbar button configuration
  */
-export type ToolbarOption = ToolbarPreset | `#${string}` | unknown[][]
+export type ToolbarOption =
+  | ToolbarPreset
+  | `#${string}` // CSS selector
+  | unknown[][] // Custom button config
+  | false // Disable toolbar
 
 // =============================================================================
 // Module Types
@@ -52,390 +59,380 @@ export type ToolbarOption = ToolbarPreset | `#${string}` | unknown[][]
  * Custom Quill module definition for registration
  */
 export interface QuillModule {
-  /**
-   * Module name (registered under 'modules/{name}')
-   * @example 'imageResize'
-   */
+  /** Module name (registered under 'modules/{name}') */
   name: string
-
-  /**
-   * Module class or constructor
-   * Must follow Quill's module interface
-   */
+  /** Module class or constructor */
   module: unknown
-
-  /**
-   * Optional configuration options passed to the module
-   */
+  /** Optional configuration options */
   options?: Record<string, unknown>
 }
 
 // =============================================================================
-// Props Interface
+// Editor Instance Interface (Core)
+// =============================================================================
+
+/**
+ * VueQuill Editor instance
+ * The central object that wraps Quill with Vue reactivity and enhanced API.
+ * Following TipTap's Editor class pattern.
+ */
+export interface Editor {
+  // ─── Quill Access ──────────────────────────────────────────────────
+  /** The underlying Quill instance */
+  readonly quill: Quill | null
+  /** The editor's DOM element */
+  readonly element: HTMLElement | null
+
+  // ─── Reactive State ────────────────────────────────────────────────
+  /** Whether editor is created and ready */
+  readonly isReady: boolean
+  /** Whether editor is currently focused */
+  readonly isFocused: boolean
+  /** Whether editor is editable */
+  readonly isEditable: boolean
+  /** Whether editor content is empty */
+  readonly isEmpty: boolean
+
+  // ─── Content Methods ───────────────────────────────────────────────
+  /** Get content as Delta (Quill's native format) */
+  getJSON(): Delta
+  /** Get content as HTML string */
+  getHTML(): string
+  /** Get content as plain text */
+  getText(index?: number, length?: number): string
+  /** Set content from Delta, HTML, or text */
+  setContent(content: string | Delta, emitUpdate?: boolean): this
+  /** Clear all content */
+  clearContent(emitUpdate?: boolean): this
+  /** Insert content at position */
+  insertContent(content: string | Delta, index?: number): this
+
+  // ─── Selection Methods ─────────────────────────────────────────────
+  /** Get current selection */
+  getSelection(): Range | null
+  /** Set selection by index and length */
+  setSelection(index: number, length?: number, source?: EmitterSource): this
+  /** Set selection by range */
+  setSelection(range: Range | null, source?: EmitterSource): this
+  /** Select all content */
+  selectAll(): this
+
+  // ─── Focus Methods ─────────────────────────────────────────────────
+  /** Focus the editor at specified position */
+  focus(position?: 'start' | 'end' | 'all' | number): this
+  /** Remove focus from editor */
+  blur(): this
+
+  // ─── State Methods ─────────────────────────────────────────────────
+  /** Enable or disable editing */
+  setEditable(editable: boolean): this
+  /** Update editor options dynamically */
+  setOptions(options: Partial<VueQuillOptions>): this
+
+  // ─── Command Chain (TipTap-style) ──────────────────────────────────
+  /** Start a command chain for fluent operations */
+  chain(): EditorCommandChain
+  /** Check if commands can be executed */
+  can(): EditorCanCommands
+
+  // ─── Event Methods ─────────────────────────────────────────────────
+  /** Subscribe to editor events */
+  on<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this
+  /** Unsubscribe from editor events */
+  off<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this
+
+  // ─── Lifecycle ─────────────────────────────────────────────────────
+  /** Destroy the editor and cleanup resources */
+  destroy(): void
+}
+
+// =============================================================================
+// Command Chain Pattern (TipTap-style)
+// =============================================================================
+
+/**
+ * Chainable editor commands for fluent operations
+ * Usage: editor.chain().focus().bold().insertContent('Hello').run()
+ */
+export interface EditorCommandChain {
+  // Formatting
+  bold(): EditorCommandChain
+  italic(): EditorCommandChain
+  underline(): EditorCommandChain
+  strike(): EditorCommandChain
+
+  // Structure
+  setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): EditorCommandChain
+  setParagraph(): EditorCommandChain
+  setBlockquote(): EditorCommandChain
+  setCodeBlock(): EditorCommandChain
+
+  // Lists
+  setBulletList(): EditorCommandChain
+  setOrderedList(): EditorCommandChain
+
+  // Selection & Focus
+  focus(position?: 'start' | 'end' | number): EditorCommandChain
+  blur(): EditorCommandChain
+  selectAll(): EditorCommandChain
+
+  // Content
+  setContent(content: string | Delta): EditorCommandChain
+  insertContent(content: string | Delta): EditorCommandChain
+  clearContent(): EditorCommandChain
+
+  // Execute the accumulated commands
+  run(): boolean
+}
+
+/**
+ * Check if commands can be executed
+ * Usage: if (editor.can().bold()) { ... }
+ */
+export interface EditorCanCommands {
+  bold(): boolean
+  italic(): boolean
+  underline(): boolean
+  strike(): boolean
+  undo(): boolean
+  redo(): boolean
+}
+
+// =============================================================================
+// Editor Events
+// =============================================================================
+
+/**
+ * Editor event handler signatures
+ */
+export interface EditorEvents {
+  /** Fired when editor is created */
+  create: (props: { editor: Editor }) => void
+  /** Fired when content changes */
+  update: (props: {
+    editor: Editor
+    delta: Delta
+    oldDelta: Delta
+    source: EmitterSource
+  }) => void
+  /** Fired when selection changes */
+  selectionUpdate: (props: {
+    editor: Editor
+    range: Range | null
+    oldRange: Range | null
+    source: EmitterSource
+  }) => void
+  /** Fired on any state change */
+  transaction: (props: { editor: Editor }) => void
+  /** Fired when editor gains focus */
+  focus: (props: { editor: Editor; event: FocusEvent }) => void
+  /** Fired when editor loses focus */
+  blur: (props: { editor: Editor; event: FocusEvent }) => void
+  /** Fired before editor is destroyed */
+  destroy: () => void
+  /** Fired when an error occurs */
+  error: (props: { editor: Editor; error: Error }) => void
+}
+
+// =============================================================================
+// VueQuill Options (Primary Configuration)
+// =============================================================================
+
+/**
+ * Configuration options for VueQuill editor
+ * This is the primary configuration interface, following TipTap's EditorOptions pattern.
+ */
+export interface VueQuillOptions {
+  // ─── Content ───────────────────────────────────────────────────────
+  /** Initial content (HTML string, Delta, or plain text) */
+  content?: string | Delta | null
+  /** Content format for serialization @default 'delta' */
+  contentType?: ContentType
+
+  // ─── Appearance ────────────────────────────────────────────────────
+  /** Editor theme @default 'snow' */
+  theme?: EditorTheme
+  /** Toolbar configuration */
+  toolbar?: ToolbarOption
+  /** Placeholder text when empty */
+  placeholder?: string
+
+  // ─── State ─────────────────────────────────────────────────────────
+  /** Whether the editor is editable @default true */
+  editable?: boolean
+  /** Autofocus on mount @default false */
+  autofocus?: boolean | 'start' | 'end'
+
+  // ─── Extensions ────────────────────────────────────────────────────
+  /** Custom Quill modules to register */
+  modules?: QuillModule[]
+  /** Raw Quill options (advanced usage) */
+  quillOptions?: Partial<QuillOptions>
+
+  // ─── Lifecycle Callbacks ───────────────────────────────────────────
+  /** Called when editor is created and ready */
+  onCreate?: EditorEvents['create']
+  /** Called when content changes */
+  onUpdate?: EditorEvents['update']
+  /** Called when selection changes */
+  onSelectionUpdate?: EditorEvents['selectionUpdate']
+  /** Called on any editor state change */
+  onTransaction?: EditorEvents['transaction']
+  /** Called when editor gains focus */
+  onFocus?: EditorEvents['focus']
+  /** Called when editor loses focus */
+  onBlur?: EditorEvents['blur']
+  /** Called before editor is destroyed */
+  onDestroy?: EditorEvents['destroy']
+  /** Called when an error occurs */
+  onError?: EditorEvents['error']
+}
+
+// =============================================================================
+// useEditor Composable (Primary API)
+// =============================================================================
+
+/**
+ * Return type of useEditor composable
+ */
+export interface UseEditorReturn {
+  /**
+   * The editor instance (reactive, wrapped in ShallowRef)
+   * null until editor is ready
+   */
+  editor: ShallowRef<Editor | null>
+}
+
+/**
+ * useEditor composable signature
+ *
+ * This is the PRIMARY API for creating editors, following TipTap's pattern.
+ *
+ * @example
+ * ```typescript
+ * const { editor } = useEditor({
+ *   content: '<p>Hello World</p>',
+ *   contentType: 'html',
+ *   onUpdate: ({ editor }) => {
+ *     console.log(editor.getHTML())
+ *   },
+ * })
+ * ```
+ */
+export type UseEditorFn = (options?: Partial<VueQuillOptions>) => UseEditorReturn
+
+// =============================================================================
+// Component API (Thin Wrapper)
 // =============================================================================
 
 /**
  * QuillEditor component props
+ * A thin wrapper around useEditor for template-based usage.
  */
-export interface QuillEditorProps {
+export interface QuillEditorProps
+  extends Omit<VueQuillOptions, 'content' | 'onCreate' | 'onUpdate' | 'onDestroy'> {
   /**
-   * Editor content bound via v-model:content
-   * Type interpretation depends on `contentType` prop:
-   * - contentType='delta': Delta object
-   * - contentType='html': HTML string
-   * - contentType='text': Plain text string
+   * v-model binding for content
+   * Two-way binding with automatic synchronization
    */
-  content?: string | Delta | null
-
-  /**
-   * Content format type
-   * @default 'delta'
-   */
-  contentType?: ContentType
-
-  /**
-   * Editor theme
-   * @default 'snow'
-   */
-  theme?: EditorTheme
-
-  /**
-   * Toolbar configuration
-   * @example 'essential' // preset
-   * @example '#my-toolbar' // CSS selector
-   * @example [['bold', 'italic'], ['link']] // custom
-   */
-  toolbar?: ToolbarOption
-
-  /**
-   * Custom Quill modules to register and enable
-   */
-  modules?: QuillModule | QuillModule[]
-
-  /**
-   * Raw Quill options (merged with derived options from other props)
-   * Lower priority than specific props
-   */
-  options?: QuillOptions
-
-  /**
-   * Read-only mode (content not editable)
-   * @default false
-   */
-  readOnly?: boolean
-
-  /**
-   * Enable/disable the editor
-   * @default true
-   */
-  enable?: boolean
-
-  /**
-   * Placeholder text shown when editor is empty
-   */
-  placeholder?: string
+  modelValue?: string | Delta | null
 }
-
-// =============================================================================
-// Event Payloads
-// =============================================================================
-
-/**
- * Payload for textChange event
- */
-export interface TextChangePayload {
-  /** The change that occurred (as Delta) */
-  delta: Delta
-  /** Contents before the change */
-  oldContents: Delta
-  /** Source of the change */
-  source: EmitterSource
-}
-
-/**
- * Payload for selectionChange event
- */
-export interface SelectionChangePayload {
-  /** New selection range, null if editor lost focus */
-  range: Range | null
-  /** Previous selection range */
-  oldRange: Range | null
-  /** Source of the change */
-  source: EmitterSource
-}
-
-/**
- * Payload for editorChange event (union type)
- */
-export type EditorChangePayload =
-  | ({ name: 'text-change' } & TextChangePayload)
-  | ({ name: 'selection-change' } & SelectionChangePayload)
-
-/**
- * Payload for error event
- */
-export interface ErrorPayload {
-  /** The error that occurred */
-  error: Error
-  /** Context where error occurred */
-  context: 'initialization' | 'operation'
-}
-
-// =============================================================================
-// Emits Interface
-// =============================================================================
 
 /**
  * QuillEditor component events
+ * Emitted as Vue component events for template integration.
  */
 export interface QuillEditorEmits {
-  /**
-   * Emitted when content changes (v-model:content)
-   */
-  (e: 'update:content', content: string | Delta): void
-
-  /**
-   * Emitted when text content changes
-   */
-  (e: 'textChange', payload: TextChangePayload): void
-
-  /**
-   * Emitted when selection/cursor changes
-   */
-  (e: 'selectionChange', payload: SelectionChangePayload): void
-
-  /**
-   * Emitted for any editor change (text or selection)
-   */
-  (e: 'editorChange', payload: EditorChangePayload): void
-
-  /**
-   * Emitted when editor gains focus
-   */
-  (e: 'focus', editor: HTMLElement): void
-
-  /**
-   * Emitted when editor loses focus
-   */
-  (e: 'blur', editor: HTMLElement): void
-
-  /**
-   * Emitted when editor is initialized and ready
-   */
-  (e: 'ready', quill: Quill): void
-
-  /**
-   * Emitted when an error occurs
-   */
-  (e: 'error', payload: ErrorPayload): void
+  /** v-model update event */
+  (e: 'update:modelValue', value: string | Delta): void
+  /** Editor created */
+  (e: 'create', props: { editor: Editor }): void
+  /** Content updated */
+  (e: 'update', props: { editor: Editor; delta: Delta }): void
+  /** Selection changed */
+  (e: 'selectionUpdate', props: { editor: Editor; range: Range | null }): void
+  /** Editor focused */
+  (e: 'focus', props: { editor: Editor }): void
+  /** Editor blurred */
+  (e: 'blur', props: { editor: Editor }): void
+  /** Error occurred */
+  (e: 'error', props: { error: Error }): void
 }
-
-// =============================================================================
-// Slots Interface
-// =============================================================================
 
 /**
  * QuillEditor component slots
  */
 export interface QuillEditorSlots {
-  /**
-   * Custom toolbar slot
-   * When provided, replaces the default theme toolbar
-   */
+  /** Custom toolbar slot (replaces default toolbar) */
   toolbar?(): VNode[]
 }
 
-// =============================================================================
-// Exposed Instance Interface
-// =============================================================================
-
 /**
- * Public API exposed by QuillEditor via template ref
- * Access via: const editorRef = ref<QuillEditorInstance>()
+ * QuillEditor exposed instance (via template ref)
  */
 export interface QuillEditorInstance {
-  /**
-   * Get the underlying Quill instance
-   * @throws If called before editor is ready
-   */
-  getQuill(): Quill
-
-  /**
-   * Get the editor container DOM element
-   */
-  getEditor(): HTMLElement
-
-  /**
-   * Get the toolbar container DOM element
-   * @returns undefined if no toolbar
-   */
-  getToolbar(): HTMLElement | undefined
-
-  /**
-   * Get current contents in the format specified by contentType
-   */
-  getContents(): Delta | string
-
-  /**
-   * Set editor contents
-   * @param content - Delta or string based on contentType
-   * @param source - Change source (default: 'api')
-   */
-  setContents(content: Delta | string, source?: EmitterSource): void
-
-  /**
-   * Get plain text content
-   * @param index - Start index
-   * @param length - Length of text to get
-   */
-  getText(index?: number, length?: number): string
-
-  /**
-   * Set plain text content
-   * @param text - Text to set
-   * @param source - Change source (default: 'api')
-   */
-  setText(text: string, source?: EmitterSource): void
-
-  /**
-   * Get HTML content
-   */
-  getHTML(): string
-
-  /**
-   * Set HTML content
-   * @param html - HTML string to set
-   */
-  setHTML(html: string): void
-
-  /**
-   * Paste HTML at current selection
-   * @param html - HTML to paste
-   * @param source - Change source (default: 'api')
-   */
-  pasteHTML(html: string, source?: EmitterSource): void
-
-  /**
-   * Focus the editor
-   */
-  focus(): void
-
-  /**
-   * Reinitialize the editor
-   * Useful after theme or major configuration changes
-   */
-  reinit(): void
+  /** The editor instance */
+  editor: Editor | null
 }
 
 // =============================================================================
-// useQuill Composable Types
+// EditorContent Component (TipTap-style)
 // =============================================================================
 
 /**
- * Options for useQuill composable
+ * EditorContent component props
+ * Renders the editor's DOM, separating logic from rendering.
+ *
+ * @example
+ * ```vue
+ * <EditorContent :editor="editor" />
+ * ```
  */
-export interface UseQuillOptions extends QuillOptions {
-  /**
-   * Auto-initialize on component mount
-   * Set to false for manual initialization
-   * @default true
-   */
-  autoInit?: boolean
+export interface EditorContentProps {
+  /** The editor instance to render */
+  editor: Editor | null
 }
-
-/**
- * Return type of useQuill composable
- */
-export interface UseQuillReturn {
-  /** The Quill instance (readonly, null before init) */
-  quill: Readonly<ShallowRef<Quill | null>>
-
-  /** Current content as Delta (readonly) */
-  content: Readonly<Ref<Delta | null>>
-
-  /** Current selection range (readonly) */
-  selection: Readonly<Ref<Range | null>>
-
-  /** Whether editor is focused (readonly) */
-  isFocused: Readonly<Ref<boolean>>
-
-  /** Whether editor has been initialized (readonly) */
-  isReady: Readonly<Ref<boolean>>
-
-  /** Get current contents as Delta */
-  getContents(): Delta | undefined
-
-  /** Set contents from Delta */
-  setContents(delta: Delta, source?: EmitterSource): void
-
-  /** Get plain text content */
-  getText(index?: number, length?: number): string
-
-  /** Set plain text content */
-  setText(text: string, source?: EmitterSource): void
-
-  /** Get HTML content */
-  getHTML(): string
-
-  /** Set HTML content */
-  setHTML(html: string): void
-
-  /** Focus the editor */
-  focus(): void
-
-  /** Blur the editor */
-  blur(): void
-
-  /**
-   * Manually initialize the editor
-   * Only needed when autoInit: false
-   */
-  initialize(): Promise<Quill>
-
-  /** Destroy the editor instance */
-  destroy(): void
-}
-
-/**
- * useQuill composable function signature
- */
-export type UseQuillFn = (
-  element: MaybeRefOrGetter<HTMLElement | null>,
-  options?: MaybeRefOrGetter<UseQuillOptions>
-) => UseQuillReturn
 
 // =============================================================================
 // Toolbar Presets
 // =============================================================================
 
 /**
- * Built-in toolbar preset configurations
+ * Built-in toolbar configurations
  */
 export interface ToolbarPresets {
-  minimal: unknown[][]
-  essential: unknown[][]
-  full: unknown[][]
+  readonly minimal: readonly unknown[][]
+  readonly essential: readonly unknown[][]
+  readonly full: readonly unknown[][]
 }
 
+/**
+ * Toolbar presets constant
+ */
+export declare const toolbarPresets: ToolbarPresets
+
 // =============================================================================
-// Package Exports
+// Package Exports Declaration
 // =============================================================================
 
 /**
- * Main package exports interface
- * Documents what is exported from '@vueup/vue-quill'
+ * Main exports from @vueup/vue-quill
  */
 export interface VueQuillExports {
-  /** Main editor component */
-  QuillEditor: unknown // Component type
+  // Components
+  QuillEditor: unknown // Vue component
+  EditorContent: unknown // Vue component
 
-  /** Editor composable for advanced usage */
-  useQuill: UseQuillFn
+  // Composables
+  useEditor: UseEditorFn
 
-  /** Toolbar preset configurations */
+  // Constants
   toolbarPresets: ToolbarPresets
-
-  // Re-exports from Quill
-  Quill: typeof Quill
-  Delta: typeof Delta
 }
+
+// =============================================================================
+// Type Re-exports from Quill
+// =============================================================================
+
+export type { Range, EmitterSource, QuillOptions } from 'quill'
+export type { Delta } from 'quill'

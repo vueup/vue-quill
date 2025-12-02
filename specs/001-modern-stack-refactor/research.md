@@ -605,6 +605,156 @@ export default tseslint.config(
 
 ---
 
+## 6. TipTap API Patterns (Industry Best Practice)
+
+### Decision: Adopt TipTap's Composable-First Architecture
+
+**Rationale**: TipTap is the gold standard for Vue rich text editor APIs. Their patterns are battle-tested, widely adopted, and provide excellent DX.
+
+**Key Patterns Adopted**:
+
+### 6.1 useEditor Composable (Primary API)
+
+TipTap's `useEditor` is the primary way to create editors, not the component:
+
+```typescript
+import { useEditor, EditorContent } from '@tiptap/vue-3'
+
+const { editor } = useEditor({
+  content: '<p>Hello World</p>',
+  onUpdate: ({ editor }) => {
+    console.log(editor.getHTML())
+  },
+})
+```
+
+**Benefits**:
+- Editor instance is available outside template
+- Cleaner separation of logic and rendering
+- Better composability with other hooks
+- Consistent with React/Vue composables patterns
+
+### 6.2 Event-Driven Callbacks
+
+TipTap uses callback options instead of component events:
+
+```typescript
+const { editor } = useEditor({
+  onCreate: ({ editor }) => { /* Called on creation */ },
+  onUpdate: ({ editor }) => { /* Called on content change */ },
+  onSelectionUpdate: ({ editor }) => { /* Called on selection change */ },
+  onFocus: ({ editor, event }) => { /* Called on focus */ },
+  onBlur: ({ editor, event }) => { /* Called on blur */ },
+  onDestroy: () => { /* Called before destruction */ },
+})
+```
+
+**Benefits**:
+- Type-safe callback signatures
+- Co-located with configuration
+- Avoids template event binding noise
+- Consistent between component and composable usage
+
+### 6.3 EditorContent Component (Rendering)
+
+TipTap separates logic from rendering:
+
+```vue
+<template>
+  <EditorContent :editor="editor" />
+</template>
+```
+
+**Benefits**:
+- Editor can be created before DOM is ready
+- Supports dynamic mounting/unmounting
+- Clean separation of concerns
+
+### 6.4 Chainable Commands
+
+TipTap provides fluent command chaining:
+
+```typescript
+editor.chain()
+  .focus()
+  .bold()
+  .insertContent('Hello!')
+  .run()
+
+// Check if command can execute
+if (editor.can().bold()) {
+  editor.chain().bold().run()
+}
+```
+
+**Benefits**:
+- Discoverable API via autocomplete
+- Batch multiple operations
+- Query capability before execution
+
+### 6.5 Reactive State Properties
+
+TipTap exposes reactive state for UI bindings:
+
+```typescript
+editor.isFocused  // boolean
+editor.isEmpty    // boolean
+editor.isEditable // boolean
+```
+
+**Benefits**:
+- Easy UI state binding (toolbar button states, etc.)
+- No need to manually track editor state
+- Reactive updates
+
+### 6.6 Content Methods
+
+TipTap provides clear content access methods:
+
+```typescript
+editor.getHTML()       // Get as HTML
+editor.getJSON()       // Get as JSON/Delta
+editor.getText()       // Get as plain text
+editor.setContent()    // Set content
+editor.clearContent()  // Clear content
+```
+
+**Adoption for VueQuill**:
+
+| TipTap Pattern | VueQuill Adoption |
+|----------------|-------------------|
+| `useEditor()` | `useEditor()` - Primary API |
+| `EditorContent` | `EditorContent` - Renderer component |
+| Callback options | `onCreate`, `onUpdate`, etc. |
+| Command chaining | `editor.chain().bold().run()` |
+| Reactive state | `editor.isFocused`, `editor.isEmpty`, etc. |
+| Content methods | `getHTML()`, `getJSON()`, `getText()` |
+
+### 6.7 Type Definitions
+
+TipTap's TypeScript patterns:
+
+```typescript
+// Options interface
+export interface EditorOptions {
+  content?: Content
+  extensions?: Extensions
+  editable?: boolean
+  autofocus?: FocusPosition
+  // Callbacks
+  onCreate?: (props: { editor: Editor }) => void
+  onUpdate?: (props: { editor: Editor }) => void
+  // ... etc
+}
+
+// Return type
+export interface UseEditorReturn {
+  editor: ShallowRef<Editor | null>
+}
+```
+
+---
+
 ## Summary Checklist
 
 | Topic | Decision | Status |
@@ -620,5 +770,8 @@ export default tseslint.config(
 | Testing | Vitest + Vue Test Utils | ✅ Researched |
 | Coverage | @vitest/coverage-v8, 80% threshold | ✅ Researched |
 | SSR handling | Dynamic import + placeholder | ✅ Researched |
-| useQuill composable | First-class export | ✅ Researched |
+| useQuill composable | First-class export (TipTap-style) | ✅ Researched |
 | Linting | ESLint 9+ flat config | ✅ Researched |
+| **API Design** | **TipTap patterns (composable-first)** | ✅ Researched |
+| **Command Chaining** | **`editor.chain().bold().run()`** | ✅ Researched |
+| **Event Architecture** | **Callback options** | ✅ Researched |

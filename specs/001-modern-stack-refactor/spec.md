@@ -170,7 +170,7 @@ As a developer building forms, I want VueQuill to integrate with form libraries 
 - **FR-009**: Component MUST accept `theme` prop with values `'snow' | 'bubble' | ''`
 - **FR-010**: Component MUST accept `toolbar` prop with preset names or custom configuration
 - **FR-011**: Component MUST accept `modules` prop for registering Quill modules
-- **FR-012**: Component MUST accept `options` prop for raw Quill configuration
+- **FR-012**: Component MUST accept `quillOptions` prop for raw Quill configuration (advanced usage)
 - **FR-013**: Component MUST accept `readOnly` and `enable` props for editor state
 - **FR-014**: Component MUST accept `placeholder` prop for empty state text
 
@@ -201,7 +201,7 @@ As a developer building forms, I want VueQuill to integrate with form libraries 
 - **FR-034**: Package MUST use package.json `exports` field for modern resolution
 
 **Composables**:
-- **FR-035**: Package MUST export `useQuill` composable for advanced use cases
+- **FR-035**: Package MUST export `useEditor` composable for advanced use cases (TipTap-style primary API)
 - **FR-036**: Composables MUST use `toValue()` for normalizing ref/getter inputs
 
 **Type Exports**:

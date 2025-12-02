@@ -3,9 +3,9 @@
     <img height="120" src="https://vueup.github.io/vue-quill/quill.svg" alt="Vue + Quill logo">
   </a>
 </p>
-<h1 align="center">VueQuill</h1>
+<h1 align="center">VueQuill v2.0</h1>
 <h3 align="center">
-  Rich Text Editor Component for Vue 3.
+  Rich Text Editor Component for Vue 3
 </h3>
 <p align="center">
   <a href="https://www.npmjs.com/package/@vueup/vue-quill" title="Version" target="_blank" rel="noopener noreferrer">
@@ -17,59 +17,201 @@
   <a href="https://github.com/vueup/vue-quill/actions" title="Checks" target="_blank" rel="noopener noreferrer">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/vueup/vue-quill/release-vue-quill.yml?branch=master&logo=github">
   </a>
-  <a href="https://github.com/vueup/vue-quill" title="Last commit" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/github/last-commit/vueup/vue-quill?logo=github" alt="Last commit">
-  </a>
   <a href="https://github.com/vueup/vue-quill" title="Github Repo Stars" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/github/stars/vueup/vue-quill?style=social" alt="Github Repo Stars">
   </a>
 </p>
-<p align="center">
-  <a href="https://vueup.github.io/vue-quill/#demo" title="VueQuill Demo" target="_blank" rel="noopener noreferrer">
-    <img src="https://user-images.githubusercontent.com/6185447/111898684-33761b00-8a5a-11eb-9458-372c0185f576.png" alt="VueQuill Editor">
-  </a>
-  <br>
-  <a href="https://vueup.github.io/vue-quill/#demo" title="Live Demo" target="_blank" rel="noopener noreferrer">👀 See a Live Demo</a>
-</p>
 
-## 🔎 Overview
+## �� Overview
 
-**VueQuill** is a **Component** for building rich text editors, powered by Vue 3 and Quill.
+**VueQuill** is a rich text editor component for Vue 3, powered by Quill 2.x.
 
-- 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
-- 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.
-- 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
+- 💚 **Vue 3.5+** - Modern Vue with Composition API and \`<script setup>\`
+- 🧙‍♂️ **TypeScript** - Full type safety with TypeScript 5.x
+- 🎨 **TipTap-style API** - Familiar composable pattern with \`useEditor\`
+- ⚡ **Vite 6** - Lightning-fast development and builds
+- 📦 **Tree-shakeable** - Import only what you need
 
-## 📚 Documentation
+## 🚀 Quick Start
 
-- **[📘 Guide](https://vueup.github.io/vue-quill/guide/)**
-  - [🚀 Introduction](https://vueup.github.io/vue-quill/guide/)
-  - [⚙️ Installation](https://vueup.github.io/vue-quill/guide/installation.html)
-  - [💡 Usage](https://vueup.github.io/vue-quill/guide/usage.html)
-  - [🎨 Themes](https://vueup.github.io/vue-quill/guide/themes.html)
-  - [🚥 Toolbar](https://vueup.github.io/vue-quill/guide/toolbar.html)
-  - [📦 Modules](https://vueup.github.io/vue-quill/guide/modules.html)
-  - [🛠️ Options](https://vueup.github.io/vue-quill/guide/options.html)
-  
-- **[🧰 APIs](https://vueup.github.io/vue-quill/api/)**
-  - [📌 Props](https://vueup.github.io/vue-quill/api/)
-  - [⚡ Events](https://vueup.github.io/vue-quill/api/events.html)
-  - [📢 Methods](https://vueup.github.io/vue-quill/api/methods.html)
-  - [🔌 Slots](https://vueup.github.io/vue-quill/api/slots.html)
-  - [↗️ Export](https://vueup.github.io/vue-quill/api/export.html)
+### Installation
 
-## ☑️ To do list
+\`\`\`bash
+npm install @vueup/vue-quill
+# or
+pnpm add @vueup/vue-quill
+# or
+yarn add @vueup/vue-quill
+\`\`\`
 
-- [x] Release `alpha` version
-- [x] Release `beta` version
-- [x] Stable `v1.0.0` release
-- [x] Enhance Typescript support with Vue 3
-- [ ] Update the Documentation with more examples and more information
+### Basic Usage
 
-## 👏 Contributing
+#### Option 1: Component (Recommended for Templates)
 
-Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first about what you would like to change.
+\`\`\`vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/style.css'
+
+const content = ref('<p>Hello World!</p>')
+</script>
+
+<template>
+  <QuillEditor
+    v-model="content"
+    theme="snow"
+    toolbar="essential"
+    content-type="html"
+    placeholder="Start writing..."
+  />
+</template>
+\`\`\`
+
+#### Option 2: Composable (TipTap-style)
+
+\`\`\`vue
+<script setup lang="ts">
+import { useEditor, EditorContent } from '@vueup/vue-quill'
+import '@vueup/vue-quill/style.css'
+
+const { editor } = useEditor({
+  content: '<p>Hello World!</p>',
+  contentType: 'html',
+  theme: 'snow',
+  toolbar: 'essential',
+  onUpdate: ({ editor }) => {
+    console.log('Content:', editor.getHTML())
+  },
+})
+</script>
+
+<template>
+  <div v-if="editor">
+    <button @click="editor.chain().bold().run()">Bold</button>
+    <button @click="editor.chain().italic().run()">Italic</button>
+    <EditorContent :editor="editor" />
+  </div>
+</template>
+\`\`\`
+
+## 📚 API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| \`modelValue\` | \`string \| Delta \| null\` | \`null\` | v-model binding for content |
+| \`contentType\` | \`'delta' \| 'html' \| 'text'\` | \`'delta'\` | Content format for serialization |
+| \`theme\` | \`'snow' \| 'bubble' \| ''\` | \`'snow'\` | Editor theme |
+| \`toolbar\` | \`'minimal' \| 'essential' \| 'full' \| string \| array \| false\` | \`'essential'\` | Toolbar configuration |
+| \`placeholder\` | \`string\` | \`undefined\` | Placeholder text |
+| \`editable\` | \`boolean\` | \`true\` | Whether editor is editable |
+| \`autofocus\` | \`boolean \| 'start' \| 'end'\` | \`false\` | Auto focus on mount |
+| \`modules\` | \`QuillModule[]\` | \`[]\` | Custom Quill modules |
+
+### Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| \`@update:modelValue\` | \`string \| Delta\` | v-model update |
+| \`@create\` | \`{ editor }\` | Editor initialized |
+| \`@update\` | \`{ editor, delta, oldDelta, source }\` | Content changed |
+| \`@selection-update\` | \`{ editor, range, oldRange, source }\` | Selection changed |
+| \`@focus\` | \`{ editor, event }\` | Editor focused |
+| \`@blur\` | \`{ editor, event }\` | Editor blurred |
+| \`@error\` | \`{ error }\` | Error occurred |
+
+### Editor Instance Methods
+
+\`\`\`typescript
+// Content
+editor.getHTML()                    // Get content as HTML
+editor.getJSON()                    // Get content as Delta
+editor.getText()                    // Get content as plain text
+editor.setContent(content)          // Set content
+editor.clearContent()               // Clear content
+
+// Selection
+editor.getSelection()               // Get current selection
+editor.setSelection(index, length)  // Set selection
+editor.selectAll()                  // Select all
+
+// Focus
+editor.focus('start' | 'end')       // Focus editor
+editor.blur()                       // Remove focus
+
+// State
+editor.setEditable(boolean)         // Toggle editable
+editor.isReady                      // Is initialized
+editor.isFocused                    // Has focus
+editor.isEditable                   // Is editable
+editor.isEmpty                      // Has no content
+
+// Commands (chainable)
+editor.chain().bold().italic().run()
+
+// Quill access
+editor.quill                        // Underlying Quill instance
+editor.element                      // Container element
+\`\`\`
+
+## 🎨 Themes
+
+### Snow Theme (Default)
+\`\`\`vue
+<QuillEditor theme="snow" />
+\`\`\`
+
+### Bubble Theme
+\`\`\`vue
+<QuillEditor theme="bubble" />
+\`\`\`
+
+## 🛠️ Toolbar Presets
+
+\`\`\`vue
+<!-- Minimal: Bold, Italic, Underline -->
+<QuillEditor toolbar="minimal" />
+
+<!-- Essential: Basic formatting + lists -->
+<QuillEditor toolbar="essential" />
+
+<!-- Full: All available options -->
+<QuillEditor toolbar="full" />
+
+<!-- Custom array -->
+<QuillEditor :toolbar="[['bold', 'italic'], [{ 'list': 'bullet' }]]" />
+
+<!-- No toolbar -->
+<QuillEditor :toolbar="false" />
+\`\`\`
+
+## 📦 Custom Modules
+
+\`\`\`vue
+<script setup>
+import { QuillEditor } from '@vueup/vue-quill'
+import ImageResize from 'quill-image-resize-module'
+
+const modules = [
+  {
+    name: 'imageResize',
+    module: ImageResize,
+    options: { displaySize: true },
+  },
+]
+</script>
+
+<template>
+  <QuillEditor :modules="modules" />
+</template>
+\`\`\`
 
 ## 📝 License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## 👏 Contributing
+
+Pull requests are welcome. For major changes, please create a [new discussion](https://github.com/vueup/vue-quill/discussions) first.

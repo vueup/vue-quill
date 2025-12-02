@@ -31,7 +31,7 @@ export default defineConfig({
     },
 
     rollupOptions: {
-      external: ['vue', 'quill'],
+      external: ['vue', 'quill', /^quill\/.*/],
       output: {
         globals: {
           vue: 'Vue',

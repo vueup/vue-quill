@@ -181,31 +181,32 @@ As a developer building forms, I want VueQuill to integrate with form libraries 
 - **FR-018**: Component MUST emit `editorChange` for all editor changes
 - **FR-019**: Component MUST emit `focus` and `blur` events
 - **FR-020**: Component MUST emit `ready` with Quill instance after initialization
+- **FR-021**: Component MUST emit `error` event when Quill initialization fails, with error details
 
 **Exposed Methods**:
-- **FR-021**: Component MUST expose `getQuill()` returning Quill instance
-- **FR-022**: Component MUST expose `getEditor()` returning editor DOM element
-- **FR-023**: Component MUST expose `getContents()`, `setContents()` methods
-- **FR-024**: Component MUST expose `getText()`, `setText()` methods
-- **FR-025**: Component MUST expose `getHTML()`, `setHTML()`, `pasteHTML()` methods
-- **FR-026**: Component MUST expose `focus()` method
-- **FR-027**: Component MUST expose `getToolbar()` returning toolbar element
+- **FR-022**: Component MUST expose `getQuill()` returning Quill instance
+- **FR-023**: Component MUST expose `getEditor()` returning editor DOM element
+- **FR-024**: Component MUST expose `getContents()`, `setContents()` methods
+- **FR-025**: Component MUST expose `getText()`, `setText()` methods
+- **FR-026**: Component MUST expose `getHTML()`, `setHTML()`, `pasteHTML()` methods
+- **FR-027**: Component MUST expose `focus()` method
+- **FR-028**: Component MUST expose `getToolbar()` returning toolbar element
 
 **Build & Package**:
-- **FR-028**: Package MUST export ES Modules as primary format
-- **FR-029**: Package MUST export CommonJS for Node.js compatibility
-- **FR-030**: Package MUST export TypeScript declaration files
-- **FR-031**: Package MUST export CSS separately from JavaScript
-- **FR-032**: Package MUST declare Vue 3.5+ and Quill as peer dependencies
-- **FR-033**: Package MUST use package.json `exports` field for modern resolution
+- **FR-029**: Package MUST export ES Modules as primary format
+- **FR-030**: Package MUST export CommonJS for Node.js compatibility
+- **FR-031**: Package MUST export TypeScript declaration files
+- **FR-032**: Package MUST export CSS separately from JavaScript
+- **FR-033**: Package MUST declare Vue 3.5+ and Quill 2.x as peer dependencies
+- **FR-034**: Package MUST use package.json `exports` field for modern resolution
 
 **Composables**:
-- **FR-034**: Package SHOULD export `useQuill` composable for advanced use cases
-- **FR-035**: Composables MUST use `toValue()` for normalizing ref/getter inputs
+- **FR-035**: Package MUST export `useQuill` composable for advanced use cases
+- **FR-036**: Composables MUST use `toValue()` for normalizing ref/getter inputs
 
 **Type Exports**:
-- **FR-036**: Package MUST export all prop types as TypeScript interfaces
-- **FR-037**: Package MUST re-export Quill types for consumer convenience
+- **FR-037**: Package MUST export all prop types as TypeScript interfaces
+- **FR-038**: Package MUST re-export Quill types for consumer convenience
 
 ### Key Entities
 
@@ -226,7 +227,7 @@ As a developer building forms, I want VueQuill to integrate with form libraries 
 - **SC-004**: All 8 user stories pass acceptance testing
 - **SC-005**: Documentation includes working examples for all major features
 - **SC-006**: Test coverage reaches minimum 80% for all public APIs
-- **SC-007**: No breaking changes to existing v1.x prop/event API signatures
+- **SC-007**: Breaking changes are documented with comprehensive migration guide from v1.x to v2.0
 - **SC-008**: Lighthouse performance score remains above 90 for demo page
 - **SC-009**: All examples in `/demo` and `/examples` work without modification
 - **SC-010**: Package passes `pnpm audit` with no high/critical vulnerabilities
@@ -235,11 +236,21 @@ As a developer building forms, I want VueQuill to integrate with form libraries 
 
 The following reasonable defaults were assumed based on industry standards:
 
-1. **Quill Version**: Support Quill 1.x as primary, with Quill 2.x compatibility as stretch goal
+1. **Quill Version**: Target Quill 2.x as the primary and only supported version (Quill 1.x support dropped)
 2. **Browser Support**: Modern browsers (Chrome 90+, Firefox 90+, Safari 14+, Edge 90+)
-3. **SSR Handling**: Component gracefully degrades on server (renders placeholder)
+3. **SSR Handling**: Component renders styled placeholder div on server, hydrates with interactive editor on client (prevents layout shift)
 4. **Performance**: Target <100ms initialization time for typical document sizes
 5. **Accessibility**: Maintain Quill's existing ARIA support without regression
+
+## Clarifications
+
+### Session 2025-12-02
+
+- Q: Should we support Quill 1.x, Quill 2.x, or both? → A: Quill 2.x primary only, drop Quill 1.x support
+- Q: How should SSR/Nuxt rendering be handled? → A: Render styled placeholder div on server, hydrate with editor on client
+- Q: Should we maintain strict v1.x API compatibility or allow breaking changes? → A: Allow breaking changes with comprehensive migration guide (this is v2.0)
+- Q: How should Quill initialization errors be reported? → A: Emit `@error` event with error details, component remains mounted
+- Q: Should `useQuill` composable be a required (MUST) or optional (SHOULD) export? → A: MUST export as first-class API alongside the component
 
 ## Out of Scope
 
@@ -250,112 +261,3 @@ The following are explicitly NOT part of this refactor:
 - Collaborative editing features (Yjs, ShareDB integration)
 - Markdown import/export (available via community modules)
 - Mobile-specific optimizations beyond responsive CSS
-
-## User Scenarios & Testing *(mandatory)*
-
-<!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
-  
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
--->
-
-### User Story 1 - [Brief Title] (Priority: P1)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-### User Story 2 - [Brief Title] (Priority: P2)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-### User Story 3 - [Brief Title] (Priority: P3)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-[Add more user stories as needed, each with an assigned priority]
-
-### Edge Cases
-
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
--->
-
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
-
-## Requirements *(mandatory)*
-
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
--->
-
-### Functional Requirements
-
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
-
-*Example of marking unclear requirements:*
-
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
-
-### Key Entities *(include if feature involves data)*
-
-- **[Entity 1]**: [What it represents, key attributes without implementation]
-- **[Entity 2]**: [What it represents, relationships to other entities]
-
-## Success Criteria *(mandatory)*
-
-<!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
--->
-
-### Measurable Outcomes
-
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]

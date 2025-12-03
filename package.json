@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "vue-quill-monorepo",
+  "name": "vueup",
   "version": "0.0.0",
   "type": "module",
   "description": "Vue 3.5+ Rich Text Editor powered by Quill 2.x",

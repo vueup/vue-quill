@@ -46,6 +46,7 @@
     "eslint": "^9.16.0",
     "eslint-plugin-vue": "^9.32.0",
     "prettier": "^3.4.2",
+    "turbo": "^2.6.1",
     "typescript": "^5.7.2"
   }
 }

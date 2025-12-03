@@ -542,6 +542,15 @@ export class Editor implements IEditor {
   destroy(): void {
     if (!this._quill) return
 
+    const toolbar = this._quill.getModule('toolbar') as any
+    const isCustomToolbar =
+      typeof this._options.toolbar === 'string' &&
+      this._options.toolbar.startsWith('#')
+
+    if (toolbar && toolbar.container && !isCustomToolbar) {
+      toolbar.container.remove()
+    }
+
     this._options.onDestroy?.()
     this._emit('destroy')
 

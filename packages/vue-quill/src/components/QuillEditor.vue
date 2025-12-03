@@ -163,6 +163,15 @@ watch(() => props.placeholder, (val) => {
   root?.setAttribute('data-placeholder', val ?? '')
 })
 
+// Re-initialize editor when configuration props change
+watch(
+  [() => props.theme, () => props.toolbar, () => props.modules],
+  () => {
+    reinit()
+  },
+  { deep: true }
+)
+
 // ─── Expose ────────────────────────────────────────────────────────────
 
 defineExpose({ editor, reinit })

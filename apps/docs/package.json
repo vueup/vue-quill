@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "@vueup/vue-quill": "^1.2.0",
-    "quill-blot-formatter": "^1.0.5"
+    "@enzedonline/quill-blot-formatter2": "^3.0.3"
   }
 }

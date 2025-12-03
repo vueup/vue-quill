@@ -408,3 +408,26 @@ export interface ToolbarPresets {
 
 export type { Range, EmitterSource, QuillOptions } from 'quill'
 export type { Delta } from 'quill'
+
+// =============================================================================
+// Simplified Types for Component Props (avoids complex type inference)
+// =============================================================================
+
+/**
+ * Delta-like object structure for component props
+ * This avoids complex type inference issues with Quill's Delta class
+ */
+export interface DeltaLike {
+  ops: Array<{
+    insert?: string | Record<string, unknown>
+    delete?: number
+    retain?: number
+    attributes?: Record<string, unknown>
+  }>
+}
+
+/**
+ * Content value type for v-model binding
+ * Uses simplified DeltaLike instead of Quill's Delta to avoid type inference issues
+ */
+export type ContentValue = string | DeltaLike | null

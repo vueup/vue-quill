@@ -13,6 +13,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "noEmit": true,
+    "noErrorTruncation": false,
 
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -34,11 +35,11 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.vue",
     "src/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "src/**/*.vue"
   ]
 }

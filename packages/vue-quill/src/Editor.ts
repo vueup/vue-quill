@@ -18,6 +18,7 @@ import type {
   VueQuillOptions,
   ContentType,
 } from './types'
+import { isDelta } from './utils'
 import { EditorCommandChainImpl } from './EditorCommandChain'
 import { toolbarPresets } from './toolbar-presets'
 import { isSSR } from './utils'
@@ -663,12 +664,18 @@ export class Editor implements IEditor {
   }
 
   private _parseContent(content: string | Delta): Delta {
+    // Check if it's a Delta instance or a Delta-like object with ops array
     if (content instanceof Delta) {
       return content
     }
 
+    // Handle plain objects with ops array (Delta-like objects)
+    if (isDelta(content)) {
+      return new Delta(content.ops)
+    }
+
     // Check if it looks like HTML
-    if (content.includes('<') && content.includes('>')) {
+    if (typeof content === 'string' && content.includes('<') && content.includes('>')) {
       // Use a temporary element to parse HTML into Delta
       // This is a simplified approach - in production, might use Quill's clipboard module
       const tempDiv = document.createElement('div')
@@ -679,7 +686,7 @@ export class Editor implements IEditor {
     }
 
     // Plain text - wrap in insert operation
-    return new Delta().insert(content)
+    return new Delta().insert(content as string)
   }
 
   /**

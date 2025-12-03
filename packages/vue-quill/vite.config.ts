@@ -15,10 +15,8 @@ export default defineConfig({
       tsconfigPath: './tsconfig.json',
       include: ['src/**/*.ts'],
       exclude: ['src/**/__tests__/**', 'src/**/*.vue'],
-      // Skip Vue files to avoid complex type inference issues
-      // Vue component types will be inferred at runtime
       strictOutput: false,
-      logLevel: 'warn',
+      logLevel: 'silent',
     }),
   ],
 

@@ -26,15 +26,17 @@ import type {
   QuillModule,
   Editor as IEditor,
   VueQuillOptions,
+  ContentValue,
+  DeltaLike,
 } from '../types'
-import type { Delta, QuillOptions, EmitterSource, Range } from 'quill'
+import type { Delta, EmitterSource, Range } from 'quill'
 import { isSSR, isDelta } from '../utils'
 
 // ─── Props ─────────────────────────────────────────────────────────────
 
 const props = defineProps<{
   /** v-model binding for content */
-  modelValue?: string | Delta | null
+  modelValue?: ContentValue
   /** Content format for serialization */
   contentType?: ContentType
   /** Editor theme */
@@ -50,7 +52,7 @@ const props = defineProps<{
   /** Custom Quill modules */
   modules?: QuillModule[]
   /** Raw Quill options (advanced) */
-  quillOptions?: Partial<QuillOptions>
+  quillOptions?: Record<string, unknown>
 }>()
 
 // ─── Emits ─────────────────────────────────────────────────────────────
@@ -157,7 +159,7 @@ function destroyEditor() {
   }
 }
 
-function getContent(): string | Delta | undefined {
+function getContent(): string | DeltaLike | undefined {
   if (!editor.value) return undefined
 
   switch (props.contentType) {
@@ -167,7 +169,7 @@ function getContent(): string | Delta | undefined {
       return editor.value.getText()
     case 'delta':
     default:
-      return editor.value.getJSON()
+      return editor.value.getJSON() as DeltaLike
   }
 }
 
@@ -202,7 +204,7 @@ watch(
 
     // Update editor content
     isUpdatingFromModel.value = true
-    editor.value.setContent(newValue ?? '', false)
+    editor.value.setContent(newValue as string ?? '', false)
     isUpdatingFromModel.value = false
   }
 )

@@ -2,7 +2,7 @@
 /**
  * QuillEditor Component
  *
- * A thin wrapper around useEditor for template-based usage.
+ * A Vue 3 component wrapper for Quill editor.
  * Provides v-model binding and component events.
  *
  * @example
@@ -12,12 +12,11 @@
  *   theme="snow"
  *   toolbar="essential"
  *   placeholder="Start writing..."
- *   @update="handleUpdate"
  * />
  * ```
  */
 
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, computed, withDefaults } from 'vue'
 import { Editor } from '../Editor'
 import type {
   ContentType,
@@ -34,52 +33,36 @@ import { isSSR, isDelta } from '../utils'
 
 // ─── Props ─────────────────────────────────────────────────────────────
 
-const props = defineProps<{
-  /** v-model binding for content */
-  modelValue?: ContentValue
-  /** Content format for serialization */
-  contentType?: ContentType
-  /** Editor theme */
-  theme?: EditorTheme
-  /** Toolbar configuration */
-  toolbar?: ToolbarOption
-  /** Placeholder text when empty */
-  placeholder?: string
-  /** Whether the editor is editable */
-  editable?: boolean
-  /** Autofocus on mount */
-  autofocus?: boolean | 'start' | 'end'
-  /** Custom Quill modules */
-  modules?: QuillModule[]
-  /** Raw Quill options (advanced) */
-  quillOptions?: Record<string, unknown>
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelValue?: ContentValue
+    contentType?: ContentType
+    theme?: EditorTheme
+    toolbar?: ToolbarOption
+    placeholder?: string
+    editable?: boolean
+    autofocus?: boolean | 'start' | 'end'
+    modules?: QuillModule[]
+    quillOptions?: Record<string, unknown>
+  }>(),
+  { editable: true }
+)
 
 // ─── Emits ─────────────────────────────────────────────────────────────
 
 const emit = defineEmits<{
-  /** v-model update event */
   (e: 'update:modelValue', value: string | unknown): void
-  /** Editor created */
   (e: 'create', payload: { editor: IEditor }): void
-  /** Content updated */
   (e: 'update', payload: { editor: IEditor; delta: unknown; oldDelta: unknown; source: EmitterSource }): void
-  /** Selection changed */
   (e: 'selectionUpdate', payload: { editor: IEditor; range: Range | null; oldRange: Range | null; source: EmitterSource }): void
-  /** Editor focused */
   (e: 'focus', payload: { editor: IEditor; event: FocusEvent }): void
-  /** Editor blurred */
   (e: 'blur', payload: { editor: IEditor; event: FocusEvent }): void
-  /** Error occurred */
   (e: 'error', payload: { error: Error }): void
 }>()
 
 // ─── Slots ─────────────────────────────────────────────────────────────
 
-defineSlots<{
-  /** Custom toolbar slot */
-  toolbar?(): unknown
-}>()
+defineSlots<{ toolbar?(): unknown }>()
 
 // ─── State ─────────────────────────────────────────────────────────────
 
@@ -91,7 +74,7 @@ const isUpdatingFromModel = ref(false)
 
 const containerClasses = computed(() => ({
   'vue-quill': true,
-  'vue-quill--disabled': props.editable === false,
+  'vue-quill--disabled': !props.editable,
   [`vue-quill--${props.theme ?? 'snow'}`]: true,
 }))
 
@@ -100,161 +83,102 @@ const containerClasses = computed(() => ({
 function createEditor() {
   if (isSSR() || !editorRef.value) return
 
-  // Build options, filtering out undefined values
-  const options: Record<string, unknown> = {
-    content: props.modelValue ?? null,
-  }
-  
-  if (props.contentType !== undefined) options['contentType'] = props.contentType
-  if (props.theme !== undefined) options['theme'] = props.theme
-  if (props.toolbar !== undefined) options['toolbar'] = props.toolbar
-  if (props.placeholder !== undefined) options['placeholder'] = props.placeholder
-  if (props.editable !== undefined) options['editable'] = props.editable
-  if (props.autofocus !== undefined) options['autofocus'] = props.autofocus
-  if (props.modules !== undefined) options['modules'] = props.modules
-  if (props.quillOptions !== undefined) options['quillOptions'] = props.quillOptions
-
-  // Add lifecycle callbacks
-  options['onCreate'] = (event: { editor: IEditor }) => {
-    emit('create', event)
-  }
-
-  options['onUpdate'] = (event: { editor: IEditor; delta: Delta; oldDelta: Delta; source: EmitterSource }) => {
-    if (!isUpdatingFromModel.value) {
-      // Emit model update
-      const content = getContent()
-      if (content !== undefined) {
-        emit('update:modelValue', content)
+  const options: VueQuillOptions = {
+    content: props.modelValue as string | null,
+    contentType: props.contentType,
+    theme: props.theme,
+    toolbar: props.toolbar,
+    placeholder: props.placeholder,
+    editable: props.editable,
+    autofocus: props.autofocus,
+    modules: props.modules,
+    quillOptions: props.quillOptions,
+    onCreate: (event) => emit('create', event),
+    onUpdate: (event) => {
+      if (!isUpdatingFromModel.value) {
+        const content = getContent()
+        if (content !== undefined) emit('update:modelValue', content)
       }
-    }
-    emit('update', event)
+      emit('update', event)
+    },
+    onSelectionUpdate: (event) => emit('selectionUpdate', event),
+    onFocus: (event) => emit('focus', event),
+    onBlur: (event) => emit('blur', event),
+    onError: ({ error }) => emit('error', { error }),
   }
 
-  options['onSelectionUpdate'] = (event: { editor: IEditor; range: Range | null; oldRange: Range | null; source: EmitterSource }) => {
-    emit('selectionUpdate', event)
-  }
-
-  options['onFocus'] = (event: { editor: IEditor; event: FocusEvent }) => {
-    emit('focus', event)
-  }
-
-  options['onBlur'] = (event: { editor: IEditor; event: FocusEvent }) => {
-    emit('blur', event)
-  }
-
-  options['onError'] = ({ error }: { editor: IEditor; error: Error }) => {
-    emit('error', { error })
-  }
-
-  const editorInstance = new Editor(options as VueQuillOptions)
-
+  const editorInstance = new Editor(options)
   editorInstance.init(editorRef.value)
   editor.value = editorInstance
 }
 
 function destroyEditor() {
-  if (editor.value) {
-    editor.value.destroy()
-    editor.value = null
-  }
+  editor.value?.destroy()
+  editor.value = null
+  if (editorRef.value) editorRef.value.innerHTML = ''
 }
 
 function getContent(): string | DeltaLike | undefined {
   if (!editor.value) return undefined
-
   switch (props.contentType) {
-    case 'html':
-      return editor.value.getHTML()
-    case 'text':
-      return editor.value.getText()
-    case 'delta':
-    default:
-      return editor.value.getJSON() as DeltaLike
+    case 'html': return editor.value.getHTML()
+    case 'text': return editor.value.getText()
+    default: return editor.value.getJSON() as DeltaLike
   }
+}
+
+function reinit() {
+  destroyEditor()
+  createEditor()
 }
 
 // ─── Lifecycle ─────────────────────────────────────────────────────────
 
-onMounted(() => {
-  createEditor()
-})
-
-onBeforeUnmount(() => {
-  destroyEditor()
-})
+onMounted(createEditor)
+onBeforeUnmount(destroyEditor)
 
 // ─── Watchers ──────────────────────────────────────────────────────────
 
-// Watch for model value changes
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    if (!editor.value?.isReady) return
+watch(() => props.modelValue, (newValue, oldValue) => {
+  if (!editor.value?.isReady || newValue === oldValue || isUpdatingFromModel.value) return
 
-    // Skip if the editor triggered this update
-    const currentContent = getContent()
-    if (isDelta(newValue) && isDelta(currentContent)) {
-      // Compare deltas - simple JSON comparison
-      if (JSON.stringify(newValue) === JSON.stringify(currentContent)) {
-        return
-      }
-    } else if (newValue === currentContent) {
-      return
-    }
+  // Compare content to avoid unnecessary updates
+  const currentContent = getContent()
+  const newStr = JSON.stringify(isDelta(newValue) ? newValue.ops : newValue)
+  const currentStr = JSON.stringify(isDelta(currentContent) ? currentContent.ops : currentContent)
+  if (newStr === currentStr) return
 
-    // Update editor content
-    isUpdatingFromModel.value = true
+  isUpdatingFromModel.value = true
+  try {
     editor.value.setContent(newValue as string ?? '', false)
+  } finally {
     isUpdatingFromModel.value = false
   }
-)
+})
 
-// Watch for editable changes
-watch(
-  () => props.editable,
-  (newEditable) => {
-    editor.value?.setEditable(newEditable)
-  }
-)
+watch(() => props.editable, (val) => editor.value?.setEditable(val))
 
-// Watch for placeholder changes
-watch(
-  () => props.placeholder,
-  (newPlaceholder) => {
-    if (editor.value?.quill) {
-      // Update placeholder via Quill's root element
-      const root = editor.value.element?.querySelector('.ql-editor')
-      if (root) {
-        root.setAttribute('data-placeholder', newPlaceholder ?? '')
-      }
-    }
-  }
-)
+watch(() => props.placeholder, (val) => {
+  const root = editor.value?.element?.querySelector('.ql-editor')
+  root?.setAttribute('data-placeholder', val ?? '')
+})
 
 // ─── Expose ────────────────────────────────────────────────────────────
 
-defineExpose({
-  /** The editor instance */
-  editor: editor,
-})
+defineExpose({ editor, reinit })
 </script>
 
 <template>
   <div :class="containerClasses">
-    <!-- Custom toolbar slot -->
     <slot name="toolbar" />
-    
-    <!-- Editor container -->
     <div ref="editorRef" class="vue-quill__editor" />
   </div>
 </template>
 
 <style>
-/* Import Quill styles */
 @import 'quill/dist/quill.snow.css';
 @import 'quill/dist/quill.bubble.css';
 
-/* Container styles */
 .vue-quill {
   display: flex;
   flex-direction: column;
@@ -264,13 +188,11 @@ defineExpose({
   flex: 1;
 }
 
-/* Disabled state */
 .vue-quill--disabled .ql-editor {
   opacity: 0.65;
   cursor: not-allowed;
 }
 
-/* Ensure proper focus styling */
 .vue-quill .ql-container:focus-within {
   outline: none;
 }

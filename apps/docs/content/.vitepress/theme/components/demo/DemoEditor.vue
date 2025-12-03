@@ -46,7 +46,7 @@ watch([selectedTheme, selectedToolbar], () => {
     <div class="initial flex-1 flex flex-col">
       <QuillEditor
         ref="myEditor"
-        v-model:content="myContent"
+        v-model="myContent"
         class="h-64 sm:h-96"
         :theme="selectedTheme"
         :toolbar="selectedToolbar"

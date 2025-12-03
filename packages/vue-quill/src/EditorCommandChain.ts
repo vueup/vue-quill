@@ -65,6 +65,34 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
+  color(color: string): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.format('color', color)
+    })
+    return this
+  }
+
+  background(color: string): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.format('background', color)
+    })
+    return this
+  }
+
+  link(url: string | false): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.format('link', url)
+    })
+    return this
+  }
+
+  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.format('align', alignment)
+    })
+    return this
+  }
+
   // ─── Structure ───────────────────────────────────────────────────────
 
   setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): EditorCommandChain {
@@ -169,6 +197,42 @@ export class EditorCommandChainImpl implements EditorCommandChain {
   clearContent(): EditorCommandChain {
     this._commands.push(() => {
       this._editor.clearContent()
+    })
+    return this
+  }
+
+  // ─── Embeds ──────────────────────────────────────────────────────────
+
+  insertImage(url: string): EditorCommandChain {
+    this._commands.push(() => {
+      const selection = this._editor.getSelection()
+      const index = selection?.index ?? this._editor.quill?.getLength() ?? 0
+      this._editor.insertImage(index, url)
+    })
+    return this
+  }
+
+  insertVideo(url: string): EditorCommandChain {
+    this._commands.push(() => {
+      const selection = this._editor.getSelection()
+      const index = selection?.index ?? this._editor.quill?.getLength() ?? 0
+      this._editor.insertVideo(index, url)
+    })
+    return this
+  }
+
+  // ─── History ─────────────────────────────────────────────────────────
+
+  undo(): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.undo()
+    })
+    return this
+  }
+
+  redo(): EditorCommandChain {
+    this._commands.push(() => {
+      this._editor.redo()
     })
     return this
   }

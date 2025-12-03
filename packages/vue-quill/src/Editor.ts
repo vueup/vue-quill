@@ -272,6 +272,203 @@ export class Editor implements IEditor {
     return this
   }
 
+  // ─── History Methods ─────────────────────────────────────────────────
+
+  /**
+   * Undo the last change
+   * @returns The editor instance for chaining
+   */
+  undo(): this {
+    const history = this._quill?.getModule('history') as any
+    history?.undo()
+    return this
+  }
+
+  /**
+   * Redo the last undone change
+   * @returns The editor instance for chaining
+   */
+  redo(): this {
+    const history = this._quill?.getModule('history') as any
+    history?.redo()
+    return this
+  }
+
+  /**
+   * Clear the entire history stack
+   * @returns The editor instance for chaining
+   */
+  clearHistory(): this {
+    const history = this._quill?.getModule('history') as any
+    history?.clear()
+    return this
+  }
+
+  // ─── Formatting Methods ──────────────────────────────────────────────
+
+  /**
+   * Apply format to current selection or cursor
+   * @param name - Format name (e.g., 'bold', 'color', 'align')
+   * @param value - Format value
+   * @param source - Source of the change
+   * @returns The editor instance for chaining
+   */
+  format(name: string, value: any, source?: EmitterSource): this {
+    this._quill?.format(name, value, source ?? 'api')
+    return this
+  }
+
+  /**
+   * Format text in a specific range
+   * @param index - Starting index
+   * @param length - Length of text to format
+   * @param formatOrFormats - Format name or object of formats
+   * @param value - Format value (if format is a string)
+   * @returns The editor instance for chaining
+   */
+  formatText(index: number, length: number, formatOrFormats: string | Record<string, any>, value?: any): this {
+    if (typeof formatOrFormats === 'string') {
+      this._quill?.formatText(index, length, formatOrFormats, value, 'api')
+    } else {
+      this._quill?.formatText(index, length, formatOrFormats, 'api')
+    }
+    return this
+  }
+
+  /**
+   * Get formats at selection or specific range
+   * @param index - Starting index (optional)
+   * @param length - Length of range (optional)
+   * @returns Object containing active formats
+   */
+  getFormat(index?: number, length?: number): Record<string, any> {
+    return this._quill?.getFormat(index, length) ?? {}
+  }
+
+  /**
+   * Remove all formatting in a range
+   * @param index - Starting index
+   * @param length - Length of text to remove formatting from
+   * @returns The editor instance for chaining
+   */
+  removeFormat(index: number, length: number): this {
+    this._quill?.removeFormat(index, length, 'api')
+    return this
+  }
+
+  // ─── Embed Methods ───────────────────────────────────────────────────
+
+  /**
+   * Insert an embed (image, video, etc.) at the specified index
+   * @param index - Position to insert the embed
+   * @param type - Type of embed (e.g., 'image', 'video')
+   * @param value - Embed value (e.g., URL)
+   * @returns The editor instance for chaining
+   */
+  insertEmbed(index: number, type: string, value: any): this {
+    this._quill?.insertEmbed(index, type, value, 'api')
+    return this
+  }
+
+  /**
+   * Insert an image at the specified index
+   * @param index - Position to insert the image
+   * @param url - Image URL
+   * @returns The editor instance for chaining
+   */
+  insertImage(index: number, url: string): this {
+    return this.insertEmbed(index, 'image', url)
+  }
+
+  /**
+   * Insert a video at the specified index
+   * @param index - Position to insert the video
+   * @param url - Video URL
+   * @returns The editor instance for chaining
+   */
+  insertVideo(index: number, url: string): this {
+    return this.insertEmbed(index, 'video', url)
+  }
+
+  // ─── Selection & Scroll Methods ──────────────────────────────────────
+
+  /**
+   * Get pixel bounds of a text range
+   * @param index - Starting index
+   * @param length - Length of range (default: 0)
+   * @returns Bounds object with top, left, height, width or null
+   */
+  getBounds(index: number, length: number = 0): { top: number; left: number; height: number; width: number } | null {
+    return this._quill?.getBounds(index, length) ?? null
+  }
+
+  /**
+   * Scroll the current selection into view
+   * @returns The editor instance for chaining
+   */
+  scrollSelectionIntoView(): this {
+    this._quill?.scrollSelectionIntoView()
+    return this
+  }
+
+  /**
+   * Check if the editor currently has focus
+   * @returns true if editor has focus, false otherwise
+   */
+  hasFocus(): boolean {
+    return this._quill?.hasFocus() ?? false
+  }
+
+  /**
+   * Synchronously check editor for updates and fire events
+   * @param source - Source of the update
+   * @returns The editor instance for chaining
+   */
+  update(source?: EmitterSource): this {
+    this._quill?.update(source ?? 'api')
+    return this
+  }
+
+  // ─── Content Manipulation ────────────────────────────────────────────
+
+  /**
+   * Insert text at a specific index
+   * @param index - Position to insert text
+   * @param text - Text to insert
+   * @param formats - Optional formats to apply
+   * @returns The editor instance for chaining
+   */
+  insertText(index: number, text: string, formats?: Record<string, any>): this {
+    if (formats) {
+      this._quill?.insertText(index, text, formats, 'api')
+    } else {
+      this._quill?.insertText(index, text, 'api')
+    }
+    return this
+  }
+
+  /**
+   * Delete text in a specific range
+   * @param index - Starting index
+   * @param length - Length of text to delete
+   * @returns The editor instance for chaining
+   */
+  deleteText(index: number, length: number): this {
+    this._quill?.deleteText(index, length, 'api')
+    return this
+  }
+
+  /**
+   * Apply Delta changes to the editor
+   * @param delta - Delta object with changes
+   * @param source - Source of the change
+   * @returns The editor instance for chaining
+   */
+  updateContents(delta: Delta, source?: EmitterSource): this {
+    this._quill?.updateContents(delta, source ?? 'api')
+    return this
+  }
+
   // ─── Command Chain ───────────────────────────────────────────────────
 
   chain(): EditorCommandChain {
@@ -297,6 +494,17 @@ export class Editor implements IEditor {
     }
   }
 
+  // ─── Extension Methods ───────────────────────────────────────────────
+
+  /**
+   * Get a Quill module instance by name
+   * @param name - Module name (e.g., 'history', 'toolbar', 'clipboard')
+   * @returns Module instance or null
+   */
+  getModule<T = any>(name: string): T | null {
+    return (this._quill?.getModule(name) as T) ?? null
+  }
+
   // ─── Event Methods ───────────────────────────────────────────────────
 
   on<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this {
@@ -309,6 +517,22 @@ export class Editor implements IEditor {
 
   off<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this {
     this._eventHandlers.get(event)?.delete(handler as EditorEvents[keyof EditorEvents])
+    return this
+  }
+
+  /**
+   * Subscribe to an event once (automatically unsubscribes after first call)
+   * @param event - Event name
+   * @param handler - Event handler
+   * @returns The editor instance for chaining
+   */
+  once<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this {
+    const wrappedHandler = ((props: any) => {
+      handler(props)
+      this.off(event, wrappedHandler as EditorEvents[E])
+    }) as EditorEvents[E]
+
+    this.on(event, wrappedHandler)
     return this
   }
 

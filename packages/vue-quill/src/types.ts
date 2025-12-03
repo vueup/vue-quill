@@ -111,6 +111,10 @@ export interface EditorCommandChain {
   italic(): EditorCommandChain
   underline(): EditorCommandChain
   strike(): EditorCommandChain
+  color(color: string): EditorCommandChain
+  background(color: string): EditorCommandChain
+  link(url: string | false): EditorCommandChain
+  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): EditorCommandChain
 
   // Structure
   setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): EditorCommandChain
@@ -131,6 +135,14 @@ export interface EditorCommandChain {
   setContent(content: string | Delta): EditorCommandChain
   insertContent(content: string | Delta): EditorCommandChain
   clearContent(): EditorCommandChain
+
+  // Embeds
+  insertImage(url: string): EditorCommandChain
+  insertVideo(url: string): EditorCommandChain
+
+  // History
+  undo(): EditorCommandChain
+  redo(): EditorCommandChain
 
   // Execute the accumulated commands
   run(): boolean
@@ -207,17 +219,67 @@ export interface Editor {
   /** Update editor options dynamically */
   setOptions(options: Partial<VueQuillOptions>): this
 
+  // ─── History Methods ───────────────────────────────────────────────
+  /** Undo the last change */
+  undo(): this
+  /** Redo the last undone change */
+  redo(): this
+  /** Clear the entire history stack */
+  clearHistory(): this
+
+  // ─── Formatting Methods ────────────────────────────────────────────
+  /** Apply format to current selection or cursor */
+  format(name: string, value: any, source?: EmitterSource): this
+  /** Format text in a specific range */
+  formatText(index: number, length: number, formatOrFormats: string | Record<string, any>, value?: any): this
+  /** Get formats at selection or specific range */
+  getFormat(index?: number, length?: number): Record<string, any>
+  /** Remove all formatting in a range */
+  removeFormat(index: number, length: number): this
+
+  // ─── Embed Methods ─────────────────────────────────────────────────
+  /** Insert an embed (image, video, etc.) at the specified index */
+  insertEmbed(index: number, type: string, value: any): this
+  /** Insert an image at the specified index */
+  insertImage(index: number, url: string): this
+  /** Insert a video at the specified index */
+  insertVideo(index: number, url: string): this
+
+  // ─── Selection & Scroll Utilities ──────────────────────────────────
+  /** Get pixel bounds of a text range */
+  getBounds(index: number, length?: number): { top: number; left: number; height: number; width: number } | null
+  /** Scroll the current selection into view */
+  scrollSelectionIntoView(): this
+  /** Check if the editor currently has focus */
+  hasFocus(): boolean
+  /** Synchronously check editor for updates and fire events */
+  update(source?: EmitterSource): this
+
+  // ─── Content Manipulation ──────────────────────────────────────────
+  /** Insert text at a specific index */
+  insertText(index: number, text: string, formats?: Record<string, any>): this
+  /** Delete text in a specific range */
+  deleteText(index: number, length: number): this
+  /** Apply Delta changes to the editor */
+  updateContents(delta: Delta, source?: EmitterSource): this
+
   // ─── Command Chain (TipTap-style) ──────────────────────────────────
   /** Start a command chain for fluent operations */
   chain(): EditorCommandChain
   /** Check if commands can be executed */
   can(): EditorCanCommands
 
+  // ─── Extension Methods ─────────────────────────────────────────────
+  /** Get a Quill module instance by name */
+  getModule<T = any>(name: string): T | null
+
   // ─── Event Methods ─────────────────────────────────────────────────
   /** Subscribe to editor events */
   on<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this
   /** Unsubscribe from editor events */
   off<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this
+  /** Subscribe to an event once (automatically unsubscribes after first call) */
+  once<E extends keyof EditorEvents>(event: E, handler: EditorEvents[E]): this
 
   // ─── Lifecycle ─────────────────────────────────────────────────────
   /** Destroy the editor and cleanup resources */

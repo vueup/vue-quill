@@ -1,73 +1,85 @@
-const loadScript: any = (src: string, isAsync: boolean) => {
-  // Initialize scripts queue
-  if (loadScript.scripts === undefined) {
-    loadScript.scripts = []
-    loadScript.index = -1
-    loadScript.loading = false
-    loadScript.next = () => {
-      if (loadScript.loading) return
-
-      // Load the next queue item
-      loadScript.loading = true
-      const item = loadScript.scripts[++loadScript.index]
-      const head = document.head
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = item.src
-      if (isAsync) script.setAttribute('async', '')
-      // When complete, start next item in queue and resolve this item's promise
-      script.onload = () => {
-        loadScript.loading = false
-        if (loadScript.index < loadScript.scripts.length - 1) loadScript.next()
-        item.resolve()
-      }
-      head.appendChild(script)
-    }
-  }
-
-  // Adding a script to the queue
-  if (src) {
-    // Check if already added
-    for (let i = 0; i < loadScript.scripts.length; i++) {
-      if (loadScript.scripts[i].src == src) return loadScript.scripts[i].promise
-    }
-    // Add to the queue
-    const item: any = { src: src }
-    item.promise = new Promise((resolve) => {
-      item.resolve = resolve
-    })
-    loadScript.scripts.push(item)
-    loadScript.next()
-  }
-
-  // Return the promise of the last queue item
-  return loadScript.scripts[loadScript.scripts.length - 1].promise
+interface ScriptItem {
+  src: string
+  promise: Promise<void>
+  resolve: () => void
 }
 
-function onReady(fn: () => void) {
-  if (document.readyState != 'loading') {
+interface ScriptLoader {
+  scripts: ScriptItem[]
+  index: number
+  loading: boolean
+  next: () => void
+}
+
+const scriptLoader: ScriptLoader = {
+  scripts: [],
+  index: -1,
+  loading: false,
+  next() {
+    if (this.loading) return
+
+    this.loading = true
+    const item = this.scripts[++this.index]
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = item.src
+
+    script.onload = () => {
+      this.loading = false
+      if (this.index < this.scripts.length - 1) {
+        this.next()
+      }
+      item.resolve()
+    }
+
+    document.head.appendChild(script)
+  },
+}
+
+export function loadScript(src: string, isAsync = false): Promise<void> {
+  const existing = scriptLoader.scripts.find((s) => s.src === src)
+  if (existing) return existing.promise
+
+  let resolve: () => void = () => {}
+  const promise = new Promise<void>((r) => {
+    resolve = r
+  })
+
+  const item: ScriptItem = { src, promise, resolve }
+  scriptLoader.scripts.push(item)
+
+  if (!scriptLoader.loading) {
+    scriptLoader.next()
+  }
+
+  return promise
+}
+
+function onReady(fn: () => void): void {
+  if (document.readyState !== 'loading') {
     fn()
   } else {
     document.addEventListener('DOMContentLoaded', fn)
   }
 }
 
+declare global {
+  interface Window {
+    dataLayer: unknown[]
+    gtag: (...args: unknown[]) => void
+  }
+}
+
 onReady(() => {
-  // Global site tag (gtag.js) - Google Analytics
   loadScript(
     'https://www.googletagmanager.com/gtag/js?id=G-NKRWLJHDXL',
     true
   ).then(() => {
-    // @ts-ignore
     window.dataLayer = window.dataLayer || []
-    function gtag() {
-      // @ts-ignore
-      dataLayer.push(arguments)
+    window.gtag = function gtag(...args: unknown[]) {
+      window.dataLayer.push(args)
     }
-    // @ts-ignore
-    gtag('js', new Date())
-
-    // @ts-ignore
-    gtag('config', 'G-NKRWLJHDXL')
+    window.gtag('js', new Date())
+    window.gtag('config', 'G-NKRWLJHDXL')
   })
 })

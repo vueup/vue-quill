@@ -1,50 +1,50 @@
-<script setup type="ts">
-import { watch, onMounted } from "vue";
-import { escapeRegExp } from "../utils/regex";
-const props = defineProps({
-  container: {
-    type: String,
-    default: "body",
-  },
-  pattern: {
-    type: String,
-    required: true,
-  },
-  replacement: {
-    type: String,
-    required: true,
-  },
-  prefix: {
-    type: String,
-    default: "",
-  },
-  suffix: {
-    type: String,
-    default: "",
-  },
-})
-const replaceDomText = (container, pattern, replacement) => {
-  pattern = new RegExp(escapeRegExp(pattern), "g");
-  document.querySelectorAll(container).forEach((el) => {
-    el.innerHTML = el.innerHTML.replace(pattern, replacement);
-  });
-};
+<script setup lang="ts">
+import { watch, onMounted, ref } from 'vue'
+import { escapeRegExp } from '../utils/regex'
 
-let replacedText;
+interface Props {
+  container?: string
+  pattern: string
+  replacement: string
+  prefix?: string
+  suffix?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  container: 'body',
+  prefix: '',
+  suffix: '',
+})
+
+const replacedText = ref<string | null>(null)
+
+const replaceDomText = (
+  container: string,
+  pattern: string,
+  replacement: string
+) => {
+  const regex = new RegExp(escapeRegExp(pattern), 'g')
+  document.querySelectorAll(container).forEach((el) => {
+    el.innerHTML = el.innerHTML.replace(regex, replacement)
+  })
+}
+
 onMounted(() => {
   watch(
     () => props.replacement,
     (value) => {
-      if (props.replacement && props.replacement !== "") {
-        const pattern = replacedText ? replacedText : props.pattern;
-        const replacement = props.prefix + value + props.suffix;
-        replaceDomText(props.container, pattern, replacement);
-        replacedText = replacement;
+      if (value && value !== '') {
+        const pattern = replacedText.value ?? props.pattern
+        const replacement = props.prefix + value + props.suffix
+        replaceDomText(props.container, pattern, replacement)
+        replacedText.value = replacement
       }
     },
     { immediate: true }
-  );
-});
+  )
+})
 </script>
 
-<template></template>
+<template>
+  <slot />
+</template>

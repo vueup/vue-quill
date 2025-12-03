@@ -1,115 +1,116 @@
-const SESSION_EXPIRY_IN_SECOND = 30
+const SESSION_EXPIRY_IN_SECONDS = 30
 
-export const getLatestReleaseVersion = async (
-  owner: string,
-  repo: string
-): Promise<string> => {
-  if (getWithExpiry('latestVersion')) return getWithExpiry('latestVersion')
-  return await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/releases/latest`
-  )
-    .then((response) => response.json())
-    .then((release) => {
-      if (release.tag_name) {
-        const latestVersion =
-          release.tag_name.match(/(\d+\.\d+)[\-\.\da-zA-Z]+/)[0] ?? ''
-        if (latestVersion !== '') {
-          setWithExpiry(
-            'latestVersion',
-            latestVersion,
-            SESSION_EXPIRY_IN_SECOND
-          )
-        }
-        return latestVersion
-      } else {
-        return fetch(`https://api.github.com/repos/${owner}/${repo}/tags`)
-          .then((response) => response.json())
-          .then((tags: any[]) => {
-            if (tags.length) {
-              // get latest tag version
-              const latestVersion =
-                tags[0].name.match(/(\d+\.\d+)[\-\.\da-zA-Z]+/)[0] ?? ''
-              if (latestVersion !== '') {
-                setWithExpiry(
-                  'latestVersion',
-                  latestVersion,
-                  SESSION_EXPIRY_IN_SECOND
-                )
-              }
-              return latestVersion
-            }
-            return ''
-          })
-      }
-    })
+interface CachedItem {
+  value: string
+  expiry: number
 }
 
-export const getLatestRelease = async (
-  owner: string,
-  repo: string
-): Promise<string> => {
-  if (getWithExpiry('latestRelease')) return getWithExpiry('latestRelease')
-  return await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/releases/latest`
-  )
-    .then((response) => response.json())
-    .then((release) => {
-      if (release.prerelease === false) {
-        const latestRelease = 'latest'
-        setWithExpiry('latestRelease', latestRelease, SESSION_EXPIRY_IN_SECOND)
-        return latestRelease
-      } else {
-        return fetch(`https://api.github.com/repos/${owner}/${repo}/tags`)
-          .then((response) => response.json())
-          .then((tags: any[]) => {
-            if (tags.length) {
-              // get prerelease name (e.g. alpha) from the latest tag name
-              const latestRelease =
-                tags[0].name.match(/(?<=\.\d-)[^.]+/)[0] ?? ''
-              if (latestRelease !== '') {
-                setWithExpiry(
-                  'latestRelease',
-                  latestRelease,
-                  SESSION_EXPIRY_IN_SECOND
-                )
-              }
-              return latestRelease
-            }
-            return ''
-          })
-      }
-    })
+interface GitHubRelease {
+  tag_name?: string
+  prerelease?: boolean
 }
 
-function setWithExpiry(key: string, value: string, ttl: number) {
-  const now = new Date()
+interface GitHubTag {
+  name: string
+}
 
-  // `item` is an object which contains the original value
-  // as well as the time when it's supposed to expire
-  const item = {
-    value: value,
-    expiry: now.getTime() + ttl * 1000,
+function setWithExpiry(key: string, value: string, ttl: number): void {
+  const item: CachedItem = {
+    value,
+    expiry: Date.now() + ttl * 1000,
   }
   sessionStorage.setItem(key, JSON.stringify(item))
 }
 
-function getWithExpiry(key: string) {
+function getWithExpiry(key: string): string | null {
   const itemStr = sessionStorage.getItem(key)
+  if (!itemStr) return null
 
-  // if the item doesn't exist, return null
-  if (!itemStr) {
-    return null
-  }
-
-  const item = JSON.parse(itemStr)
-  const now = new Date()
-
-  // compare the expiry time of the item with the current time
-  if (now.getTime() > item.expiry) {
-    // If the item is expired, delete the item from storage
-    // and return null
+  const item: CachedItem = JSON.parse(itemStr)
+  if (Date.now() > item.expiry) {
     sessionStorage.removeItem(key)
     return null
   }
+
   return item.value
+}
+
+export async function getLatestReleaseVersion(
+  owner: string,
+  repo: string
+): Promise<string> {
+  const cached = getWithExpiry('latestVersion')
+  if (cached) return cached
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+    )
+    const release: GitHubRelease = await response.json()
+
+    if (release.tag_name) {
+      const match = release.tag_name.match(/(\d+\.\d+)[-.\da-zA-Z]+/)
+      const latestVersion = match?.[0] ?? ''
+      if (latestVersion) {
+        setWithExpiry('latestVersion', latestVersion, SESSION_EXPIRY_IN_SECONDS)
+      }
+      return latestVersion
+    }
+
+    const tagsResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/tags`
+    )
+    const tags: GitHubTag[] = await tagsResponse.json()
+
+    if (tags.length) {
+      const match = tags[0].name.match(/(\d+\.\d+)[-.\da-zA-Z]+/)
+      const latestVersion = match?.[0] ?? ''
+      if (latestVersion) {
+        setWithExpiry('latestVersion', latestVersion, SESSION_EXPIRY_IN_SECONDS)
+      }
+      return latestVersion
+    }
+
+    return ''
+  } catch {
+    return ''
+  }
+}
+
+export async function getLatestRelease(
+  owner: string,
+  repo: string
+): Promise<string> {
+  const cached = getWithExpiry('latestRelease')
+  if (cached) return cached
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`
+    )
+    const release: GitHubRelease = await response.json()
+
+    if (release.prerelease === false) {
+      setWithExpiry('latestRelease', 'latest', SESSION_EXPIRY_IN_SECONDS)
+      return 'latest'
+    }
+
+    const tagsResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/tags`
+    )
+    const tags: GitHubTag[] = await tagsResponse.json()
+
+    if (tags.length) {
+      const match = tags[0].name.match(/(?<=\.\d-)[^.]+/)
+      const latestRelease = match?.[0] ?? ''
+      if (latestRelease) {
+        setWithExpiry('latestRelease', latestRelease, SESSION_EXPIRY_IN_SECONDS)
+      }
+      return latestRelease
+    }
+
+    return ''
+  } catch {
+    return ''
+  }
 }

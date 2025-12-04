@@ -104,9 +104,11 @@ export class Editor implements IEditor {
       // Create Quill instance
       this._quill = new Quill(element, quillOptions)
 
-      // Set initial content
+      // Set initial content directly (bypassing isReady check)
+      // This is safe because we haven't set up event handlers yet
       if (this._options.content) {
-        this.setContent(this._options.content, false)
+        const delta = this._parseContent(this._options.content)
+        this._quill.setContents(delta, 'silent')
       }
 
       // Set editable state
@@ -114,11 +116,12 @@ export class Editor implements IEditor {
         this._quill.disable()
       }
 
+      // Mark as ready BEFORE setting up event handlers
+      // This ensures handlers see the editor in ready state
+      this._isReady = true
+
       // Setup event handlers
       this._setupEventHandlers()
-
-      // Mark as ready
-      this._isReady = true
 
       // Fire onCreate callback
       this._options.onCreate?.({ editor: this })
@@ -159,18 +162,10 @@ export class Editor implements IEditor {
   }
 
   setContent(content: string | Delta, emitUpdate = true): this {
-    if (!this._quill) return this
+    if (!this._quill || !this._isReady) return this
 
     const delta = this._parseContent(content)
-    const oldDelta = this._quill.getContents()
-
     this._quill.setContents(delta, 'api')
-
-    if (emitUpdate) {
-      const newDelta = new Delta().retain(0).delete(oldDelta.length()).concat(delta)
-      this._options.onUpdate?.({ editor: this, delta: newDelta, oldDelta, source: 'api' })
-      this._emit('update', { editor: this, delta: newDelta, oldDelta, source: 'api' })
-    }
 
     return this
   }
@@ -547,23 +542,26 @@ export class Editor implements IEditor {
   destroy(): void {
     if (!this._quill) return
 
+    // Remove Quill's event listeners
+    this._quill.off('text-change')
+    this._quill.off('selection-change')
+    this._quill.off('editor-change')
+
+    // Remove auto-generated toolbar (not custom ones)
     const toolbar = this._quill.getModule('toolbar') as any
     const isCustomToolbar =
       typeof this._options.toolbar === 'string' &&
       this._options.toolbar.startsWith('#')
 
-    if (toolbar && toolbar.container && !isCustomToolbar) {
+    if (toolbar?.container && !isCustomToolbar) {
       toolbar.container.remove()
     }
 
     this._options.onDestroy?.()
     this._emit('destroy')
-
-    // Clear event handlers
     this._eventHandlers.clear()
 
-    // Note: Quill doesn't have a destroy method
-    // We just nullify references
+    // Nullify references - Quill doesn't have a destroy method
     this._quill = null
     this._element = null
     this._isReady = false

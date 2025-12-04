@@ -148,28 +148,17 @@ onBeforeUnmount(destroyEditor)
 watch(model, (newValue, oldValue) => {
   if (!editor.value?.isReady || newValue === oldValue || isUpdatingFromModel.value) return
 
-  // Fast path: string comparison (most common case)
-  if (typeof newValue === 'string' && typeof getContent() === 'string') {
-    if (newValue === getContent()) return
-  }
-  // Delta comparison: check ops length first (fast), then compare
-  else if (isDelta(newValue)) {
-    const currentContent = getContent()
-    if (isDelta(currentContent)) {
-      // Fast: compare ops length first
-      if (newValue.ops.length === currentContent.ops.length) {
-        // Only stringify if lengths match (rare case where content might be same)
-        if (JSON.stringify(newValue.ops) === JSON.stringify(currentContent.ops)) return
-      }
-    }
+  // Compare content to avoid unnecessary updates
+  const currentContent = getContent()
+  
+  if (typeof newValue === 'string' && newValue === currentContent) return
+  if (isDelta(newValue) && isDelta(currentContent)) {
+    if (JSON.stringify(newValue.ops) === JSON.stringify(currentContent.ops)) return
   }
 
   isUpdatingFromModel.value = true
-  try {
-    editor.value.setContent(newValue as string ?? '', false)
-  } finally {
-    isUpdatingFromModel.value = false
-  }
+  editor.value?.setContent(newValue as string ?? '', false)
+  isUpdatingFromModel.value = false
 })
 
 watch(() => props.editable, (val) => editor.value?.setEditable(val))

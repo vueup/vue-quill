@@ -9,4 +9,6 @@ TODOs.md
 .env
 .nuxt
 .turbo
-.vitepress
+# VitePress build output and cache
+**/.vitepress/cache
+**/.vitepress/dist

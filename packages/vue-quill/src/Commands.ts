@@ -1,5 +1,5 @@
 /**
- * VueQuill Editor Command Chain
+ * VueQuill Commands
  *
  * Provides a fluent API for chaining editor commands,
  * following TipTap's command chain pattern.
@@ -8,14 +8,14 @@
  */
 
 import type { Delta } from 'quill'
-import type { EditorCommandChain, Editor } from './types'
+import type { Commands, Editor } from './types'
 
 type CommandFn = () => void
 
 /**
  * Implementation of chainable editor commands
  */
-export class EditorCommandChainImpl implements EditorCommandChain {
+export class CommandsImpl implements Commands {
   private _editor: Editor
   private _commands: CommandFn[] = []
 
@@ -25,7 +25,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Formatting ──────────────────────────────────────────────────────
 
-  bold(): EditorCommandChain {
+  bold(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -35,7 +35,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  italic(): EditorCommandChain {
+  italic(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -45,7 +45,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  underline(): EditorCommandChain {
+  underline(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -55,7 +55,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  strike(): EditorCommandChain {
+  strike(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -65,28 +65,28 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  color(color: string): EditorCommandChain {
+  color(color: string): Commands {
     this._commands.push(() => {
       this._editor.format('color', color)
     })
     return this
   }
 
-  background(color: string): EditorCommandChain {
+  background(color: string): Commands {
     this._commands.push(() => {
       this._editor.format('background', color)
     })
     return this
   }
 
-  link(url: string | false): EditorCommandChain {
+  link(url: string | false): Commands {
     this._commands.push(() => {
       this._editor.format('link', url)
     })
     return this
   }
 
-  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): EditorCommandChain {
+  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): Commands {
     this._commands.push(() => {
       this._editor.format('align', alignment)
     })
@@ -95,7 +95,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Structure ───────────────────────────────────────────────────────
 
-  setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): EditorCommandChain {
+  setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -104,7 +104,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  setParagraph(): EditorCommandChain {
+  setParagraph(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -113,7 +113,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  setBlockquote(): EditorCommandChain {
+  setBlockquote(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -123,7 +123,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  setCodeBlock(): EditorCommandChain {
+  setCodeBlock(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -135,7 +135,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Lists ───────────────────────────────────────────────────────────
 
-  setBulletList(): EditorCommandChain {
+  setBulletList(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -145,7 +145,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  setOrderedList(): EditorCommandChain {
+  setOrderedList(): Commands {
     this._commands.push(() => {
       const quill = this._editor.quill
       if (!quill) return
@@ -157,21 +157,21 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Selection & Focus ───────────────────────────────────────────────
 
-  focus(position?: 'start' | 'end' | number): EditorCommandChain {
+  focus(position?: 'start' | 'end' | number): Commands {
     this._commands.push(() => {
       this._editor.focus(position)
     })
     return this
   }
 
-  blur(): EditorCommandChain {
+  blur(): Commands {
     this._commands.push(() => {
       this._editor.blur()
     })
     return this
   }
 
-  selectAll(): EditorCommandChain {
+  selectAll(): Commands {
     this._commands.push(() => {
       this._editor.selectAll()
     })
@@ -180,21 +180,21 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Content ─────────────────────────────────────────────────────────
 
-  setContent(content: string | Delta): EditorCommandChain {
+  setContent(content: string | Delta): Commands {
     this._commands.push(() => {
       this._editor.setContent(content)
     })
     return this
   }
 
-  insertContent(content: string | Delta): EditorCommandChain {
+  insertContent(content: string | Delta): Commands {
     this._commands.push(() => {
       this._editor.insertContent(content)
     })
     return this
   }
 
-  clearContent(): EditorCommandChain {
+  clearContent(): Commands {
     this._commands.push(() => {
       this._editor.clearContent()
     })
@@ -203,7 +203,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── Embeds ──────────────────────────────────────────────────────────
 
-  insertImage(url: string): EditorCommandChain {
+  insertImage(url: string): Commands {
     this._commands.push(() => {
       const selection = this._editor.getSelection()
       const index = selection?.index ?? this._editor.quill?.getLength() ?? 0
@@ -212,7 +212,7 @@ export class EditorCommandChainImpl implements EditorCommandChain {
     return this
   }
 
-  insertVideo(url: string): EditorCommandChain {
+  insertVideo(url: string): Commands {
     this._commands.push(() => {
       const selection = this._editor.getSelection()
       const index = selection?.index ?? this._editor.quill?.getLength() ?? 0
@@ -223,17 +223,27 @@ export class EditorCommandChainImpl implements EditorCommandChain {
 
   // ─── History ─────────────────────────────────────────────────────────
 
-  undo(): EditorCommandChain {
+  undo(): Commands {
     this._commands.push(() => {
       this._editor.undo()
     })
     return this
   }
 
-  redo(): EditorCommandChain {
+  redo(): Commands {
     this._commands.push(() => {
       this._editor.redo()
     })
+    return this
+  }
+
+  // ─── Reset ────────────────────────────────────────────────────────────
+
+  /**
+   * Reset the command chain for reuse
+   */
+  reset(): this {
+    this._commands = []
     return this
   }
 

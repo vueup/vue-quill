@@ -141,14 +141,12 @@ export function useEditor(
   })
 
   // Watch for configuration changes that require re-initialization
+  // Only watch primitive values, not deep objects
   watch(
-    [
-      () => options.theme,
-      () => options.toolbar,
-      () => options.modules,
-    ],
-    () => {
-      if (editorElement) {
+    () => [options.theme, options.toolbar] as const,
+    ([newTheme, newToolbar], [oldTheme, oldToolbar]) => {
+      // Only re-init if theme or toolbar preset actually changed
+      if (editorElement && (newTheme !== oldTheme || newToolbar !== oldToolbar)) {
         // Re-initialize
         destroyEditor()
         // Create new instance with current options
@@ -175,8 +173,7 @@ export function useEditor(
           }
         })
       }
-    },
-    { deep: true }
+    }
   )
 
   return {

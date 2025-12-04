@@ -15,7 +15,7 @@ describe('useEditor', () => {
   describe('Composable Export', () => {
     it('should export useEditor function', async () => {
       const { useEditor } = await import('../useEditor')
-      
+
       expect(useEditor).toBeDefined()
       expect(typeof useEditor).toBe('function')
     })
@@ -24,7 +24,7 @@ describe('useEditor', () => {
   describe('EditorContent Export', () => {
     it('should export EditorContent component', async () => {
       const { EditorContent } = await import('../index')
-      
+
       expect(EditorContent).toBeDefined()
     })
   })
@@ -32,24 +32,24 @@ describe('useEditor', () => {
   describe('Editor Class', () => {
     it('should export Editor class', async () => {
       const { Editor } = await import('../Editor')
-      
+
       expect(Editor).toBeDefined()
       expect(typeof Editor).toBe('function')
     })
 
     it('Editor should have static methods', async () => {
       const { Editor } = await import('../Editor')
-      
+
       // Editor is a class, verify it can be instantiated (though it needs Quill)
       expect(Editor.prototype).toBeDefined()
     })
   })
 
-  describe('EditorCommandChain', () => {
-    it('should export EditorCommandChainImpl', async () => {
-      const { EditorCommandChainImpl } = await import('../EditorCommandChain')
-      
-      expect(EditorCommandChainImpl).toBeDefined()
+  describe('Commands', () => {
+    it('should export CommandsImpl', async () => {
+      const { CommandsImpl } = await import('../Commands')
+
+      expect(CommandsImpl).toBeDefined()
     })
   })
 
@@ -64,7 +64,7 @@ describe('useEditor', () => {
   describe('SSR Compatibility', () => {
     it('isSSR should return false in jsdom (browser-like)', async () => {
       const { isSSR } = await import('../utils')
-      
+
       // jsdom simulates window/document, so should return false
       expect(isSSR()).toBe(false)
     })

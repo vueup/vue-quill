@@ -6,8 +6,9 @@
 
 // Components
 export { default as QuillEditor } from './components/QuillEditor.vue'
-export { default as EditorContent } from './components/EditorContent.vue'
 export { default as QuillEditorContent } from './components/QuillEditorContent.vue'
+// Alias for backwards compatibility
+export { default as EditorContent } from './components/QuillEditorContent.vue'
 
 // Core editor
 export { Editor } from './Editor'
@@ -19,10 +20,12 @@ export type {
   EditorTheme,
   ToolbarPreset,
   ToolbarOption,
+  ToolbarItem,
+  ToolbarItemGroup,
   QuillModule,
   Editor as IEditor,
   EditorEvents,
-  EditorCommandChain,
+  Commands,
   EditorCanCommands,
   VueQuillOptions,
   UseEditorReturn,
@@ -30,24 +33,28 @@ export type {
   QuillEditorInstance,
   EditorContentProps,
   ToolbarPresets,
+  // Format types
+  FormatName,
+  FormatValue,
+  Formats,
+  EmbedType,
+  ContentValue,
 } from './types'
 
 // Toolbar presets
-export { toolbarPresets, resolveToolbar } from './toolbar-presets'
+export { toolbarPresets, resolveToolbar } from './toolbar'
 
 // Utilities
 export {
   isSSR,
   isDelta,
   isHTML,
-  normalizeContent,
-  createEditorId,
   debounce,
   deltasEqual,
   getContentLength,
   isContentEmpty,
-  createEmptyDelta,
 } from './utils'
 
 // Re-export Quill types for convenience
-export type { Range, EmitterSource, QuillOptions, Delta } from 'quill'
+export type { Range, EmitterSource, QuillOptions, Bounds } from 'quill'
+export { Delta, Op, AttributeMap } from 'quill'

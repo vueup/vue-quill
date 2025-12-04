@@ -9,8 +9,54 @@
 
 import type { ShallowRef } from 'vue'
 import type Quill from 'quill'
-import type { QuillOptions, Range, Delta, EmitterSource } from 'quill'
+import type { QuillOptions, Range, EmitterSource, Bounds } from 'quill'
+import { Delta, Op, AttributeMap } from 'quill'
 import type { Blot, LeafBlot, BlockBlot, EmbedBlot } from 'parchment'
+
+// =============================================================================
+// Format Types (Stricter Types for Better DX)
+// =============================================================================
+
+/**
+ * Known format names that Quill supports
+ */
+export type FormatName =
+  | 'bold'
+  | 'italic'
+  | 'underline'
+  | 'strike'
+  | 'color'
+  | 'background'
+  | 'font'
+  | 'size'
+  | 'link'
+  | 'script'
+  | 'header'
+  | 'blockquote'
+  | 'code-block'
+  | 'list'
+  | 'indent'
+  | 'direction'
+  | 'align'
+  | 'image'
+  | 'video'
+  | 'formula'
+  | (string & {}) // Allow custom formats while keeping autocomplete
+
+/**
+ * Possible format values
+ */
+export type FormatValue = string | number | boolean | null | undefined
+
+/**
+ * Format object (key-value pairs of format names and values)
+ */
+export type Formats = Partial<Record<FormatName, FormatValue>>
+
+/**
+ * Embed types supported by Quill
+ */
+export type EmbedType = 'image' | 'video' | 'formula' | (string & {})
 
 // =============================================================================
 // Content & Theme Types
@@ -43,8 +89,30 @@ export type ToolbarPreset = 'minimal' | 'essential' | 'full'
 export type ToolbarOption =
   | ToolbarPreset
   | `#${string}` // CSS selector
-  | unknown[][] // Custom button config
+  | ToolbarItemGroup[] // Custom button config
   | false // Disable toolbar
+
+/**
+ * A single toolbar item (button or dropdown)
+ */
+export type ToolbarItem =
+  | string // Simple format name like 'bold'
+  | { header: number | number[] } // Header dropdown
+  | { list: 'ordered' | 'bullet' | 'check' }
+  | { script: 'sub' | 'super' }
+  | { indent: '-1' | '+1' }
+  | { direction: 'rtl' }
+  | { size: string[] }
+  | { color: string[] }
+  | { background: string[] }
+  | { font: string[] }
+  | { align: string[] }
+  | Record<string, unknown> // Custom formats
+
+/**
+ * A group of toolbar items
+ */
+export type ToolbarItemGroup = ToolbarItem[]
 
 // =============================================================================
 // Module Types
@@ -53,13 +121,13 @@ export type ToolbarOption =
 /**
  * Custom Quill module definition for registration
  */
-export interface QuillModule {
+export interface QuillModule<TOptions = Record<string, unknown>> {
   /** Module name (registered under 'modules/{name}') */
   name: string
   /** Module class or constructor */
-  module: unknown
+  module: new (quill: Quill, options?: TOptions) => unknown
   /** Optional configuration options */
-  options?: Record<string, unknown>
+  options?: TOptions
 }
 
 // =============================================================================
@@ -112,44 +180,47 @@ export interface EditorEvents {
  * Chainable editor commands for fluent operations
  * Usage: editor.chain().focus().bold().insertContent('Hello').run()
  */
-export interface EditorCommandChain {
+export interface Commands {
   // Formatting
-  bold(): EditorCommandChain
-  italic(): EditorCommandChain
-  underline(): EditorCommandChain
-  strike(): EditorCommandChain
-  color(color: string): EditorCommandChain
-  background(color: string): EditorCommandChain
-  link(url: string | false): EditorCommandChain
-  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): EditorCommandChain
+  bold(): Commands
+  italic(): Commands
+  underline(): Commands
+  strike(): Commands
+  color(color: string): Commands
+  background(color: string): Commands
+  link(url: string | false): Commands
+  align(alignment: 'left' | 'center' | 'right' | 'justify' | false): Commands
 
   // Structure
-  setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): EditorCommandChain
-  setParagraph(): EditorCommandChain
-  setBlockquote(): EditorCommandChain
-  setCodeBlock(): EditorCommandChain
+  setHeading(level: 1 | 2 | 3 | 4 | 5 | 6): Commands
+  setParagraph(): Commands
+  setBlockquote(): Commands
+  setCodeBlock(): Commands
 
   // Lists
-  setBulletList(): EditorCommandChain
-  setOrderedList(): EditorCommandChain
+  setBulletList(): Commands
+  setOrderedList(): Commands
 
   // Selection & Focus
-  focus(position?: 'start' | 'end' | number): EditorCommandChain
-  blur(): EditorCommandChain
-  selectAll(): EditorCommandChain
+  focus(position?: 'start' | 'end' | number): Commands
+  blur(): Commands
+  selectAll(): Commands
 
   // Content
-  setContent(content: string | Delta): EditorCommandChain
-  insertContent(content: string | Delta): EditorCommandChain
-  clearContent(): EditorCommandChain
+  setContent(content: string | Delta): Commands
+  insertContent(content: string | Delta): Commands
+  clearContent(): Commands
 
   // Embeds
-  insertImage(url: string): EditorCommandChain
-  insertVideo(url: string): EditorCommandChain
+  insertImage(url: string): Commands
+  insertVideo(url: string): Commands
 
   // History
-  undo(): EditorCommandChain
-  redo(): EditorCommandChain
+  undo(): Commands
+  redo(): Commands
+
+  // Reset for reuse
+  reset(): Commands
 
   // Execute the accumulated commands
   run(): boolean
@@ -236,17 +307,17 @@ export interface Editor {
 
   // ─── Formatting Methods ────────────────────────────────────────────
   /** Apply format to current selection or cursor */
-  format(name: string, value: any, source?: EmitterSource): this
+  format(name: FormatName, value: FormatValue, source?: EmitterSource): this
   /** Format text in a specific range */
-  formatText(index: number, length: number, formatOrFormats: string | Record<string, any>, value?: any): this
+  formatText(index: number, length: number, formatOrFormats: FormatName | Formats, value?: FormatValue): this
   /** Get formats at selection or specific range */
-  getFormat(index?: number, length?: number): Record<string, any>
+  getFormat(index?: number, length?: number): Formats
   /** Remove all formatting in a range */
   removeFormat(index: number, length: number): this
 
   // ─── Embed Methods ─────────────────────────────────────────────────
   /** Insert an embed (image, video, etc.) at the specified index */
-  insertEmbed(index: number, type: string, value: any): this
+  insertEmbed(index: number, type: EmbedType, value: string | Record<string, unknown>): this
   /** Insert an image at the specified index */
   insertImage(index: number, url: string): this
   /** Insert a video at the specified index */
@@ -264,7 +335,7 @@ export interface Editor {
 
   // ─── Content Manipulation ──────────────────────────────────────────
   /** Insert text at a specific index */
-  insertText(index: number, text: string, formats?: Record<string, any>): this
+  insertText(index: number, text: string, formats?: Formats): this
   /** Delete text in a specific range */
   deleteText(index: number, length: number): this
   /** Apply Delta changes to the editor */
@@ -272,7 +343,7 @@ export interface Editor {
 
   // ─── Command Chain (TipTap-style) ──────────────────────────────────
   /** Start a command chain for fluent operations */
-  chain(): EditorCommandChain
+  chain(): Commands
   /** Check if commands can be executed */
   can(): EditorCanCommands
 
@@ -416,6 +487,7 @@ export interface EditorContentProps {
 
 /**
  * Built-in toolbar configurations
+ * Uses Quill's native toolbar format (unknown[][] for flexibility)
  */
 export interface ToolbarPresets {
   readonly minimal: readonly unknown[][]
@@ -424,31 +496,18 @@ export interface ToolbarPresets {
 }
 
 // =============================================================================
-// Re-exports from Quill
+// Re-exports from Quill (for convenience)
 // =============================================================================
 
-export type { Range, EmitterSource, QuillOptions } from 'quill'
-export type { Delta } from 'quill'
+export type { Range, EmitterSource, QuillOptions, Bounds } from 'quill'
+export { Delta, Op, AttributeMap } from 'quill'
 
 // =============================================================================
-// Simplified Types for Component Props (avoids complex type inference)
+// Simplified Types for Component Props
 // =============================================================================
-
-/**
- * Delta-like object structure for component props
- * This avoids complex type inference issues with Quill's Delta class
- */
-export interface DeltaLike {
-  ops: Array<{
-    insert?: string | Record<string, unknown>
-    delete?: number
-    retain?: number
-    attributes?: Record<string, unknown>
-  }>
-}
 
 /**
  * Content value type for v-model binding
- * Uses simplified DeltaLike instead of Quill's Delta to avoid type inference issues
+ * Accepts Delta instance, HTML string, plain text, or null
  */
-export type ContentValue = string | DeltaLike | null
+export type ContentValue = Delta | string | null

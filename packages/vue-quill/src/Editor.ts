@@ -13,15 +13,15 @@ import { Delta } from 'quill/core'
 import type { Blot, LeafBlot, BlockBlot, EmbedBlot } from 'parchment'
 import type {
   Editor as IEditor,
-  EditorCommandChain,
+  Commands,
   EditorCanCommands,
   EditorEvents,
   VueQuillOptions,
   ContentType,
 } from './types'
 import { isDelta } from './utils'
-import { EditorCommandChainImpl } from './EditorCommandChain'
-import { toolbarPresets } from './toolbar-presets'
+import { CommandsImpl } from './Commands'
+import { toolbarPresets } from './toolbar'
 import { isSSR } from './utils'
 
 /**
@@ -36,6 +36,7 @@ export class Editor implements IEditor {
   private _options: VueQuillOptions
   private _contentType: ContentType
   private _eventHandlers = new Map<keyof EditorEvents, Set<EditorEvents[keyof EditorEvents]>>()
+  private _commandChain: CommandsImpl | null = null
 
   constructor(options: VueQuillOptions = {}) {
     this._options = options
@@ -473,8 +474,11 @@ export class Editor implements IEditor {
 
   // ─── Command Chain ───────────────────────────────────────────────────
 
-  chain(): EditorCommandChain {
-    return new EditorCommandChainImpl(this)
+  chain(): Commands {
+    if (!this._commandChain) {
+      this._commandChain = new CommandsImpl(this)
+    }
+    return this._commandChain.reset()
   }
 
   can(): EditorCanCommands {

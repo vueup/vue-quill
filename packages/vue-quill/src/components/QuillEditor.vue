@@ -20,20 +20,19 @@ defineOptions({
   name: 'QuillEditor',
 })
 
-import { watch, computed, withDefaults } from 'vue'
-import { useEditor } from '../useEditor'
-import QuillEditorContent from './QuillEditorContent.vue'
+import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { Editor } from '../Editor'
 import type {
   ContentType,
   EditorTheme,
   ToolbarOption,
   QuillModule,
   Editor as IEditor,
+  VueQuillOptions,
   ContentValue,
-  DeltaLike,
 } from '../types'
-import type { EmitterSource, Range } from 'quill'
-import { isDelta } from '../utils'
+import type { EmitterSource, Range, Delta } from 'quill'
+import { isSSR, isDelta } from '../utils'
 
 // ─── Props ─────────────────────────────────────────────────────────────
 
@@ -71,9 +70,9 @@ defineSlots<{ toolbar?(): unknown }>()
 
 // ─── State ─────────────────────────────────────────────────────────────
 
-const isUpdatingFromModel = computed(() => false) // Placeholder if needed, but useEditor handles sync?
-// Actually useEditor doesn't handle v-model sync automatically unless we pass a ref.
-// But here we are using useEditor to get the editor instance, and we need to sync model.
+const editorRef = ref<HTMLDivElement | null>(null)
+const editor = ref<IEditor | null>(null)
+const isUpdatingFromModel = ref(false)
 
 // ─── Computed ──────────────────────────────────────────────────────────
 
@@ -85,55 +84,91 @@ const containerClasses = computed(() => ({
 
 // ─── Editor Creation ───────────────────────────────────────────────────
 
-const { editor } = useEditor({
-  content: model.value as string | null,
-  contentType: props.contentType,
-  theme: props.theme,
-  toolbar: props.toolbar,
-  placeholder: props.placeholder,
-  editable: props.editable,
-  autofocus: props.autofocus,
-  modules: props.modules,
-  quillOptions: props.quillOptions,
-  onCreate: (event) => emit('create', event),
-  onUpdate: (event) => {
-    // Sync model
-    const content = getContent()
-    if (content !== undefined && content !== model.value) {
-       model.value = content
-    }
-    emit('update', event)
-  },
-  onSelectionUpdate: (event) => emit('selectionUpdate', event),
-  onFocus: (event) => emit('focus', event),
-  onBlur: (event) => emit('blur', event),
-  onError: ({ error }) => emit('error', { error }),
-  // @ts-expect-error - Custom event
-  onEditorChange: (event) => emit('editorChange', event),
-})
+function createEditor() {
+  if (isSSR() || !editorRef.value) return
 
-function getContent(): string | DeltaLike | undefined {
+  const options: VueQuillOptions = {
+    content: model.value as string | null,
+    contentType: props.contentType,
+    theme: props.theme,
+    toolbar: props.toolbar,
+    placeholder: props.placeholder,
+    editable: props.editable,
+    autofocus: props.autofocus,
+    modules: props.modules,
+    quillOptions: props.quillOptions,
+    onCreate: (event) => emit('create', event),
+    onUpdate: (event) => {
+      if (!isUpdatingFromModel.value) {
+        const content = getContent()
+        if (content !== undefined) model.value = content
+      }
+      emit('update', event)
+    },
+    onSelectionUpdate: (event) => emit('selectionUpdate', event),
+    onFocus: (event) => emit('focus', event),
+    onBlur: (event) => emit('blur', event),
+    onError: ({ error }) => emit('error', { error }),
+    // @ts-expect-error - Custom event
+    onEditorChange: (event) => emit('editorChange', event),
+  }
+
+  const editorInstance = new Editor(options)
+  editorInstance.init(editorRef.value)
+  editor.value = editorInstance
+}
+
+function destroyEditor() {
+  editor.value?.destroy()
+  editor.value = null
+  if (editorRef.value) editorRef.value.innerHTML = ''
+}
+
+function getContent(): string | Delta | undefined {
   if (!editor.value) return undefined
   switch (props.contentType) {
     case 'html': return editor.value.getHTML()
     case 'text': return editor.value.getText()
-    default: return editor.value.getJSON() as DeltaLike
+    default: return editor.value.getJSON()
   }
 }
 
 function reinit() {
-  // handled by useEditor watcher
+  destroyEditor()
+  createEditor()
 }
 
 // ─── Lifecycle ─────────────────────────────────────────────────────────
 
-// Managed by useEditor
+onMounted(createEditor)
+onBeforeUnmount(destroyEditor)
 
 // ─── Watchers ──────────────────────────────────────────────────────────
 
-watch(model, (newValue) => {
-  if (editor.value && newValue !== getContent()) {
-    editor.value.setContent(newValue as string ?? '')
+watch(model, (newValue, oldValue) => {
+  if (!editor.value?.isReady || newValue === oldValue || isUpdatingFromModel.value) return
+
+  // Fast path: string comparison (most common case)
+  if (typeof newValue === 'string' && typeof getContent() === 'string') {
+    if (newValue === getContent()) return
+  }
+  // Delta comparison: check ops length first (fast), then compare
+  else if (isDelta(newValue)) {
+    const currentContent = getContent()
+    if (isDelta(currentContent)) {
+      // Fast: compare ops length first
+      if (newValue.ops.length === currentContent.ops.length) {
+        // Only stringify if lengths match (rare case where content might be same)
+        if (JSON.stringify(newValue.ops) === JSON.stringify(currentContent.ops)) return
+      }
+    }
+  }
+
+  isUpdatingFromModel.value = true
+  try {
+    editor.value.setContent(newValue as string ?? '', false)
+  } finally {
+    isUpdatingFromModel.value = false
   }
 })
 
@@ -145,7 +180,13 @@ watch(() => props.placeholder, (val) => {
 })
 
 // Re-initialize editor when configuration props change
-// Handled by useEditor
+watch(
+  [() => props.theme, () => props.toolbar, () => props.modules],
+  () => {
+    reinit()
+  },
+  { deep: true }
+)
 
 // ─── Expose ────────────────────────────────────────────────────────────
 
@@ -155,7 +196,7 @@ defineExpose({ editor, reinit })
 <template>
   <div :class="containerClasses">
     <slot name="toolbar" />
-    <QuillEditorContent :editor="editor" />
+    <div ref="editorRef" class="vue-quill__editor" />
   </div>
 </template>
 

@@ -30,7 +30,7 @@ describe('QuillEditor', () => {
 
   describe('Toolbar Presets', () => {
     it('should export toolbar presets', async () => {
-      const { toolbarPresets } = await import('../toolbar-presets')
+      const { toolbarPresets } = await import('../toolbar')
       
       expect(toolbarPresets).toBeDefined()
       expect(toolbarPresets.minimal).toBeDefined()
@@ -39,14 +39,14 @@ describe('QuillEditor', () => {
     })
 
     it('minimal preset should have basic formats', async () => {
-      const { toolbarPresets } = await import('../toolbar-presets')
+      const { toolbarPresets } = await import('../toolbar')
       
       expect(Array.isArray(toolbarPresets.minimal)).toBe(true)
       expect(toolbarPresets.minimal.length).toBeGreaterThan(0)
     })
 
     it('essential preset should include more options than minimal', async () => {
-      const { toolbarPresets } = await import('../toolbar-presets')
+      const { toolbarPresets } = await import('../toolbar')
       
       const minimalFlat = toolbarPresets.minimal.flat()
       const essentialFlat = toolbarPresets.essential.flat()
@@ -55,7 +55,7 @@ describe('QuillEditor', () => {
     })
 
     it('full preset should include most options', async () => {
-      const { toolbarPresets } = await import('../toolbar-presets')
+      const { toolbarPresets } = await import('../toolbar')
       
       const essentialFlat = toolbarPresets.essential.flat()
       const fullFlat = toolbarPresets.full.flat()

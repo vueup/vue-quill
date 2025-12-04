@@ -35,24 +35,7 @@ export function isHTML(content: string): boolean {
   return content.includes('<') && content.includes('>')
 }
 
-/**
- * Normalize content to always be a string or null
- */
-export function normalizeContent(
-  content: string | Delta | null | undefined
-): string | Delta | null {
-  if (content === undefined || content === '') {
-    return null
-  }
-  return content
-}
 
-/**
- * Create a unique ID for editor instances
- */
-export function createEditorId(prefix = 'quill-editor'): string {
-  return `${prefix}-${Math.random().toString(36).substring(2, 11)}`
-}
 
 /**
  * Debounce function for rate-limiting callbacks
@@ -124,12 +107,4 @@ export function isContentEmpty(content: string | Delta | null): boolean {
   }
 
   return content.trim() === ''
-}
-
-/**
- * Create an empty Delta
- */
-export async function createEmptyDelta(): Promise<Delta> {
-  const { Delta } = await import('quill/core')
-  return new Delta()
 }

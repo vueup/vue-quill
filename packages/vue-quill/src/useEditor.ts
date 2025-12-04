@@ -13,6 +13,7 @@ import {
   onBeforeUnmount,
   watch,
   type ShallowRef,
+  nextTick,
 } from 'vue'
 import { Editor } from './Editor'
 import type { VueQuillOptions, Editor as IEditor, UseEditorReturn } from './types'
@@ -61,7 +62,7 @@ export function useEditor(
 ): UseEditorReturn {
   // Create editor instance (but don't initialize Quill yet)
   const editorInstance = new Editor(options)
-  
+
   // Expose editor instance immediately so EditorContent can access _initElement
   const editor: ShallowRef<IEditor | null> = shallowRef(editorInstance)
 
@@ -138,6 +139,45 @@ export function useEditor(
     writable: false,
     enumerable: false,
   })
+
+  // Watch for configuration changes that require re-initialization
+  watch(
+    [
+      () => options.theme,
+      () => options.toolbar,
+      () => options.modules,
+    ],
+    () => {
+      if (editorElement) {
+        // Re-initialize
+        destroyEditor()
+        // Create new instance with current options
+        const newInstance = new Editor(options)
+        // Preserve internal methods
+        Object.defineProperty(newInstance, '_initElement', {
+          value: initEditor,
+          writable: false,
+          enumerable: false,
+        })
+        Object.defineProperty(newInstance, '_destroyEditor', {
+          value: destroyEditor,
+          writable: false,
+          enumerable: false,
+        })
+
+        // Update ref
+        editor.value = newInstance
+
+        // Re-mount
+        nextTick(() => {
+          if (editorElement) {
+            newInstance.init(editorElement)
+          }
+        })
+      }
+    },
+    { deep: true }
+  )
 
   return {
     editor,

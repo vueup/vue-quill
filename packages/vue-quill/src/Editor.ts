@@ -10,6 +10,7 @@
 import Quill from 'quill'
 import type { QuillOptions, Range, EmitterSource } from 'quill'
 import { Delta } from 'quill/core'
+import type { Blot, LeafBlot, BlockBlot, EmbedBlot } from 'parchment'
 import type {
   Editor as IEditor,
   EditorCommandChain,
@@ -565,11 +566,55 @@ export class Editor implements IEditor {
     this._isFocused = false
   }
 
+  // ─── Model Methods (Advanced) ────────────────────────────────────────
+
+  find(domNode: Node, bubble?: boolean): Blot | Quill | null {
+    return Quill.find(domNode, bubble) ?? null
+  }
+
+  getIndex(blot: Blot): number {
+    return this._quill?.getIndex(blot) ?? -1
+  }
+
+  getLeaf(index: number): [LeafBlot | null, number] {
+    return this._quill?.getLeaf(index) ?? [null, -1]
+  }
+
+  getLine(index: number): [BlockBlot | EmbedBlot | null, number] {
+    return this._quill?.getLine(index) ?? [null, -1]
+  }
+
+  getLines(indexOrRange?: number | Range, length?: number): (BlockBlot | EmbedBlot)[] {
+    if (!this._quill) return []
+    if (typeof indexOrRange === 'number') {
+      return this._quill.getLines(indexOrRange, length)
+    } else if (indexOrRange) {
+      return this._quill.getLines(indexOrRange)
+    }
+    return this._quill.getLines()
+  }
+
+  addContainer(classNameOrNode: string | HTMLElement, refNode?: Node): Element {
+    if (!this._quill) {
+      // Return a dummy element if quill is not ready, or throw?
+      // For safety, let's return a disconnected div but warn
+      console.warn('[VueQuill] addContainer called before editor init')
+      return document.createElement('div')
+    }
+    if (typeof classNameOrNode === 'string') {
+      return this._quill.addContainer(classNameOrNode, refNode)
+    } else {
+      return this._quill.addContainer(classNameOrNode, refNode)
+    }
+  }
+
   // ─── Private Methods ─────────────────────────────────────────────────
 
   private _emit<E extends keyof EditorEvents>(event: E, props?: Parameters<EditorEvents[E]>[0]): void {
     const handlers = this._eventHandlers.get(event)
-    if (!handlers) return
+    if (!handlers) {
+      return
+    }
 
     handlers.forEach((handler) => {
       try {
@@ -669,6 +714,11 @@ export class Editor implements IEditor {
 
       this._options.onTransaction?.({ editor: this })
       this._emit('transaction', { editor: this })
+    })
+
+    // Editor change handler (Quill v2)
+    this._quill.on('editor-change', (eventName, ...args) => {
+      this._emit('editorChange', { editor: this, name: eventName, args })
     })
   }
 

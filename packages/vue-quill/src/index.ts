@@ -7,6 +7,7 @@
 // Components
 export { default as QuillEditor } from './components/QuillEditor.vue'
 export { default as EditorContent } from './components/EditorContent.vue'
+export { default as QuillEditorContent } from './components/QuillEditorContent.vue'
 
 // Core editor
 export { Editor } from './Editor'

@@ -10,6 +10,7 @@
 import type { ShallowRef } from 'vue'
 import type Quill from 'quill'
 import type { QuillOptions, Range, Delta, EmitterSource } from 'quill'
+import type { Blot, LeafBlot, BlockBlot, EmbedBlot } from 'parchment'
 
 // =============================================================================
 // Content & Theme Types
@@ -95,6 +96,12 @@ export interface EditorEvents {
   destroy: () => void
   /** Fired when an error occurs */
   error: (props: { editor: Editor; error: Error }) => void
+  /** Fired on either text-change or selection-change */
+  editorChange: (props: {
+    editor: Editor
+    name: 'text-change' | 'selection-change'
+    args: unknown[]
+  }) => void
 }
 
 // =============================================================================
@@ -284,6 +291,20 @@ export interface Editor {
   // ─── Lifecycle ─────────────────────────────────────────────────────
   /** Destroy the editor and cleanup resources */
   destroy(): void
+
+  // ─── Model Methods (Advanced) ──────────────────────────────────────
+  /** Find the Blot or Quill instance for a DOM node */
+  find(domNode: Node, bubble?: boolean): Blot | Quill | null
+  /** Get the index of a Blot */
+  getIndex(blot: Blot): number
+  /** Get the leaf Blot at an index */
+  getLeaf(index: number): [LeafBlot | null, number]
+  /** Get the line Blot at an index */
+  getLine(index: number): [BlockBlot | EmbedBlot | null, number]
+  /** Get lines at an index or range */
+  getLines(index?: number | Range, length?: number): (BlockBlot | EmbedBlot)[]
+  /** Add a container element inside the editor */
+  addContainer(classNameOrNode: string | Node, refNode?: Node): Element
 }
 
 // =============================================================================

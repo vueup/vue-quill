@@ -42,7 +42,7 @@ const modelValue = defineModel<string>({ required: true })
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 7px 16px;
   border: none;
   background: transparent;
   color: var(--vp-c-text-2);

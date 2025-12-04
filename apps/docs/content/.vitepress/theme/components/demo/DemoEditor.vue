@@ -71,15 +71,15 @@ watch([selectedTheme, selectedToolbar, selectedPreset], ([,, preset]) => {
 })
 
 // Update output displays
-function updateOutput() {
-  const editor = editorRef.value?.editor?.value
+function updateOutput(event?: { editor?: any }) {
+  const editor = event?.editor ?? editorRef.value?.editor?.value
   if (editor) {
     htmlOutput.value = editor.getHTML()
     textOutput.value = editor.getText()
   }
 }
 
-onMounted(() => setTimeout(updateOutput, 100))
+onMounted(updateOutput)
 
 // Copy code
 const codeCopied = ref(false)
@@ -160,7 +160,8 @@ async function copyCode() {
               content-type="delta"
               :theme="selectedTheme"
               :toolbar="selectedToolbar"
-              @text-change="updateOutput"
+              @create="updateOutput"
+              @update="updateOutput"
             />
           </div>
           
@@ -221,7 +222,7 @@ async function copyCode() {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
+  padding: 8px 16px;
   background: var(--vp-c-bg-soft);
   border-bottom: 1px solid var(--vp-c-divider);
 }
@@ -301,7 +302,7 @@ async function copyCode() {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 5px 10px;
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg);
   color: var(--vp-c-text-2);

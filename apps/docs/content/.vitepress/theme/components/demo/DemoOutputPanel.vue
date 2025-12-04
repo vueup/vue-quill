@@ -83,9 +83,9 @@ async function copyOutput() {
 <style scoped>
 .output-panel {
   background: var(--vp-code-block-bg);
-  border-radius: 8px;
+  /* border-radius: 8px; */
   overflow: hidden;
-  border: 1px solid var(--vp-c-divider);
+  /* border: 1px solid var(--vp-c-divider); */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ async function copyOutput() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 12px;
   background: var(--vp-c-bg-soft);
   border-bottom: 1px solid var(--vp-c-divider);
 }
@@ -109,7 +109,7 @@ async function copyOutput() {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border: none;
   background: transparent;
   color: var(--vp-c-text-3);

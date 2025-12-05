@@ -23,7 +23,6 @@ defineOptions({
 import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
 import { Editor } from '../Editor'
 import type {
-  ContentType,
   EditorTheme,
   ToolbarOption,
   QuillModule,
@@ -31,14 +30,14 @@ import type {
   VueQuillOptions,
   ContentValue,
 } from '../types'
-import type { EmitterSource, Range, Delta } from 'quill'
-import { isSSR, isDelta } from '../utils'
+import { Delta } from 'quill'
+import type { EmitterSource, Range } from 'quill'
+import { isSSR, isDelta, deltasEqual } from '../utils'
 
 // ─── Props ─────────────────────────────────────────────────────────────
 
 const props = withDefaults(
   defineProps<{
-    contentType?: ContentType
     theme?: EditorTheme
     toolbar?: ToolbarOption
     placeholder?: string
@@ -56,7 +55,7 @@ const model = defineModel<ContentValue>()
 
 const emit = defineEmits<{
   (e: 'create', payload: { editor: IEditor }): void
-  (e: 'update', payload: { editor: IEditor; delta: unknown; oldDelta: unknown; source: EmitterSource }): void
+  (e: 'update', payload: { editor: IEditor; delta: Delta; oldDelta: Delta; source: EmitterSource; html: string; text: string }): void
   (e: 'selectionUpdate', payload: { editor: IEditor; range: Range | null; oldRange: Range | null; source: EmitterSource }): void
   (e: 'focus', payload: { editor: IEditor; event: FocusEvent }): void
   (e: 'blur', payload: { editor: IEditor; event: FocusEvent }): void
@@ -73,6 +72,7 @@ defineSlots<{ toolbar?(): unknown }>()
 const editorRef = ref<HTMLDivElement | null>(null)
 const editor = ref<IEditor | null>(null)
 const isUpdatingFromModel = ref(false)
+const loadedThemes = new Set<EditorTheme | ''>()
 
 // ─── Computed ──────────────────────────────────────────────────────────
 
@@ -82,14 +82,31 @@ const containerClasses = computed(() => ({
   [`vue-quill--${props.theme ?? 'snow'}`]: true,
 }))
 
+// ─── Styles ───────────────────────────────────────────────────────────
+
+function loadThemeStyles(theme?: EditorTheme) {
+  if (isSSR()) return
+  const effectiveTheme = theme ?? 'snow'
+  if (!effectiveTheme || loadedThemes.has(effectiveTheme)) return
+
+  if (effectiveTheme === 'bubble') {
+    import('quill/dist/quill.bubble.css')
+  } else {
+    import('quill/dist/quill.snow.css')
+  }
+
+  loadedThemes.add(effectiveTheme)
+}
+
 // ─── Editor Creation ───────────────────────────────────────────────────
 
 function createEditor() {
   if (isSSR() || !editorRef.value) return
 
+  loadThemeStyles(props.theme)
+
   const options: VueQuillOptions = {
-    content: model.value as string | null,
-    contentType: props.contentType,
+    content: model.value ?? null,
     theme: props.theme,
     toolbar: props.toolbar,
     placeholder: props.placeholder,
@@ -100,7 +117,7 @@ function createEditor() {
     onCreate: (event) => emit('create', event),
     onUpdate: (event) => {
       if (!isUpdatingFromModel.value) {
-        const content = getContent()
+        const content = deriveContentFromUpdate(event)
         if (content !== undefined) model.value = content
       }
       emit('update', event)
@@ -124,13 +141,13 @@ function destroyEditor() {
   if (editorRef.value) editorRef.value.innerHTML = ''
 }
 
-function getContent(): string | Delta | undefined {
+function getContent(): Delta | undefined {
   if (!editor.value) return undefined
-  switch (props.contentType) {
-    case 'html': return editor.value.getHTML()
-    case 'text': return editor.value.getText()
-    default: return editor.value.getJSON()
-  }
+  return editor.value.getJSON()
+}
+
+function deriveContentFromUpdate(event: { delta: Delta; html: string; text: string }): ContentValue {
+  return event.delta
 }
 
 function reinit() {
@@ -151,13 +168,11 @@ watch(model, (newValue, oldValue) => {
   // Compare content to avoid unnecessary updates
   const currentContent = getContent()
   
-  if (typeof newValue === 'string' && newValue === currentContent) return
-  if (isDelta(newValue) && isDelta(currentContent)) {
-    if (JSON.stringify(newValue.ops) === JSON.stringify(currentContent.ops)) return
-  }
+  if (isDelta(newValue) && isDelta(currentContent) && deltasEqual(newValue, currentContent)) return
 
   isUpdatingFromModel.value = true
-  editor.value?.setContent(newValue as string ?? '', false)
+  const nextContent = (newValue ?? new Delta()) as Delta
+  editor.value?.setContent(nextContent, false)
   isUpdatingFromModel.value = false
 })
 
@@ -167,6 +182,14 @@ watch(() => props.placeholder, (val) => {
   const root = editor.value?.element?.querySelector('.ql-editor')
   root?.setAttribute('data-placeholder', val ?? '')
 })
+
+watch(
+  () => props.theme,
+  (theme) => {
+    loadThemeStyles(theme)
+  },
+  { immediate: true }
+)
 
 // Re-initialize editor when configuration props change
 watch(
@@ -190,9 +213,6 @@ defineExpose({ editor, reinit })
 </template>
 
 <style>
-@import 'quill/dist/quill.snow.css';
-@import 'quill/dist/quill.bubble.css';
-
 .vue-quill {
   display: flex;
   flex-direction: column;

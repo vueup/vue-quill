@@ -16,7 +16,6 @@ export { useEditor } from './useEditor'
 
 // Types
 export type {
-  ContentType,
   EditorTheme,
   ToolbarPreset,
   ToolbarOption,

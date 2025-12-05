@@ -34,7 +34,6 @@ import { isSSR } from './utils'
  *
  * const { editor } = useEditor({
  *   content: '<p>Hello World</p>',
- *   contentType: 'html',
  *   onUpdate: ({ editor }) => {
  *     console.log(editor.getHTML())
  *   },

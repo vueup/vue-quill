@@ -17,9 +17,8 @@ import type {
   EditorCanCommands,
   EditorEvents,
   VueQuillOptions,
-  ContentType,
 } from './types'
-import { isDelta } from './utils'
+import { isDelta, isHTML } from './utils'
 import { CommandsImpl } from './Commands'
 import { toolbarPresets } from './toolbar'
 import { isSSR } from './utils'
@@ -34,14 +33,12 @@ export class Editor implements IEditor {
   private _isFocused = false
   private _isEditable: boolean
   private _options: VueQuillOptions
-  private _contentType: ContentType
   private _eventHandlers = new Map<keyof EditorEvents, Set<EditorEvents[keyof EditorEvents]>>()
   private _commandChain: CommandsImpl | null = null
 
   constructor(options: VueQuillOptions = {}) {
     this._options = options
     this._isEditable = options.editable ?? true
-    this._contentType = options.contentType ?? 'delta'
   }
 
   // ─── Quill Access ────────────────────────────────────────────────────
@@ -165,7 +162,7 @@ export class Editor implements IEditor {
     if (!this._quill || !this._isReady) return this
 
     const delta = this._parseContent(content)
-    this._quill.setContents(delta, 'api')
+    this._quill.setContents(delta, emitUpdate ? 'api' : 'silent')
 
     return this
   }
@@ -261,10 +258,6 @@ export class Editor implements IEditor {
 
     if (options.editable !== undefined) {
       this.setEditable(options.editable)
-    }
-
-    if (options.contentType !== undefined) {
-      this._contentType = options.contentType
     }
 
     return this
@@ -477,20 +470,38 @@ export class Editor implements IEditor {
   }
 
   can(): EditorCanCommands {
-    const quill = this._quill
-
     return {
-      bold: () => quill !== null,
-      italic: () => quill !== null,
-      underline: () => quill !== null,
-      strike: () => quill !== null,
+      bold: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
+        return !!quill && isEnabled && quill.getSelection() !== null
+      },
+      italic: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
+        return !!quill && isEnabled && quill.getSelection() !== null
+      },
+      underline: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
+        return !!quill && isEnabled && quill.getSelection() !== null
+      },
+      strike: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
+        return !!quill && isEnabled && quill.getSelection() !== null
+      },
       undo: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
         const history = quill?.getModule('history') as { stack?: { undo?: unknown[] } } | undefined
-        return (history?.stack?.undo?.length ?? 0) > 0
+        return !!quill && isEnabled && (history?.stack?.undo?.length ?? 0) > 0
       },
       redo: () => {
+        const quill = this._quill
+        const isEnabled = typeof (quill as any)?.isEnabled === 'function' ? (quill as any).isEnabled() : true
         const history = quill?.getModule('history') as { stack?: { redo?: unknown[] } } | undefined
-        return (history?.stack?.redo?.length ?? 0) > 0
+        return !!quill && isEnabled && (history?.stack?.redo?.length ?? 0) > 0
       },
     }
   }
@@ -651,27 +662,26 @@ export class Editor implements IEditor {
       toolbarConfig = toolbar
     }
 
-    // Build modules configuration
-    const modulesConfig: Record<string, unknown> = {}
+    // Build modules configuration with user-provided modules merged in
+    const { modules: userModules, ...restQuillOptions } = quillOptions ?? {}
+    const modulesConfig: Record<string, unknown> = { ...(userModules ?? {}) }
 
-    if (toolbarConfig !== undefined) {
+    if (toolbarConfig !== undefined && modulesConfig['toolbar'] === undefined) {
       modulesConfig['toolbar'] = toolbarConfig
     }
 
     // Add custom module options
     for (const mod of modules ?? []) {
-      if (mod.options) {
-        modulesConfig[mod.name] = mod.options
-      } else {
-        modulesConfig[mod.name] = true
+      if (modulesConfig[mod.name] === undefined) {
+        modulesConfig[mod.name] = mod.options ?? true
       }
     }
 
     const options: QuillOptions = {
       theme: theme ?? 'snow',
       readOnly: !this._isEditable,
+      ...restQuillOptions,
       modules: modulesConfig,
-      ...quillOptions,
     }
 
     // Only add placeholder if defined
@@ -687,8 +697,10 @@ export class Editor implements IEditor {
 
     // Text change handler
     this._quill.on('text-change', (delta, oldDelta, source) => {
-      this._options.onUpdate?.({ editor: this, delta, oldDelta, source })
-      this._emit('update', { editor: this, delta, oldDelta, source })
+      const html = this.getHTML()
+      const text = this.getText()
+      this._options.onUpdate?.({ editor: this, delta, oldDelta, source, html, text })
+      this._emit('update', { editor: this, delta, oldDelta, source, html, text })
       this._options.onTransaction?.({ editor: this })
       this._emit('transaction', { editor: this })
     })
@@ -735,33 +747,22 @@ export class Editor implements IEditor {
       return new Delta(content.ops)
     }
 
-    // Check if it looks like HTML
-    if (typeof content === 'string' && content.includes('<') && content.includes('>')) {
-      // Use a temporary element to parse HTML into Delta
-      // This is a simplified approach - in production, might use Quill's clipboard module
-      const tempDiv = document.createElement('div')
-      tempDiv.innerHTML = content
-      const tempQuill = new Quill(tempDiv, { modules: {} })
-      const delta = tempQuill.getContents()
-      return delta
+    const clipboard = (this._quill?.getModule('clipboard') ?? null) as { convert?: (val: string) => Delta } | null
+    if (typeof content === 'string' && isHTML(content) && clipboard?.convert) {
+      return clipboard.convert(content as string)
     }
 
-    // Plain text - wrap in insert operation
-    return new Delta().insert(content as string)
+    if (typeof content === 'string') {
+      return new Delta().insert(content)
+    }
+
+    return new Delta()
   }
 
   /**
    * Get content in the configured format
    */
-  getContent(): string | Delta {
-    switch (this._contentType) {
-      case 'html':
-        return this.getHTML()
-      case 'text':
-        return this.getText()
-      case 'delta':
-      default:
-        return this.getJSON()
-    }
+  getContent(): Delta {
+    return this.getJSON()
   }
 }

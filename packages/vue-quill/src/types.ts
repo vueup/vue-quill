@@ -63,14 +63,6 @@ export type EmbedType = 'image' | 'video' | 'formula' | (string & {})
 // =============================================================================
 
 /**
- * Content format type for the editor
- * - 'delta': Quill's native Delta format (default)
- * - 'html': HTML string
- * - 'text': Plain text string
- */
-export type ContentType = 'delta' | 'html' | 'text'
-
-/**
  * Editor theme options
  * - 'snow': Traditional toolbar theme (default)
  * - 'bubble': Floating tooltip theme
@@ -134,6 +126,15 @@ export interface QuillModule<TOptions = Record<string, unknown>> {
 // Editor Events
 // =============================================================================
 
+export interface EditorUpdatePayload {
+  editor: Editor
+  delta: Delta
+  oldDelta: Delta
+  source: EmitterSource
+  html: string
+  text: string
+}
+
 /**
  * Editor event handler signatures
  */
@@ -141,12 +142,7 @@ export interface EditorEvents {
   /** Fired when editor is created */
   create: (props: { editor: Editor }) => void
   /** Fired when content changes */
-  update: (props: {
-    editor: Editor
-    delta: Delta
-    oldDelta: Delta
-    source: EmitterSource
-  }) => void
+  update: (props: EditorUpdatePayload) => void
   /** Fired when selection changes */
   selectionUpdate: (props: {
     editor: Editor
@@ -390,8 +386,6 @@ export interface VueQuillOptions {
   // ─── Content ───────────────────────────────────────────────────────
   /** Initial content (HTML string, Delta, or plain text) */
   content?: string | Delta | null
-  /** Content format for serialization @default 'delta' */
-  contentType?: ContentType
 
   // ─── Appearance ────────────────────────────────────────────────────
   /** Editor theme @default 'snow' */
@@ -461,7 +455,7 @@ export interface QuillEditorProps
    * v-model binding for content
    * Two-way binding with automatic synchronization
    */
-  modelValue?: string | Delta | null
+  modelValue?: Delta | null
 }
 
 /**
@@ -508,6 +502,6 @@ export { Delta, Op, AttributeMap } from 'quill'
 
 /**
  * Content value type for v-model binding
- * Accepts Delta instance, HTML string, plain text, or null
+ * Delta is the canonical format; HTML/text should be derived from events
  */
-export type ContentValue = Delta | string | null
+export type ContentValue = Delta | null

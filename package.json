@@ -55,7 +55,7 @@
   "devDependencies": {
     "@microsoft/api-extractor": "~7.58.7",
     "@rollup/plugin-commonjs": "^22.0.2",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@semantic-release/changelog": "^6.0.3",

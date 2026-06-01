@@ -109,6 +109,7 @@ function createConfig(format, output, plugins = []) {
 
   output.sourcemap = !!process.env.SOURCE_MAP
   output.externalLiveBindings = false
+  output.inlineDynamicImports = true
   output.banner = banner
   output.globals = globals
 

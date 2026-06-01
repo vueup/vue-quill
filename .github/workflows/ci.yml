@@ -125,6 +125,7 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
+            examples/ssr-app/package-lock.json
             examples/vite-app/package-lock.json
             packages/vue-quill/package-lock.json
       - name: Install root deps
@@ -135,8 +136,14 @@ jobs:
       - name: Install example deps
         working-directory: examples/vite-app
         run: npm ci
+      - name: Install SSR example deps
+        working-directory: examples/ssr-app
+        run: npm ci
       - name: Build package assets for example
         run: npm run build -- vue-quill --assets --types
       - name: Build Vite example
         working-directory: examples/vite-app
         run: npm run build
+      - name: Test Vite SSR example
+        working-directory: examples/ssr-app
+        run: npm run test:ssr

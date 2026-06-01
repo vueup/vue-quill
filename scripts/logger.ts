@@ -1,4 +1,4 @@
-const chalk = require('chalk')
+const chalk = require('./chalk')
 const PRINT_HEADER_WIDTH = 80
 const PRINT_LABEL_WIDTH = 9
 
@@ -18,7 +18,9 @@ const PRINT_LABEL_WIDTH = 9
 function header(scopes: string | string[], msg: string) {
   const spacedHeader = getSpacedHeader(`✦ ${msg} [${formatScopes(scopes)}] ✦`)
   const printWidth =
-    spacedHeader.length > PRINT_HEADER_WIDTH ? spacedHeader.length : PRINT_HEADER_WIDTH
+    spacedHeader.length > PRINT_HEADER_WIDTH
+      ? spacedHeader.length
+      : PRINT_HEADER_WIDTH
   const header =
     `┏${'━'.repeat(printWidth)}┓\n` +
     `┃${spacedHeader}┃\n` +
@@ -32,7 +34,7 @@ function info(scopes: string | string[], msg: string) {
   console.log(
     `${chalk.bold(chalk.bgBlue(getSpacedLabel(' INFO')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
-      `${chalk.bgBlue(' ')} ${chalk.blue(msg)}`
+      `${chalk.bgBlue(' ')} ${chalk.blue(msg)}`,
   )
   console.log()
 }
@@ -41,7 +43,7 @@ function success(scopes: string | string[], msg: string) {
   console.log(
     `${chalk.bold(chalk.bgGreen(getSpacedLabel(' SUCCESS')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
-      `${chalk.bgGreen(' ')} ${chalk.green(msg)}`
+      `${chalk.bgGreen(' ')} ${chalk.green(msg)}`,
   )
   console.log()
 }
@@ -50,7 +52,7 @@ function error(scopes: string | string[], msg: string) {
   console.error(
     `${chalk.bold(chalk.bgRed(getSpacedLabel(' ERROR')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
-      `${chalk.bgRed(' ')} ${chalk.red(msg)}`
+      `${chalk.bgRed(' ')} ${chalk.red(msg)}`,
   )
   console.log()
 }
@@ -59,7 +61,7 @@ function warning(scopes: string | string[], msg: string) {
   console.log(
     `${chalk.bold(chalk.bgYellow(getSpacedLabel(' WARNING')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
-      `${chalk.bgYellow(' ')} ${chalk.yellow(msg)}`
+      `${chalk.bgYellow(' ')} ${chalk.yellow(msg)}`,
   )
   console.log()
 }
@@ -68,7 +70,7 @@ function debug(scopes: string | string[], msg: string) {
   console.log(
     `${chalk.bold(chalk.bgMagenta(getSpacedLabel(' DEBUG')))}` +
       `${chalk.bold(chalk.inverse(` ${formatScopes(scopes)} `))}` +
-      `${chalk.bgMagenta(' ')} ${chalk.magenta(msg)}`
+      `${chalk.bgMagenta(' ')} ${chalk.magenta(msg)}`,
   )
   console.log()
 }

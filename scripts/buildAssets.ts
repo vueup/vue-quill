@@ -10,7 +10,7 @@ npm run assets:build -- vue-quill
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
-  const chalk = require('chalk')
+  const chalk = require('./chalk')
   const logger = require('./logger')
   const {
     targets: allTargets,
@@ -46,7 +46,7 @@ npm run assets:build -- vue-quill
     const matchedTargets = fuzzyMatchTarget(
       allTargets,
       targets,
-      buildAllMatching
+      buildAllMatching,
     )
     logger.header(matchedTargets, 'BUILD ASSETS')
     await buildAll(matchedTargets)
@@ -67,8 +67,8 @@ npm run assets:build -- vue-quill
       logger.warning(
         target,
         `Can't find assets configuration or file configuration ${chalk.underline(
-          target + '/assets.config.json'
-        )}`
+          target + '/assets.config.json',
+        )}`,
       )
       return
     }
@@ -82,7 +82,7 @@ npm run assets:build -- vue-quill
       const outputProd: string = path.resolve(
         pkgDir,
         path.dirname(output),
-        path.parse(output).name + '.prod.css'
+        path.parse(output).name + '.prod.css',
       )
 
       if (!fs.existsSync(input)) {

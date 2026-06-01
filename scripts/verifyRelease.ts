@@ -1,7 +1,7 @@
 ;(async () => {
   const fs = require('fs')
   const path = require('path')
-  const chalk = require('chalk')
+  const chalk = require('./chalk')
   const logger = require('./logger')
   const { getPackageDir, getPackageJson } = require('./utils')
 
@@ -32,11 +32,11 @@
   const buildOutputPaths: string[] = []
   packageOptions.formats.forEach((format: string) => {
     buildOutputPaths.push(
-      path.resolve(pkgDir, 'dist', `${target}.${format}.js`)
+      path.resolve(pkgDir, 'dist', `${target}.${format}.js`),
     )
     if (packageOptions.prod === false) return
     buildOutputPaths.push(
-      path.resolve(pkgDir, 'dist', `${target}.${format}.prod.js`)
+      path.resolve(pkgDir, 'dist', `${target}.${format}.prod.js`),
     )
   })
   checkBuildFiles(`${target} builds`, buildOutputPaths)
@@ -69,12 +69,12 @@
       if (fs.existsSync(buildPath)) {
         logger.success(
           target,
-          `✔  The file ${chalk.underline(buildPath)} exists.`
+          `✔  The file ${chalk.underline(buildPath)} exists.`,
         )
       } else {
         logger.error(
           target,
-          `✖  The file ${chalk.underline(buildPath)} file does not exist.`
+          `✖  The file ${chalk.underline(buildPath)} file does not exist.`,
         )
         errors.push(`Missing file: ${buildPath}`)
       }

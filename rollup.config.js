@@ -80,7 +80,9 @@ export default packageConfigs
 
 function createConfig(format, output, plugins = []) {
   if (!output) {
-    console.log(require('chalk').yellow(`invalid format: "${format}"`))
+    console.log(
+      require('./scripts/chalk').yellow(`invalid format: "${format}"`),
+    )
     process.exit(1)
   }
 

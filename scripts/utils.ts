@@ -48,7 +48,7 @@ function getAssetsConfigJson(target = '') {
 function fuzzyMatchTarget(
   allTargets: string[],
   partialTargets: string[],
-  includeAllMatching?: boolean
+  includeAllMatching?: boolean,
 ) {
   const matched: string[] = []
   partialTargets.forEach((partialTarget) => {
@@ -66,10 +66,10 @@ function fuzzyMatchTarget(
     return matched
   } else {
     console.log()
-    const chalk = require('chalk')
+    const chalk = require('./chalk')
     logger.error(
       partialTargets,
-      `Target ${chalk.underline(partialTargets)} not found!`
+      `Target ${chalk.underline(partialTargets)} not found!`,
     )
     process.exit(1)
   }
@@ -78,7 +78,7 @@ function fuzzyMatchTarget(
 async function runParallel(
   maxConcurrency: number,
   source: string[],
-  iteratorFn: (target: string) => Promise<void>
+  iteratorFn: (target: string) => Promise<void>,
 ) {
   const ret: Promise<void>[] = []
   const executing: Promise<void>[] = []
@@ -88,7 +88,7 @@ async function runParallel(
 
     if (maxConcurrency <= source.length) {
       const e: Promise<any> = p.then(() =>
-        executing.splice(executing.indexOf(e), 1)
+        executing.splice(executing.indexOf(e), 1),
       )
       executing.push(e)
       if (executing.length >= maxConcurrency) {
@@ -165,7 +165,7 @@ async function generateTypes(target: string) {
         const toAdd = await Promise.all(
           typeFiles.map((file: string) => {
             return fs.readFile(path.resolve(typesDir, file), 'utf-8')
-          })
+          }),
         )
         await fs.writeFile(dtsPath, existing + '\n' + toAdd.join('\n'))
       })
@@ -174,14 +174,14 @@ async function generateTypes(target: string) {
       console.log()
       logger.warning(
         target,
-        `There's no additional .d.ts to roll-up with ${err}`
+        `There's no additional .d.ts to roll-up with ${err}`,
       )
     }
   } else {
     logger.error(
       target,
       `API Extractor completed with ${extractorResult.errorCount} errors` +
-        ` and ${extractorResult.warningCount} warnings`
+        ` and ${extractorResult.warningCount} warnings`,
     )
     process.exitCode = 1
   }

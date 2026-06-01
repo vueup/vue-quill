@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+npx ts-node scripts/verifyCommit.ts "$1"

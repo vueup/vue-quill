@@ -1,7 +1,7 @@
 ;(async () => {
-  require('dotenv').config()
+  require('dotenv').config({ quiet: true })
   const logger = require('./logger')
-  const semanticRelease = require('semantic-release')
+  const semanticRelease = (await import('semantic-release')).default
   const { rootDir, getPackageDir, getPackageJson } = require('./utils')
 
   const args = require('minimist')(process.argv.slice(2))
@@ -9,7 +9,7 @@
   const target = args._[0]
 
   // semantic-release configurations
-  const releaserc = {
+  const releaserc: any = {
     branches: [
       'master',
       'next',
@@ -17,6 +17,10 @@
       { name: 'rc', prerelease: true },
       { name: 'beta', prerelease: true },
       { name: 'alpha', prerelease: true },
+    ],
+    previewPlugins: [
+      '@semantic-release/commit-analyzer',
+      '@semantic-release/release-notes-generator',
     ],
     plugins: [
       '@semantic-release/commit-analyzer',
@@ -61,7 +65,7 @@
   if (!target) {
     logger.warning(
       'semantic-release',
-      'You must specify the target package e.g. npm run release -- vue-quill'
+      'You must specify the target package e.g. npm run release -- vue-quill',
     )
     return
   }
@@ -69,7 +73,7 @@
   if (!process.env.CI && !preview) {
     logger.warning(
       'semantic-release',
-      `You can't release [${target}] locally, use --preview to get a preview of the pending release`
+      `You can't release [${target}] locally, use --preview to get a preview of the pending release`,
     )
     return
   }
@@ -79,7 +83,7 @@
   if (pkg.private) {
     logger.warning(
       'semantic-release',
-      `You can't release private package [${target}]`
+      `You can't release private package [${target}]`,
     )
     return
   }
@@ -90,14 +94,14 @@
       {
         branches: releaserc.branches,
         repositoryUrl: pkg.repository.url,
-        plugins: releaserc.plugins,
+        plugins: preview ? releaserc.previewPlugins : releaserc.plugins,
         dryRun: preview ? true : false,
         ci: preview ? false : true,
       },
       {
         cwd: pkgDir,
         env: { ...process.env },
-      }
+      },
     )
 
     if (result) {
@@ -106,7 +110,11 @@
 
       logger.success(
         target,
-        `Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`
+        `${preview ? 'Previewed' : 'Published'} ${
+          nextRelease.type
+        } release version ${nextRelease.version} containing ${
+          commits.length
+        } commits.`,
       )
       if (lastRelease.version) {
         logger.info(target, `The last release was "${lastRelease.version}".`)
@@ -114,7 +122,7 @@
 
       for (const release of releases) {
         console.log(
-          `The release was published with plugin "${release.pluginName}".`
+          `The release was published with plugin "${release.pluginName}".`,
         )
       }
     } else {

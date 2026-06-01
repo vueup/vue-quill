@@ -19,7 +19,7 @@
     "vue3-highlightjs": "^1.0.5"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.1.0",
+    "@rushstack/eslint-patch": "^1.16.1",
     "@types/node": "^16.11.43",
     "@vitejs/plugin-vue": "^2.3.3",
     "@vue/eslint-config-prettier": "^7.0.0",

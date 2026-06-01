@@ -15,7 +15,7 @@
     "npm": "^8.14.0",
     "quill-blot-formatter": "^1.0.5",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.2",
+    "vue-router": "^5.1.0",
     "vue3-highlightjs": "^1.0.5"
   },
   "devDependencies": {

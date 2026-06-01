@@ -197,7 +197,15 @@
 }
 
 .preview-panel--submitted {
+  min-height: 0;
   margin-top: 16px;
+}
+
+.preview-panel--submitted code {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .button-row,

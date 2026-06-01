@@ -158,7 +158,7 @@ async function generateTypes(target: string) {
     const pkg = getPackageJson(target)
     try {
       const typesDir = path.resolve(pkgDir, 'types')
-      await fs.promises.access(typesDir).then(async () => {
+      if (fs.existsSync(typesDir)) {
         const dtsPath = path.resolve(pkgDir, pkg.types)
         const existing = await fs.readFile(dtsPath, 'utf-8')
         const typeFiles = await fs.readdir(typesDir)
@@ -168,7 +168,7 @@ async function generateTypes(target: string) {
           }),
         )
         await fs.writeFile(dtsPath, existing + '\n' + toAdd.join('\n'))
-      })
+      }
       logger.success(target, `API Extractor completed successfully.`)
     } catch (err) {
       console.log()

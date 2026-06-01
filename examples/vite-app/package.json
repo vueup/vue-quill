@@ -12,7 +12,7 @@
   "dependencies": {
     "@vueup/vue-quill": "^1.2.1",
     "install": "^0.13.0",
-    "npm": "^8.14.0",
+    "npm": "^11.16.0",
     "quill-blot-formatter": "^1.0.5",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2",

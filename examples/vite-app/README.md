@@ -10,6 +10,10 @@ This is a fresh Vite Vue TypeScript app scaffolded with `npm create vite@latest`
 
 The source for the example lives in `../vue-quill/src` and is imported through the `@vue-quill-example/*` alias.
 
+When deployed with the docs site, the example is published at:
+
+https://vueup.github.io/vue-quill/examples/vite-app/
+
 ## Commands
 
 ```sh
@@ -17,6 +21,7 @@ npm install
 npm run test
 npm run dev
 npm run build
+npm run build:pages
 npm run preview
 ```
 

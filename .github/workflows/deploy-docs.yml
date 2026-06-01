@@ -8,6 +8,8 @@ on:
       - alpha
     paths:
       - 'docs/**'
+      - 'examples/vite-app/**'
+      - 'examples/vue-quill/**'
       - 'package.json'
       - 'package-lock.json'
       - 'packages/vue-quill/**'
@@ -29,6 +31,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             docs/package-lock.json
+            examples/vite-app/package-lock.json
             packages/vue-quill/package-lock.json
       - name: Install root deps
         run: npm ci
@@ -38,6 +41,9 @@ jobs:
       - name: Install docs deps
         working-directory: docs
         run: npm ci
+      - name: Install example deps
+        working-directory: examples/vite-app
+        run: npm ci
       - name: Build package for docs
         run: npm run build -- vue-quill --assets --types
       - name: Build docs
@@ -46,6 +52,13 @@ jobs:
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
+      - name: Build Vite example for GitHub Pages
+        working-directory: examples/vite-app
+        run: npm run build:pages
+      - name: Add Vite example to docs deploy
+        run: |
+          mkdir -p docs/content/.vitepress/dist/examples/vite-app
+          cp -R examples/vite-app/dist/. docs/content/.vitepress/dist/examples/vite-app/
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v4
         with:

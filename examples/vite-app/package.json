@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:npm": "vite --mode npm",
     "build": "vue-tsc -b && vite build",
+    "build:pages": "vue-tsc -b && vite build --base=/vue-quill/examples/vite-app/",
     "preview": "vite preview",
     "test": "node --experimental-strip-types --test ../vue-quill/src/example-catalog.test.ts"
   },

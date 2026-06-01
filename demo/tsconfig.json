@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
@@ -11,7 +11,6 @@
     "lib": ["esnext", "dom"],
     "types": ["vite/client"],
     "rootDir": "..",
-    "baseUrl": ".",
     "paths": {
       "@vueup/*": ["../packages/*/src"]
     },

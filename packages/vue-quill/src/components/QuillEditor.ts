@@ -23,6 +23,7 @@ import { toolbarOptions, ToolbarOptions } from './options'
 export type Module = { name: string; module: unknown; options?: object }
 
 type ContentPropType = string | Delta | undefined | null
+type QuillWithImports = typeof Quill & { imports?: Record<string, unknown> }
 
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
@@ -106,7 +107,8 @@ export const QuillEditor = defineComponent({
 
     // Register Module if not already registered
     const registerModule = (moduleName: string, module: unknown) => {
-      if (Quill?.imports && moduleName in Quill.imports) {
+      const quillImports = (Quill as QuillWithImports).imports
+      if (quillImports && moduleName in quillImports) {
         return
       }
       Quill.register(moduleName, module)

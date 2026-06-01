@@ -34,13 +34,13 @@
     ]
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.19.0"
   },
   "scripts": {
     "dev": "npx ts-node scripts/dev.ts",
     "build": "npx ts-node scripts/build.ts",
     "size": "npx ts-node scripts/build.ts vue-quill size-check -p -f global --assets",
-    "lint": "eslint --ext .ts packages/*/src/**/*.ts",
+    "lint": "eslint \"packages/*/src/**/*.ts\"",
     "format": "prettier --write --parser typescript \"packages/**/*.ts?(x)\"",
     "release": "npx ts-node scripts/release.ts",
     "assets:dev": "npm run assets:build && npx ts-node scripts/devAssets.ts",
@@ -53,6 +53,7 @@
     "demo:serve": "cd demo && npm run serve"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@microsoft/api-extractor": "~7.58.7",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
@@ -70,15 +71,16 @@
     "chalk": "^4.1.2",
     "csso": "^5.0.5",
     "dotenv": "^17.4.2",
-    "eslint": "^8.57.1",
+    "eslint": "^10.4.1",
     "eslint-plugin-vue": "^10.9.1",
     "execa": "^9.6.1",
     "fs-extra": "^11.3.5",
+    "globals": "^17.6.0",
     "lint-staged": "^12.5.0",
     "minimist": "^1.2.8",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.8.3",
-    "rollup": "^4.60.4",
+    "rollup": "^4.61.0",
     "rollup-plugin-typescript2": "^0.37.0",
     "semantic-release": "^19.0.5",
     "stylus": "^0.64.0",

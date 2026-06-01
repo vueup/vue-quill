@@ -51,7 +51,9 @@
   packageAssets.css.forEach((css: any) => {
     buildAssetPaths.push(path.resolve(pkgDir, `${css.output}`))
     if (packageAssets.prod === false) return
-    buildAssetPaths.push(path.resolve(pkgDir, `${css.output}`))
+    buildAssetPaths.push(
+      path.resolve(pkgDir, css.output.replace(/\.css$/, '.prod.css')),
+    )
   })
   checkBuildFiles(`${target} assets`, buildAssetPaths)
 

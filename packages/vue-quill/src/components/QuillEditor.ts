@@ -6,12 +6,13 @@ import {
   onBeforeUnmount,
   onMounted,
   nextTick,
-  PropType,
   watch,
   ref,
   h,
 } from 'vue'
-import { toolbarOptions, ToolbarOptions } from './options'
+import type { PropType } from 'vue'
+import { toolbarOptions } from './options'
+import type { ToolbarOptions } from './options'
 import { loadQuill, type QuillConstructor } from '../quill'
 
 export type Module = { name: string; module: unknown; options?: object }

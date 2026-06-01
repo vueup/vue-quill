@@ -1,6 +1,8 @@
 # Vue Quill Example
 
-This folder contains the reusable Vue Quill example source. The Vite shell in `../vite-app` imports this source through the `@vue-quill-example/*` alias.
+This folder contains the reusable Vue Quill example source. The Vite shell in
+`../vite-app` and the Nuxt shell in `../nuxt-app` import this source through the
+`@vue-quill-example/*` alias.
 
 Covered patterns:
 
@@ -18,6 +20,14 @@ Run it from the Vite app:
 
 ```sh
 cd ../vite-app
+npm install
+npm run dev
+```
+
+Run the Nuxt rendering-strategy example:
+
+```sh
+cd ../nuxt-app
 npm install
 npm run dev
 ```

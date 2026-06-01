@@ -1,0 +1,27 @@
+{
+  "name": "vue-quill-nuxt-example",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "build:npm": "NUXT_VUE_QUILL_SOURCE=npm nuxt build",
+    "dev": "nuxt dev",
+    "dev:npm": "NUXT_VUE_QUILL_SOURCE=npm nuxt dev",
+    "generate": "nuxt generate",
+    "generate:npm": "NUXT_VUE_QUILL_SOURCE=npm nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test:generate": "npm run generate && node scripts/smoke-generate.mjs",
+    "test:rendering": "npm run build && node scripts/smoke-rendering.mjs",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@vueup/vue-quill": "^1.3.0",
+    "nuxt": "^4.4.6",
+    "vue": "^3.5.34",
+    "vue-router": "^5.0.7"
+  },
+  "devDependencies": {
+    "vue-tsc": "^3.3.3"
+  }
+}

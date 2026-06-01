@@ -36,6 +36,30 @@ jobs:
       - name: Verify package artifacts
         run: npx ts-node scripts/verifyRelease.ts vue-quill
 
+  size:
+    name: Size check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            packages/vue-quill/package-lock.json
+            packages/size-check/package-lock.json
+      - name: Install root deps
+        run: npm ci
+      - name: Install package deps
+        working-directory: packages/vue-quill
+        run: npm ci
+      - name: Install size-check deps
+        working-directory: packages/size-check
+        run: npm ci
+      - name: Build size check
+        run: npm run size
+
   docs:
     name: Docs
     runs-on: ubuntu-latest

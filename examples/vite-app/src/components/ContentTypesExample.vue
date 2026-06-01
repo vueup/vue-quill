@@ -6,7 +6,7 @@ const contentDelta = ref<Delta>(
     { insert: 'Gandalf', attributes: { bold: true } },
     { insert: ' the ' },
     { insert: 'Grey', attributes: { color: '#ccc' } },
-  ])
+  ]),
 )
 const contentHTML = ref('<h1>This is html header</h1>')
 const contentText = ref('This is just plain text')

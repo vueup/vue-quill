@@ -27,6 +27,10 @@
     "*.ts?(x)": [
       "eslint",
       "prettier --parser=typescript --write"
+    ],
+    "*.vue": [
+      "eslint",
+      "prettier --write"
     ]
   },
   "engines": {

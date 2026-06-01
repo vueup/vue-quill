@@ -15,6 +15,12 @@ const localVueQuillDist = fileURLToPath(
 const localVueQuillSnowCss = fileURLToPath(
   new URL('../../packages/vue-quill/dist/vue-quill.snow.css', import.meta.url),
 )
+const npmVueQuillEntry = fileURLToPath(
+  new URL(
+    './node_modules/@vueup/vue-quill/dist/vue-quill.esm-bundler.js',
+    import.meta.url,
+  ),
+)
 const exampleSource = fileURLToPath(
   new URL('../vue-quill/src/', import.meta.url),
 )
@@ -34,9 +40,12 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: [
         { find: '@vue-quill-example', replacement: exampleSource },
+        {
+          find: /^@vueup\/vue-quill$/,
+          replacement: useLocalVueQuill ? localVueQuillEntry : npmVueQuillEntry,
+        },
         ...(useLocalVueQuill
           ? [
-              { find: /^@vueup\/vue-quill$/, replacement: localVueQuillEntry },
               ...(useLocalVueQuillStyles
                 ? [
                     {

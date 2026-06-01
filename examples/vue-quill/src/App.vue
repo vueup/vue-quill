@@ -43,13 +43,17 @@ type EditorChangePayload = {
 
 const basicContent = new Delta()
   .insert('VueQuill starts with a simple component import.\n', { bold: true })
-  .insert('Use Delta content for robust editing state and HTML when you need previews.')
+  .insert(
+    'Use Delta content for robust editing state and HTML when you need previews.',
+  )
 
 const modelEditor = shallowRef<EditorExpose>()
 const modelContent = ref(
   '<h2>Launch checklist</h2><p>Draft release notes, confirm screenshots, and send the publishing brief.</p>',
 )
-const methodResult = ref('Use the buttons to call focus(), setHTML(), or getHTML().')
+const methodResult = ref(
+  'Use the buttons to call focus(), setHTML(), or getHTML().',
+)
 
 const activeToolbarId = ref<(typeof toolbarExamples)[number]['id']>('minimal')
 const toolbarContent = ref(
@@ -85,7 +89,9 @@ const enableContent = ref(
 )
 
 const eventContent = ref(
-  new Delta().insert('Type here, select text, focus, or blur to populate the event log.'),
+  new Delta().insert(
+    'Type here, select text, focus, or blur to populate the event log.',
+  ),
 )
 const eventLog = ref<EventItem[]>([])
 let nextEventId = 1
@@ -96,7 +102,10 @@ const formContent = ref(
 const submittedContent = ref('')
 
 const plainFormText = computed(() => {
-  return formContent.value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  return formContent.value
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 })
 const formIsReady = computed(() => plainFormText.value.length >= 80)
 const formStatus = computed(() => {
@@ -160,7 +169,8 @@ const insertTemplateWithMethod = () => {
     '<h2>Editorial plan</h2><ol><li>Write draft</li><li>Review tone</li><li>Publish update</li></ol>',
   )
   modelContent.value = modelEditor.value?.getHTML() ?? modelContent.value
-  methodResult.value = 'setHTML() replaced the editor body and synced v-model content.'
+  methodResult.value =
+    'setHTML() replaced the editor body and synced v-model content.'
 }
 
 const readHtmlWithMethod = () => {
@@ -206,7 +216,9 @@ const submitContent = () => {
       <aside class="coverage-panel" aria-label="Example coverage">
         <strong>{{ coverageSummary }}</strong>
         <ul>
-          <li v-for="item in requiredCoverage" :key="item">{{ item }}</li>
+          <li v-for="item in requiredCoverage" :key="item">
+            {{ item }}
+          </li>
         </ul>
       </aside>
     </header>
@@ -255,16 +267,23 @@ const submitContent = () => {
               placeholder="Plan the launch..."
             />
             <div class="button-row">
-              <button type="button" @click="focusModelEditor">Focus editor</button>
+              <button type="button" @click="focusModelEditor">
+                Focus editor
+              </button>
               <button type="button" @click="insertTemplateWithMethod">
                 Insert template
               </button>
-              <button type="button" @click="readHtmlWithMethod">Read HTML</button>
+              <button type="button" @click="readHtmlWithMethod">
+                Read HTML
+              </button>
             </div>
-            <p class="method-result">{{ methodResult }}</p>
+            <p class="method-result">
+              {{ methodResult }}
+            </p>
           </div>
           <div class="preview-panel">
             <h3>Live HTML preview</h3>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-html="modelContent" />
           </div>
         </div>
@@ -286,7 +305,9 @@ const submitContent = () => {
             {{ toolbar.label }}
           </button>
         </div>
-        <p class="helper-text">{{ activeToolbarDescription }}</p>
+        <p class="helper-text">
+          {{ activeToolbarDescription }}
+        </p>
         <QuillEditor
           :key="activeToolbarId"
           v-model:content="toolbarContent"
@@ -299,14 +320,22 @@ const submitContent = () => {
             <div id="article-toolbar" class="custom-toolbar">
               <button class="ql-bold" type="button" aria-label="Bold" />
               <button class="ql-italic" type="button" aria-label="Italic" />
-              <button class="ql-underline" type="button" aria-label="Underline" />
+              <button
+                class="ql-underline"
+                type="button"
+                aria-label="Underline"
+              />
               <select class="ql-header" aria-label="Heading">
                 <option value="2">Heading</option>
                 <option value="3">Subheading</option>
                 <option selected />
               </select>
               <button class="ql-link" type="button" aria-label="Link" />
-              <button class="ql-clean" type="button" aria-label="Clear formatting" />
+              <button
+                class="ql-clean"
+                type="button"
+                aria-label="Clear formatting"
+              />
             </div>
           </template>
         </QuillEditor>
@@ -383,18 +412,20 @@ const submitContent = () => {
         :description="exampleSections[5].description"
       >
         <div class="split-panel split-panel--events">
-          <QuillEditor
-            v-model:content="eventContent"
-            theme="snow"
-            toolbar="minimal"
-            placeholder="Trigger editor events..."
-            @ready="handleReady"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            @text-change="handleTextChange"
-            @selection-change="handleSelectionChange"
-            @editor-change="handleEditorChange"
-          />
+          <div class="editor-stack">
+            <QuillEditor
+              v-model:content="eventContent"
+              theme="snow"
+              toolbar="minimal"
+              placeholder="Trigger editor events..."
+              @ready="handleReady"
+              @focus="handleFocus"
+              @blur="handleBlur"
+              @text-change="handleTextChange"
+              @selection-change="handleSelectionChange"
+              @editor-change="handleEditorChange"
+            />
+          </div>
           <div class="event-panel">
             <div class="event-panel__header">
               <h3>Latest events</h3>
@@ -414,20 +445,27 @@ const submitContent = () => {
           <label for="post-title">Post title</label>
           <input id="post-title" value="Release note draft" />
           <label>Post body</label>
-          <QuillEditor
-            v-model:content="formContent"
-            content-type="html"
-            theme="snow"
-            toolbar="essential"
-            placeholder="Write the release note body..."
-          />
+          <div class="editor-stack">
+            <QuillEditor
+              v-model:content="formContent"
+              content-type="html"
+              theme="snow"
+              toolbar="essential"
+              placeholder="Write the release note body..."
+            />
+          </div>
           <div class="form-footer">
             <span>{{ plainFormText.length }} plain-text characters</span>
             <button type="submit" :disabled="!formIsReady">Submit draft</button>
           </div>
-          <p class="method-result">{{ formStatus }}</p>
+          <p class="method-result">
+            {{ formStatus }}
+          </p>
         </form>
-        <div v-if="submittedContent" class="preview-panel preview-panel--submitted">
+        <div
+          v-if="submittedContent"
+          class="preview-panel preview-panel--submitted"
+        >
           <h3>Submitted HTML</h3>
           <code>{{ submittedContent }}</code>
         </div>

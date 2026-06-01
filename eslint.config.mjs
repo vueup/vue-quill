@@ -1,5 +1,6 @@
 import js from '@eslint/js'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
 import globals from 'globals'
 import vuePlugin from 'eslint-plugin-vue'
 
@@ -22,6 +23,19 @@ export default [
     rules: {
       'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
       'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    },
+  },
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parserOptions: {
+        parser: tsParser,
+      },
+    },
+    rules: {
+      'vue/html-self-closing': 'off',
+      'vue/max-attributes-per-line': 'off',
+      'vue/singleline-html-element-content-newline': 'off',
     },
   },
   {

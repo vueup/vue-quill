@@ -154,7 +154,7 @@
 
 .example-card code {
   color: #0f172a;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.86rem;
   white-space: pre-wrap;
 }
@@ -176,6 +176,10 @@
 
 .split-panel--events {
   grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.editor-stack {
+  min-width: 0;
 }
 
 .preview-panel,

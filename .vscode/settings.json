@@ -14,7 +14,6 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "conventionalCommits.scopes": [
-    "docs"
-  ]
+  "biome.requireConfiguration": true,
+  "conventionalCommits.scopes": ["docs"]
 }

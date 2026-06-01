@@ -61,7 +61,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/jest": "^28.1.8",
+    "@types/jest": "^30.0.0",
     "@types/node": "^18.11.3",
     "@types/quill": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

@@ -1,7 +1,7 @@
-import path from 'path'
-import typescript2 from 'rollup-plugin-typescript2'
-import replace from '@rollup/plugin-replace'
-import json from '@rollup/plugin-json'
+const path = require('path')
+const typescript2 = require('rollup-plugin-typescript2')
+const replace = require('@rollup/plugin-replace')
+const json = require('@rollup/plugin-json')
 
 if (!process.env.TARGET) {
   throw new Error('TARGET package must be specified via --environment flag.')
@@ -76,7 +76,7 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-export default packageConfigs
+module.exports = packageConfigs
 
 function createConfig(format, output, plugins = []) {
   if (!output) {

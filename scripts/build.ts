@@ -101,7 +101,6 @@ npm run build -- vue-quill --formats cjs
         'rollup',
         '--config',
         rollupConfig,
-        '--bundleConfigAsCjs',
         '--environment',
         [
           `COMMIT:${commit}`,

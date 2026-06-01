@@ -1,18 +1,26 @@
 name: Release @vueup/vue-quill
 
-on: 
-  push: 
-    branches: 
+on:
+  push:
+    branches:
       - alpha
       - beta
       - master
-    paths: 
+    paths:
+      - '.github/workflows/release-vue-quill.yml'
+      - 'package.json'
+      - 'package-lock.json'
       - 'packages/vue-quill/**'
-jobs: 
-  release: 
+      - 'scripts/**'
+jobs:
+  release:
     name: Build and release
     runs-on: ubuntu-latest
-    steps: 
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
         with:
@@ -25,6 +33,6 @@ jobs:
       - name: Release package
         working-directory: packages/vue-quill
         run: npx ts-node ../../scripts/release.ts vue-quill
-        env: 
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        env:
+          GH_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -77,7 +77,10 @@
   const pkgDir = getPackageDir(target)
   const pkg = getPackageJson(target)
   if (pkg.private) {
-    logger.warning('semantic-release', `You can't release private package [${target}]`)
+    logger.warning(
+      'semantic-release',
+      `You can't release private package [${target}]`
+    )
     return
   }
 
@@ -110,12 +113,15 @@
       }
 
       for (const release of releases) {
-        console.log(`The release was published with plugin "${release.pluginName}".`)
+        console.log(
+          `The release was published with plugin "${release.pluginName}".`
+        )
       }
     } else {
       logger.warning(target, 'No release published.')
     }
   } catch (err) {
     logger.error(target, `The automated release failed with ${err}`)
+    process.exitCode = 1
   }
 })()

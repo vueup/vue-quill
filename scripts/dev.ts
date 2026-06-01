@@ -16,18 +16,27 @@ __DEV__=false npm run dev
 ```
 */
 ;(async () => {
-  const execa = require('execa')
   const logger = require('./logger')
-  const { targets: allTargets, fuzzyMatchTarget } = require('./utils')
+  const {
+    targets: allTargets,
+    fuzzyMatchTarget,
+    loadExeca,
+  } = require('./utils')
+  const { execa, execaSync } = await loadExeca()
 
   const args = require('minimist')(process.argv.slice(2))
-  const target: string = args._.length ? fuzzyMatchTarget(allTargets, args._)[0] : ''
+  const target: string = args._.length
+    ? fuzzyMatchTarget(allTargets, args._)[0]
+    : ''
   const formats: string[] = args.formats || args.f
   const sourceMap: boolean = args.sourcemap || args.s
-  const commit = execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+  const commit = execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
   if (target === '') {
-    logger.warning('', 'You must specify the target e.g. npm run dev -- vue-quill')
+    logger.warning(
+      '',
+      'You must specify the target e.g. npm run dev -- vue-quill'
+    )
     return
   }
 

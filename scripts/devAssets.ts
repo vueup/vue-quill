@@ -9,16 +9,26 @@ npm run assets:build -- vue-quill
 */
 ;(async () => {
   const path = require('path')
-  const execa = require('execa')
   const logger = require('./logger')
-  const { targets: allTargets, getPackageDir, fuzzyMatchTarget } = require('./utils')
+  const {
+    targets: allTargets,
+    getPackageDir,
+    fuzzyMatchTarget,
+    loadExeca,
+  } = require('./utils')
+  const { execa } = await loadExeca()
 
   const args = require('minimist')(process.argv.slice(2))
-  const target: string = args._.length ? fuzzyMatchTarget(allTargets, args._)[0] : ''
+  const target: string = args._.length
+    ? fuzzyMatchTarget(allTargets, args._)[0]
+    : ''
   const sourceMap = args.sourcemap || args.s
 
   if (target === '') {
-    logger.warning('', 'You must specify the target e.g. npm run assets:dev -- vue-quill')
+    logger.warning(
+      '',
+      'You must specify the target e.g. npm run assets:dev -- vue-quill'
+    )
     return
   }
 

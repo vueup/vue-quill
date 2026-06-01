@@ -7,21 +7,23 @@ const { compress } = require('brotli')
 const rootDir = path.resolve(__dirname, '..')
 const packagesDir = path.resolve(rootDir, 'packages')
 
-const targets: string[] = fs.readdirSync(packagesDir).filter((targetDir: string) => {
-  const pkgDir = path.resolve(packagesDir, targetDir)
-  if (!fs.statSync(pkgDir).isDirectory()) {
-    return false
-  }
-  const pkgPath = path.resolve(pkgDir, 'package.json')
-  if (!fs.existsSync(pkgPath)) {
-    return false
-  }
-  const pkg = require(pkgPath)
-  if (pkg.private && !pkg.buildOptions) {
-    return false
-  }
-  return true
-})
+const targets: string[] = fs
+  .readdirSync(packagesDir)
+  .filter((targetDir: string) => {
+    const pkgDir = path.resolve(packagesDir, targetDir)
+    if (!fs.statSync(pkgDir).isDirectory()) {
+      return false
+    }
+    const pkgPath = path.resolve(pkgDir, 'package.json')
+    if (!fs.existsSync(pkgPath)) {
+      return false
+    }
+    const pkg = require(pkgPath)
+    if (pkg.private && !pkg.buildOptions) {
+      return false
+    }
+    return true
+  })
 
 function getPackageDir(target: string) {
   return path.resolve(packagesDir, target)
@@ -65,7 +67,10 @@ function fuzzyMatchTarget(
   } else {
     console.log()
     const chalk = require('chalk')
-    logger.error(partialTargets, `Target ${chalk.underline(partialTargets)} not found!`)
+    logger.error(
+      partialTargets,
+      `Target ${chalk.underline(partialTargets)} not found!`
+    )
     process.exit(1)
   }
 }
@@ -82,7 +87,9 @@ async function runParallel(
     ret.push(p)
 
     if (maxConcurrency <= source.length) {
-      const e: Promise<any> = p.then(() => executing.splice(executing.indexOf(e), 1))
+      const e: Promise<any> = p.then(() =>
+        executing.splice(executing.indexOf(e), 1)
+      )
       executing.push(e)
       if (executing.length >= maxConcurrency) {
         await Promise.race(executing)
@@ -123,7 +130,12 @@ function getTableSize(filePath: string) {
   const gzippedSize = (gzipped.length / 1024).toFixed(2) + 'kb'
   const compressed = compress(file)
   const compressedSize = (compressed.length / 1024).toFixed(2) + 'kb'
-  return { filename: filename, min: minSize, gzip: gzippedSize, brotli: compressedSize }
+  return {
+    filename: filename,
+    min: minSize,
+    gzip: gzippedSize,
+    brotli: compressedSize,
+  }
 }
 
 async function generateTypes(target: string) {
@@ -134,7 +146,8 @@ async function generateTypes(target: string) {
   // build types
   const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
   const extractorConfigPath = path.resolve(pkgDir, `api-extractor.json`)
-  const extractorConfig = ExtractorConfig.loadFileAndPrepare(extractorConfigPath)
+  const extractorConfig =
+    ExtractorConfig.loadFileAndPrepare(extractorConfigPath)
   const extractorResult = Extractor.invoke(extractorConfig, {
     localBuild: true,
     showVerboseMessages: true,
@@ -159,7 +172,10 @@ async function generateTypes(target: string) {
       logger.success(target, `API Extractor completed successfully.`)
     } catch (err) {
       console.log()
-      logger.warning(target, `There's no additional .d.ts to roll-up with ${err}`)
+      logger.warning(
+        target,
+        `There's no additional .d.ts to roll-up with ${err}`
+      )
     }
   } else {
     logger.error(
@@ -171,6 +187,13 @@ async function generateTypes(target: string) {
   }
 
   await fs.remove(`${pkgDir}/dist/packages`)
+}
+
+async function loadExeca() {
+  const execaModule = (await import('execa')) as any
+  const execa = execaModule.execa || execaModule.default || execaModule
+  const execaSync = execaModule.execaSync || execaModule.sync || execa.sync
+  return { execa, execaSync }
 }
 
 module.exports = {
@@ -186,4 +209,5 @@ module.exports = {
   checkAssetsSize,
   getTableSize,
   generateTypes,
+  loadExeca,
 }

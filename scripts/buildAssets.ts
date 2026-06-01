@@ -11,7 +11,6 @@ npm run assets:build -- vue-quill
   const fs = require('fs-extra')
   const path = require('path')
   const chalk = require('chalk')
-  const execa = require('execa')
   const logger = require('./logger')
   const {
     targets: allTargets,
@@ -20,7 +19,9 @@ npm run assets:build -- vue-quill
     fuzzyMatchTarget,
     checkAssetsSize,
     runParallel,
+    loadExeca,
   } = require('./utils')
+  const { execa } = await loadExeca()
 
   const args: any = require('minimist')(process.argv.slice(2))
   const targets: string[] = args._
@@ -42,7 +43,11 @@ npm run assets:build -- vue-quill
     await buildAll(allTargets)
     checkAllSizes(allTargets)
   } else {
-    const matchedTargets = fuzzyMatchTarget(allTargets, targets, buildAllMatching)
+    const matchedTargets = fuzzyMatchTarget(
+      allTargets,
+      targets,
+      buildAllMatching
+    )
     logger.header(matchedTargets, 'BUILD ASSETS')
     await buildAll(matchedTargets)
     checkAllSizes(matchedTargets)

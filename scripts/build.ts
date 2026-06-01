@@ -16,7 +16,6 @@ npm run build -- vue-quill --formats cjs
 ;(async () => {
   const fs = require('fs-extra')
   const path = require('path')
-  const execa = require('execa')
   const logger = require('./logger')
   const {
     rootDir,
@@ -27,7 +26,9 @@ npm run build -- vue-quill --formats cjs
     checkBuildSize,
     runParallel,
     generateTypes,
+    loadExeca,
   } = require('./utils')
+  const { execa, execaSync } = await loadExeca()
 
   const args = require('minimist')(process.argv.slice(2))
   const targets: string[] = args._
@@ -35,13 +36,14 @@ npm run build -- vue-quill --formats cjs
   const devOnly: boolean = args.devOnly || args.d
   const prodOnly: boolean = !devOnly && (args.prodOnly || args.p)
   const sourceMap: boolean = args.sourcemap || args.s
-  const isRelease: boolean = args.release || (args.nextVersion && args.nextVersion !== '')
+  const isRelease: boolean =
+    args.release || (args.nextVersion && args.nextVersion !== '')
   const hasTypes: boolean = args.t || args.types || isRelease
   const buildAssets: boolean = args.assets || isRelease
   const buildAllMatching: boolean = args.all || args.a
   const nextVersion: string = args.nextVersion || getPackageJson().version
   const commit =
-    args.commit || execa.sync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
+    args.commit || execaSync('git', ['rev-parse', 'HEAD']).stdout.slice(0, 7)
 
   if (isRelease) {
     // remove build cache for release builds to avoid outdated enum values
@@ -73,7 +75,10 @@ npm run build -- vue-quill --formats cjs
 
     // only build published packages for release
     if (isRelease && pkg.private) {
-      logger.warning(target, `Skip private package (${target}) in release build`)
+      logger.warning(
+        target,
+        `Skip private package (${target}) in release build`
+      )
       return
     }
 

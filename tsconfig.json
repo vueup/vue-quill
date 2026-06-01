@@ -5,7 +5,7 @@
     "sourceMap": false,
     "target": "ES2019",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,
@@ -16,6 +16,7 @@
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
     "types": ["jest", "node"],
+    "ignoreDeprecations": "6.0",
     "rootDir": ".",
     "paths": {
       "@vueup/*": ["packages/*/src"]

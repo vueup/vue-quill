@@ -57,7 +57,7 @@ npm run build -- vue-quill --formats cjs
     const matchedTargets: string[] = fuzzyMatchTarget(
       allTargets,
       targets,
-      buildAllMatching
+      buildAllMatching,
     )
     logger.header(matchedTargets, 'BUILD PACKAGES')
     await buildAll(matchedTargets)
@@ -77,7 +77,7 @@ npm run build -- vue-quill --formats cjs
     if (isRelease && pkg.private) {
       logger.warning(
         target,
-        `Skip private package (${target}) in release build`
+        `Skip private package (${target}) in release build`,
       )
       return
     }
@@ -101,6 +101,7 @@ npm run build -- vue-quill --formats cjs
         'rollup',
         '--config',
         rollupConfig,
+        '--bundleConfigAsCjs',
         '--environment',
         [
           `COMMIT:${commit}`,
@@ -115,7 +116,7 @@ npm run build -- vue-quill --formats cjs
           .filter(Boolean)
           .join(','),
       ],
-      { stdio: 'inherit' }
+      { stdio: 'inherit' },
     )
 
     if (hasTypes && pkg.types) await generateTypes(target)

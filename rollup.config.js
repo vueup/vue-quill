@@ -164,7 +164,7 @@ function createConfig(format, output, plugins = []) {
         // isBrowserBuild?
         isGlobalBuild || isBrowserESMBuild || isBundlerESMBuild,
         isGlobalBuild,
-        isNodeBuild
+        isNodeBuild,
       ),
       ...nodePlugins,
       ...plugins,
@@ -187,7 +187,7 @@ function createReplacePlugin(
   isBrowserESMBuild,
   isBrowserBuild,
   isGlobalBuild,
-  isNodeBuild
+  isNodeBuild,
 ) {
   const replacements = {
     __COMMIT__: `"${process.env.COMMIT}"`,
@@ -243,7 +243,8 @@ function createProductionConfig(format) {
 }
 
 function createMinifiedConfig(format) {
-  const { terser } = require('rollup-plugin-terser')
+  const terserPlugin = require('@rollup/plugin-terser')
+  const terser = terserPlugin.default || terserPlugin.terser || terserPlugin
   return createConfig(
     format,
     {
@@ -259,6 +260,6 @@ function createMinifiedConfig(format) {
         },
         safari10: true,
       }),
-    ]
+    ],
   )
 }

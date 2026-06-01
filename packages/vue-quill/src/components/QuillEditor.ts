@@ -253,7 +253,10 @@ export const QuillEditor = defineComponent({
     }
 
     watch(isEditorFocus, (focus) => {
+      // Focus and blur events document the editor ref as their payload.
+      // eslint-disable-next-line vue/no-ref-as-operand
       if (focus) ctx.emit('focus', editor)
+      // eslint-disable-next-line vue/no-ref-as-operand
       else ctx.emit('blur', editor)
     })
 
@@ -346,7 +349,9 @@ export const QuillEditor = defineComponent({
     }
 
     const pasteHTML = (html: string, source: Sources = 'api') => {
-      const delta = quill?.clipboard.convert(html as {})
+      const delta = quill?.clipboard.convert(
+        html as unknown as Parameters<Quill['clipboard']['convert']>[0]
+      )
       if (delta) quill?.setContents(delta, source)
     }
 

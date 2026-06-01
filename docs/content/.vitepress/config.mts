@@ -62,10 +62,6 @@ export default defineConfig({
         text: 'Support VueQuill',
         items: [
           {
-            text: 'Patreon',
-            link: 'https://www.patreon.com/luthfimasruri',
-          },
-          {
             text: 'Buy me a coffee',
             link: 'https://www.buymeacoffee.com/luthfimasruri',
           },

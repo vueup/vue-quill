@@ -8,8 +8,12 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@vueup/vue-quill',
+        find: /^@vueup\/vue-quill$/,
         replacement: path.resolve(__dirname, '../packages/vue-quill/src'),
+      },
+      {
+        find: /^@vueup\/vue-quill\/dist\/(.*)$/,
+        replacement: path.resolve(__dirname, '../packages/vue-quill/dist/$1'),
       },
     ],
   },

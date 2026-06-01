@@ -67,10 +67,7 @@ if (process.env.NODE_ENV === 'production') {
     if (packageOptions.prod === false) {
       return
     }
-    if (format === 'cjs') {
-      packageConfigs.push(createProductionConfig(format))
-    }
-    if (/^(global|esm-browser)?/.test(format)) {
+    if (/^(cjs|global|esm-browser|esm-bundler)$/.test(format)) {
       packageConfigs.push(createMinifiedConfig(format))
     }
   })
@@ -234,13 +231,6 @@ function createReplacePlugin(
   return replace({
     values: replacements,
     preventAssignment: true,
-  })
-}
-
-function createProductionConfig(format) {
-  return createConfig(format, {
-    file: resolve(`dist/${name}.${format}.prod.js`),
-    format: outputConfigs[format].format,
   })
 }
 

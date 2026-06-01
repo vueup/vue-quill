@@ -6,7 +6,8 @@
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 import { QuillEditor, Delta } from '@vueup/vue-quill'
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from '@enzedonline/quill-blot-formatter2'
+import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css'
 
 export default defineComponent({
   components: {
@@ -14,7 +15,7 @@ export default defineComponent({
   },
   setup: () => {
     const modules = {
-      name: 'blotFormatter',
+      name: 'blotFormatter2',
       module: BlotFormatter,
       options: {
         /* options */
@@ -32,4 +33,3 @@ export default defineComponent({
   },
 })
 </script>
-

@@ -1,11 +1,12 @@
 <!-- eslint-disable prettier/prettier -->
 <script setup lang="ts">
-import BlotFormatter from 'quill-blot-formatter'
+import BlotFormatter from '@enzedonline/quill-blot-formatter2'
+import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css'
 import { Delta } from '@vueup/vue-quill'
 import { ref } from 'vue'
 
 const modules = {
-  name: 'blotFormatter',
+  name: 'blotFormatter2',
   module: BlotFormatter,
   options: {
     /* options */
@@ -37,9 +38,9 @@ const content = ref<Delta>(
     },
     {
       attributes: {
-        link: 'https://github.com/Fandom-OSS/quill-blot-formatter',
+        link: 'https://github.com/enzedonline/quill-blot-formatter2',
       },
-      insert: 'https://github.com/Fandom-OSS/quill-blot-formatter',
+      insert: 'https://github.com/enzedonline/quill-blot-formatter2',
     },
     {
       insert: '\n\n',

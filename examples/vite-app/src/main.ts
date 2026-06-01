@@ -1,19 +1,9 @@
 import { createApp } from 'vue'
-// VueQuill
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
-// VueHighlightJS
-import VueHighlightJS from 'vue3-highlightjs'
-import 'highlight.js/styles/solarized-light.css'
-
 import App from './App.vue'
-import router from './router'
+import '@vueup/vue-quill/dist/vue-quill.core.css'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import '@vueup/vue-quill/dist/vue-quill.bubble.css'
+import './style.css'
+import '@vue-quill-example/styles.css'
 
-import './assets/main.css'
-
-const app = createApp(App)
-app.component('QuillEditor', QuillEditor)
-app.use(VueHighlightJS)
-app.use(router)
-
-app.mount('#app')
+createApp(App).mount('#app')

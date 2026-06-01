@@ -1,46 +1,29 @@
-# vite-app
+# Vue Quill Vite Example
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a fresh Vite Vue TypeScript app scaffolded with `npm create vite@latest` and adapted to showcase `@vueup/vue-quill`.
 
-## Recommended IDE Setup
+## Dependency behavior
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- `npm run dev` uses the local workspace source from `../../packages/vue-quill` when that package is available.
+- `npm run dev:npm` forces the released npm package, which is useful for comparison.
+- `npm run build` does not apply the local alias, so production builds resolve `@vueup/vue-quill` from npm.
 
-## Type Support for `.vue` Imports in TS
+The source for the example lives in `../vue-quill/src` and is imported through the `@vue-quill-example/*` alias.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Commands
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+npm run test
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
 npm run build
+npm run preview
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Vite Reference
+
+The project follows the current Vite guide for scaffolding:
 
 ```sh
-npm run lint
+npm create vite@latest examples/vite-app -- --template vue-ts
 ```

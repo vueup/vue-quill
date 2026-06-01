@@ -2,13 +2,13 @@
 
 ## @textChange
 
-- **Arguments:** `{ delta: Delta, oldContents: Delta, source: Sources }`
+- **Arguments:** `{ delta: Delta, oldContents: Delta, source: EmitterSource }`
 
   Triggered when the text changes
 
 ## @selectionChange
 
-- **Arguments:** `{ range: RangeStatic, oldRange: RangeStatic, source: Sources }`
+- **Arguments:** `{ range: Range, oldRange: Range, source: EmitterSource }`
 
   Triggered when the selections changes
 
@@ -16,11 +16,11 @@
 
 - **Arguments:** 
   
-  - `{ name: 'text-change', delta: Delta, oldContents: Delta, source: Sources}`
+  - `{ name: 'text-change', delta: Delta, oldContents: Delta, source: EmitterSource }`
    
     **OR**
 
-  - `{ name: 'selection-change', range: RangeStatic, oldRange: RangeStatic, source: Sources }`
+  - `{ name: 'selection-change', range: Range, oldRange: Range, source: EmitterSource }`
 
   Triggered when the editor changes, either `text-change` or `selection-change`
 

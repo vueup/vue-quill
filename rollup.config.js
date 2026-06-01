@@ -122,8 +122,6 @@ function createConfig(format, output, plugins = []) {
           require('@rollup/plugin-commonjs')({
             sourceMap: false,
           }),
-          require('rollup-plugin-node-builtins')(),
-          require('rollup-plugin-node-globals')(),
         ]
       : []
 

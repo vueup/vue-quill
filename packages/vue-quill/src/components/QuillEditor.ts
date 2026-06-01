@@ -1,11 +1,4 @@
-import {
-  TextChangeHandler,
-  SelectionChangeHandler,
-  EditorChangeHandler,
-  QuillOptionsStatic,
-  RangeStatic,
-  Sources,
-} from 'quill'
+import type { EmitterSource, QuillOptions, Range } from 'quill'
 import Quill from 'quill'
 import Delta from 'quill-delta'
 import {
@@ -24,6 +17,32 @@ export type Module = { name: string; module: unknown; options?: object }
 
 type ContentPropType = string | Delta | undefined | null
 type QuillWithImports = typeof Quill & { imports?: Record<string, unknown> }
+type ToolbarModule = { container?: HTMLElement | null }
+type TextChangeHandler = (
+  delta: Delta,
+  oldContents: Delta,
+  source: EmitterSource
+) => void
+type SelectionChangeHandler = (
+  range: Range,
+  oldRange: Range,
+  source: EmitterSource
+) => void
+type EditorChangeHandler = (
+  ...args:
+    | [
+        name: 'text-change',
+        delta: Delta,
+        oldContents: Delta,
+        source: EmitterSource
+      ]
+    | [
+        name: 'selection-change',
+        range: Range,
+        oldRange: Range,
+        source: EmitterSource
+      ]
+) => void
 
 export const QuillEditor = defineComponent({
   name: 'QuillEditor',
@@ -75,11 +94,11 @@ export const QuillEditor = defineComponent({
       required: false,
     },
     options: {
-      type: Object as PropType<QuillOptionsStatic>,
+      type: Object as PropType<QuillOptions>,
       required: false,
     },
     globalOptions: {
-      type: Object as PropType<QuillOptionsStatic>,
+      type: Object as PropType<QuillOptions>,
       required: false,
     },
   },
@@ -102,8 +121,8 @@ export const QuillEditor = defineComponent({
     })
 
     let quill: Quill | null
-    let options: QuillOptionsStatic
-    const editor = ref<Element>()
+    let options: QuillOptions
+    const editor = ref<HTMLElement>()
 
     // Register Module if not already registered
     const registerModule = (moduleName: string, module: unknown) => {
@@ -140,18 +159,19 @@ export const QuillEditor = defineComponent({
       if (props.theme !== 'bubble') editor.value.classList.remove('ql-bubble')
       if (props.theme !== 'snow') editor.value.classList.remove('ql-snow')
       // Fix clicking the quill toolbar is detected as blur event
-      quill
-        .getModule('toolbar')
-        ?.container.addEventListener('mousedown', (e: MouseEvent) => {
+      getToolbarModule()?.container?.addEventListener(
+        'mousedown',
+        (e: MouseEvent) => {
           e.preventDefault()
-        })
+        }
+      )
       // Emit ready event
       ctx.emit('ready', quill)
     }
 
     // Compose Options
-    const composeOptions = (): QuillOptionsStatic => {
-      const clientOptions: QuillOptionsStatic = {}
+    const composeOptions = (): QuillOptions => {
+      const clientOptions: QuillOptions = {}
       if (props.theme !== '') clientOptions.theme = props.theme
       if (props.readOnly) clientOptions.readOnly = props.readOnly
       if (props.placeholder) clientOptions.placeholder = props.placeholder
@@ -200,6 +220,10 @@ export const QuillEditor = defineComponent({
       return typeof delta === 'object' && delta ? delta.slice() : delta
     }
 
+    const getToolbarModule = (): ToolbarModule | undefined => {
+      return quill?.getModule('toolbar') as ToolbarModule | undefined
+    }
+
     const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
       return Object.values(delta.ops).some(
         (v) => !v.retain || Object.keys(v).length !== 1
@@ -231,7 +255,7 @@ export const QuillEditor = defineComponent({
     const handleTextChange: TextChangeHandler = (
       delta: Delta,
       oldContents: Delta,
-      source: Sources
+      source: EmitterSource
     ) => {
       internalModel = maybeClone(getContents() as string | Delta)
       // Update v-model:content when text changes
@@ -243,9 +267,9 @@ export const QuillEditor = defineComponent({
 
     const isEditorFocus = ref<boolean>()
     const handleSelectionChange: SelectionChangeHandler = (
-      range: RangeStatic,
-      oldRange: RangeStatic,
-      source: Sources
+      range: Range,
+      oldRange: Range,
+      source: EmitterSource
     ) => {
       // Set isEditorFocus if quill.hasFocus()
       isEditorFocus.value = !!quill?.hasFocus()
@@ -260,21 +284,7 @@ export const QuillEditor = defineComponent({
       else ctx.emit('blur', editor)
     })
 
-    const handleEditorChange: EditorChangeHandler = (
-      ...args:
-        | [
-            name: 'text-change',
-            delta: Delta,
-            oldContents: Delta,
-            source: Sources
-          ]
-        | [
-            name: 'selection-change',
-            range: RangeStatic,
-            oldRange: RangeStatic,
-            source: Sources
-          ]
-    ) => {
+    const handleEditorChange: EditorChangeHandler = (...args) => {
       if (args[0] === 'text-change')
         ctx.emit('editorChange', {
           name: args[0],
@@ -296,7 +306,7 @@ export const QuillEditor = defineComponent({
     }
 
     const getToolbar = (): Element => {
-      return quill?.getModule('toolbar')?.container
+      return getToolbarModule()?.container as Element
     }
 
     const getQuill = (): Quill => {
@@ -316,7 +326,10 @@ export const QuillEditor = defineComponent({
       return quill?.getContents(index, length)
     }
 
-    const setContents = (content: ContentPropType, source: Sources = 'api') => {
+    const setContents = (
+      content: ContentPropType,
+      source: EmitterSource = 'api'
+    ) => {
       const normalizedContent = !content
         ? props.contentType === 'delta'
           ? new Delta()
@@ -336,7 +349,7 @@ export const QuillEditor = defineComponent({
       return quill?.getText(index, length) ?? ''
     }
 
-    const setText = (text: string, source: Sources = 'api') => {
+    const setText = (text: string, source: EmitterSource = 'api') => {
       quill?.setText(text, source)
     }
 
@@ -348,10 +361,8 @@ export const QuillEditor = defineComponent({
       if (quill) quill.root.innerHTML = html
     }
 
-    const pasteHTML = (html: string, source: Sources = 'api') => {
-      const delta = quill?.clipboard.convert(
-        html as unknown as Parameters<Quill['clipboard']['convert']>[0]
-      )
+    const pasteHTML = (html: string, source: EmitterSource = 'api') => {
+      const delta = quill?.clipboard.convert({ html })
       if (delta) quill?.setContents(delta, source)
     }
 
@@ -361,8 +372,7 @@ export const QuillEditor = defineComponent({
 
     const reinit = () => {
       nextTick(() => {
-        if (!ctx.slots.toolbar && quill)
-          quill.getModule('toolbar')?.container.remove()
+        if (!ctx.slots.toolbar && quill) getToolbarModule()?.container?.remove()
         initialize()
       })
     }

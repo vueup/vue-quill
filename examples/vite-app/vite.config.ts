@@ -21,15 +21,20 @@ const npmVueQuillEntry = fileURLToPath(
     import.meta.url,
   ),
 )
+const ssrHtmlEntry = fileURLToPath(new URL('./index.ssr.html', import.meta.url))
 const exampleSource = fileURLToPath(
   new URL('../vue-quill/src/', import.meta.url),
 )
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
+  const isSsrClientBuild =
+    mode === 'ssr' || mode === 'workspace-ssr' || mode === 'npm-ssr'
+  const forceLocalVueQuill = mode === 'workspace' || mode === 'workspace-ssr'
+  const forceNpmVueQuill = mode === 'npm' || mode === 'npm-ssr'
   const useLocalVueQuill =
-    command === 'serve' &&
-    mode !== 'npm' &&
+    !forceNpmVueQuill &&
+    (command === 'serve' || forceLocalVueQuill) &&
     existsSync(localVueQuillRoot) &&
     existsSync(localVueQuillEntry)
   const useLocalVueQuillStyles =
@@ -63,5 +68,12 @@ export default defineConfig(({ command, mode }) => {
         allow: ['../..'],
       },
     },
+    build: isSsrClientBuild
+      ? {
+          rollupOptions: {
+            input: ssrHtmlEntry,
+          },
+        }
+      : undefined,
   }
 })

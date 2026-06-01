@@ -29,7 +29,7 @@ if (!isProduction) {
   app.use(vite.middlewares)
 } else {
   productionTemplate = await fs.readFile(
-    path.resolve(__dirname, 'dist/client/index.html'),
+    path.resolve(__dirname, 'dist/client/index.ssr.html'),
     'utf-8',
   )
   productionRender = (
@@ -53,7 +53,7 @@ app.use(async (req, res, next) => {
       render = productionRender
     } else {
       template = await fs.readFile(
-        path.resolve(__dirname, 'index.html'),
+        path.resolve(__dirname, 'index.ssr.html'),
         'utf-8',
       )
       template = await vite.transformIndexHtml(url, template)
@@ -71,5 +71,5 @@ app.use(async (req, res, next) => {
 })
 
 app.listen(port, () => {
-  console.log(`SSR example running at http://localhost:${port}${base}`)
+  console.log(`Vite SSR example running at http://localhost:${port}${base}`)
 })

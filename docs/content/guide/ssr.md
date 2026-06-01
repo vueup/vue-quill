@@ -41,6 +41,6 @@ onMounted(async () => {
 </script>
 ```
 
-For complete examples, see `examples/ssr-app` for a Vite SSR setup and
-`examples/nuxt-app` for Nuxt universal, client-only, prerendered, SWR, and ISR
-routes.
+For complete examples, see `examples/vite-app` for the Vite SPA and SSR setup,
+and `examples/nuxt-app` for Nuxt universal, client-only, prerendered, SWR, and
+ISR routes.

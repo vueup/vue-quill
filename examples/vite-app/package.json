@@ -6,13 +6,24 @@
   "scripts": {
     "dev": "vite",
     "dev:npm": "vite --mode npm",
+    "dev:ssr": "node server.mjs",
+    "dev:ssr:npm": "node server.mjs --mode npm",
     "build": "vue-tsc -b && vite build",
     "build:pages": "vue-tsc -b && vite build --base=/vue-quill/examples/vite-app/",
+    "build:ssr": "npm run build:ssr:workspace",
+    "build:ssr:client": "vite build --outDir dist/client",
+    "build:ssr:workspace": "npm run build:ssr:client -- --mode workspace-ssr && npm run build:ssr:server -- --mode workspace",
+    "build:ssr:npm": "npm run build:ssr:client -- --mode npm-ssr && npm run build:ssr:server -- --mode npm",
+    "build:ssr:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
     "preview": "vite preview",
-    "test": "node --experimental-strip-types --test ../vue-quill/src/example-catalog.test.ts"
+    "preview:ssr": "NODE_ENV=production node server.mjs",
+    "test": "node --experimental-strip-types --test ../vue-quill/src/example-catalog.test.ts",
+    "test:ssr": "vue-tsc -b && npm run build:ssr:workspace && node scripts/smoke-ssr.mjs"
   },
   "dependencies": {
-    "@vueup/vue-quill": "^1.2.1",
+    "@vue/server-renderer": "^3.5.35",
+    "@vueup/vue-quill": "^1.3.0",
+    "express": "^5.2.1",
     "vue": "^3.5.35"
   },
   "devDependencies": {

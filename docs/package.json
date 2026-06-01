@@ -18,8 +18,8 @@
     "dotenv": "^17.4.2",
     "tailwindcss": "^4.3.0",
     "types-quill-delta": "^1.0.0",
-    "vitepress": "^1.6.4",
-    "vue": "^3.2.37"
+    "vitepress": "^2.0.0-alpha.17",
+    "vue": "^3.5.35"
   },
   "dependencies": {
     "@vueup/vue-quill": "file:../packages/vue-quill"

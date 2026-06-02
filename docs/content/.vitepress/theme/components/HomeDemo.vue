@@ -7,10 +7,6 @@ const exampleLinks = [
     href: 'https://vueup.github.io/vue-quill/examples/vite-app/',
   },
   {
-    label: 'Open Vite SSR example',
-    href: 'https://vueup.github.io/vue-quill/examples/vite-app/ssr/',
-  },
-  {
     label: 'Open Nuxt example',
     href: 'https://vueup.github.io/vue-quill/examples/nuxt-app/',
   },

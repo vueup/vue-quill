@@ -6,8 +6,6 @@ const ogImage = 'https://vueup.github.io/vue-quill/og-image.png'
 const ogTitle = 'VueQuill'
 const ogUrl = 'https://vueup.github.io/vue-quill/'
 const viteExampleUrl = 'https://vueup.github.io/vue-quill/examples/vite-app/'
-const viteSsrExampleUrl =
-  'https://vueup.github.io/vue-quill/examples/vite-app/ssr/'
 const nuxtExampleUrl = 'https://vueup.github.io/vue-quill/examples/nuxt-app/'
 
 export default defineConfig({
@@ -68,12 +66,6 @@ export default defineConfig({
           {
             text: 'Vite example',
             link: viteExampleUrl,
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          },
-          {
-            text: 'Vite SSR example',
-            link: viteSsrExampleUrl,
             target: '_blank',
             rel: 'noopener noreferrer',
           },

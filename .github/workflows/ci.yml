@@ -147,6 +147,9 @@ jobs:
       - name: Build Vite example
         working-directory: examples/vite-app
         run: npm run build
+      - name: Test Vite Pages example
+        working-directory: examples/vite-app
+        run: npm run test:pages
       - name: Test Vite SSR example
         working-directory: examples/vite-app
         run: npm run test:ssr

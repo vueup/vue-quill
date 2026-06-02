@@ -21,7 +21,9 @@ When deployed with the docs site, the example is published at:
 
 https://vueup.github.io/vue-quill/examples/vite-app/
 
-The Pages-compatible static SSR build is published at:
+The Vite example includes a small rendering navigation that switches between
+the SPA build and the Pages-compatible static SSR build. The SSR build is
+published at:
 
 https://vueup.github.io/vue-quill/examples/vite-app/ssr/
 
@@ -36,6 +38,7 @@ npm run dev:ssr
 npm run build
 npm run build:ssr
 npm run build:pages
+npm run test:pages
 npm run build:ssr:pages
 npm run test:ssr:pages
 npm run preview

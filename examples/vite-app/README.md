@@ -11,6 +11,7 @@ browser.
 - `npm run dev` and `npm run dev:ssr` use the local workspace source from `../../packages/vue-quill` when that package is available.
 - `npm run dev:npm` forces the released npm package, which is useful for comparison.
 - `npm run build` and `npm run build:pages` do not apply the local alias, so production SPA builds resolve `@vueup/vue-quill` from npm.
+- `npm run build:ssr:pages` builds a static, prerendered SSR page for GitHub Pages using the released npm package.
 - `npm run test:ssr` and `npm run build:ssr` intentionally use the local workspace source through Vite's `workspace-ssr` and `workspace` modes so CI can verify unreleased SSR changes.
 - `npm run build:ssr:npm` forces the released npm package for comparison after an SSR-capable release is published.
 
@@ -19,6 +20,10 @@ The source for the example lives in `../vue-quill/src` and is imported through t
 When deployed with the docs site, the example is published at:
 
 https://vueup.github.io/vue-quill/examples/vite-app/
+
+The Pages-compatible static SSR build is published at:
+
+https://vueup.github.io/vue-quill/examples/vite-app/ssr/
 
 ## Commands
 
@@ -31,6 +36,8 @@ npm run dev:ssr
 npm run build
 npm run build:ssr
 npm run build:pages
+npm run build:ssr:pages
+npm run test:ssr:pages
 npm run preview
 npm run preview:ssr
 ```

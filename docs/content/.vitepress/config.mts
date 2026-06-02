@@ -5,6 +5,10 @@ const ogDescription = 'VueQuill Rich Text Editor for Vue 3'
 const ogImage = 'https://vueup.github.io/vue-quill/og-image.png'
 const ogTitle = 'VueQuill'
 const ogUrl = 'https://vueup.github.io/vue-quill/'
+const viteExampleUrl = 'https://vueup.github.io/vue-quill/examples/vite-app/'
+const viteSsrExampleUrl =
+  'https://vueup.github.io/vue-quill/examples/vite-app/ssr/'
+const nuxtExampleUrl = 'https://vueup.github.io/vue-quill/examples/nuxt-app/'
 
 export default defineConfig({
   base: '/vue-quill/',
@@ -58,6 +62,29 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/' },
       { text: 'API Reference', link: '/api/' },
+      {
+        text: 'Examples',
+        items: [
+          {
+            text: 'Vite example',
+            link: viteExampleUrl,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          {
+            text: 'Vite SSR example',
+            link: viteSsrExampleUrl,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          {
+            text: 'Nuxt example',
+            link: nuxtExampleUrl,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+        ],
+      },
       {
         text: 'Support VueQuill',
         items: [

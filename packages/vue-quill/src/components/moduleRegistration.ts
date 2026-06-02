@@ -31,7 +31,7 @@ type QuillRegistrationTarget = {
   register: (name: string, module: unknown) => void
 }
 type QuillRegistry = { register: (...definitions: never[]) => unknown }
-const globalRegistryPathPrefixes = new Set(['blots', 'formats'])
+const globalRegistryPathPrefixes = new Set(['attributors', 'blots', 'formats'])
 
 const usesParchmentRegistry = (name: string): boolean => {
   const [prefix] = name.split('/')

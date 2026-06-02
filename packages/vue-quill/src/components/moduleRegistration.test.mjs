@@ -140,6 +140,29 @@ describe('module registration names', () => {
     assert.deepEqual(registryRegistrations, [mentionBlot])
   })
 
+  it('registers attributors with a custom Quill registry', () => {
+    const mentionAttributor = {}
+    const registryRegistrations = []
+
+    registerModule(
+      {
+        imports: {},
+        register: () => {},
+      },
+      {
+        name: 'attributors/class/mention',
+        module: mentionAttributor,
+      },
+      {
+        register: (module) => {
+          registryRegistrations.push(module)
+        },
+      },
+    )
+
+    assert.deepEqual(registryRegistrations, [mentionAttributor])
+  })
+
   it('does not register Quill modules with a custom Quill registry', () => {
     const mentionModule = {}
     const registryRegistrations = []

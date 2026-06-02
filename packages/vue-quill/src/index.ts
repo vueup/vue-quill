@@ -5,7 +5,8 @@
  * License: MIT
  */
 
-import Quill from 'quill'
 import Delta from 'quill-delta'
 import { QuillEditor } from './components/QuillEditor'
-export { QuillEditor, Quill, Delta }
+import { Quill, loadQuill, getLoadedQuill } from './quill'
+export type { QuillConstructor } from './quill'
+export { QuillEditor, Quill, Delta, loadQuill, getLoadedQuill }

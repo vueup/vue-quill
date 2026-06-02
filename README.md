@@ -50,7 +50,7 @@
   - [🚥 Toolbar](https://vueup.github.io/vue-quill/guide/toolbar.html)
   - [📦 Modules](https://vueup.github.io/vue-quill/guide/modules.html)
   - [🛠️ Options](https://vueup.github.io/vue-quill/guide/options.html)
-  
+  - [🖥️ Server-Side Rendering](https://vueup.github.io/vue-quill/guide/ssr.html)
 - **[🧰 APIs](https://vueup.github.io/vue-quill/api/)**
   - [📌 Props](https://vueup.github.io/vue-quill/api/)
   - [⚡ Events](https://vueup.github.io/vue-quill/api/events.html)

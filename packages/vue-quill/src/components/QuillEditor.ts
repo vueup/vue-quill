@@ -1,32 +1,34 @@
 import type { EmitterSource, QuillOptions, Range } from 'quill'
-import Quill from 'quill'
+import type Quill from 'quill'
 import Delta from 'quill-delta'
 import {
   defineComponent,
   onBeforeUnmount,
   onMounted,
   nextTick,
-  PropType,
   watch,
   ref,
   h,
 } from 'vue'
-import { toolbarOptions, ToolbarOptions } from './options'
+import type { PropType } from 'vue'
+import { toolbarOptions } from './options'
+import type { ToolbarOptions } from './options'
+import { loadQuill, type QuillConstructor } from '../quill'
 
 export type Module = { name: string; module: unknown; options?: object }
 
 type ContentPropType = string | Delta | undefined | null
-type QuillWithImports = typeof Quill & { imports?: Record<string, unknown> }
+type QuillWithImports = QuillConstructor & { imports?: Record<string, unknown> }
 type ToolbarModule = { container?: HTMLElement | null }
 type TextChangeHandler = (
   delta: Delta,
   oldContents: Delta,
-  source: EmitterSource
+  source: EmitterSource,
 ) => void
 type SelectionChangeHandler = (
   range: Range,
   oldRange: Range,
-  source: EmitterSource
+  source: EmitterSource,
 ) => void
 type EditorChangeHandler = (
   ...args:
@@ -34,13 +36,13 @@ type EditorChangeHandler = (
         name: 'text-change',
         delta: Delta,
         oldContents: Delta,
-        source: EmitterSource
+        source: EmitterSource,
       ]
     | [
         name: 'selection-change',
         range: Range,
         oldRange: Range,
-        source: EmitterSource
+        source: EmitterSource,
       ]
 ) => void
 
@@ -113,19 +115,26 @@ export const QuillEditor = defineComponent({
   ],
   setup: (props, ctx) => {
     onMounted(() => {
-      initialize()
+      isUnmounted = false
+      void initialize()
     })
 
     onBeforeUnmount(() => {
       quill = null
+      isUnmounted = true
     })
 
+    let isUnmounted = false
     let quill: Quill | null
     let options: QuillOptions
     const editor = ref<HTMLElement>()
 
     // Register Module if not already registered
-    const registerModule = (moduleName: string, module: unknown) => {
+    const registerModule = (
+      Quill: QuillConstructor,
+      moduleName: string,
+      module: unknown,
+    ) => {
       const quillImports = (Quill as QuillWithImports).imports
       if (quillImports && moduleName in quillImports) {
         return
@@ -134,17 +143,25 @@ export const QuillEditor = defineComponent({
     }
 
     // Initialize Quill
-    const initialize = () => {
+    const initialize = async () => {
       if (!editor.value) return
+      const editorElement = editor.value
+      const Quill = await loadQuill()
+      if (isUnmounted || !editor.value || editor.value !== editorElement) return
+
       options = composeOptions()
       // Register modules
       if (props.modules) {
         if (Array.isArray(props.modules)) {
           for (const module of props.modules) {
-            registerModule(`modules/${module.name}`, module.module)
+            registerModule(Quill, `modules/${module.name}`, module.module)
           }
         } else {
-          registerModule(`modules/${props.modules.name}`, props.modules.module)
+          registerModule(
+            Quill,
+            `modules/${props.modules.name}`,
+            props.modules.module,
+          )
         }
       }
       // Create new Quill instance
@@ -163,7 +180,7 @@ export const QuillEditor = defineComponent({
         'mousedown',
         (e: MouseEvent) => {
           e.preventDefault()
-        }
+        },
       )
       // Emit ready event
       ctx.emit('ready', quill)
@@ -205,14 +222,14 @@ export const QuillEditor = defineComponent({
         clientOptions.modules = Object.assign(
           {},
           clientOptions.modules,
-          modules
+          modules,
         )
       }
       return Object.assign(
         {},
         props.globalOptions,
         props.options,
-        clientOptions
+        clientOptions,
       )
     }
 
@@ -226,7 +243,7 @@ export const QuillEditor = defineComponent({
 
     const deltaHasValuesOtherThanRetain = (delta: Delta): boolean => {
       return Object.values(delta.ops).some(
-        (v) => !v.retain || Object.keys(v).length !== 1
+        (v) => !v.retain || Object.keys(v).length !== 1,
       )
     }
 
@@ -245,7 +262,7 @@ export const QuillEditor = defineComponent({
           internalModel
         ) {
           return !deltaHasValuesOtherThanRetain(
-            internalModel.diff(against as Delta)
+            internalModel.diff(against as Delta),
           )
         }
       }
@@ -255,7 +272,7 @@ export const QuillEditor = defineComponent({
     const handleTextChange: TextChangeHandler = (
       delta: Delta,
       oldContents: Delta,
-      source: EmitterSource
+      source: EmitterSource,
     ) => {
       internalModel = maybeClone(getContents() as string | Delta)
       // Update v-model:content when text changes
@@ -269,7 +286,7 @@ export const QuillEditor = defineComponent({
     const handleSelectionChange: SelectionChangeHandler = (
       range: Range,
       oldRange: Range,
-      source: EmitterSource
+      source: EmitterSource,
     ) => {
       // Set isEditorFocus if quill.hasFocus()
       isEditorFocus.value = !!quill?.hasFocus()
@@ -328,7 +345,7 @@ export const QuillEditor = defineComponent({
 
     const setContents = (
       content: ContentPropType,
-      source: EmitterSource = 'api'
+      source: EmitterSource = 'api',
     ) => {
       const normalizedContent = !content
         ? props.contentType === 'delta'
@@ -373,7 +390,7 @@ export const QuillEditor = defineComponent({
     const reinit = () => {
       nextTick(() => {
         if (!ctx.slots.toolbar && quill) getToolbarModule()?.container?.remove()
-        initialize()
+        void initialize()
       })
     }
 
@@ -389,14 +406,14 @@ export const QuillEditor = defineComponent({
         }
         setContents(newContent)
       },
-      { deep: true }
+      { deep: true },
     )
 
     watch(
       () => props.enable,
       (newValue) => {
         if (quill) quill.enable(newValue)
-      }
+      },
     )
 
     return {

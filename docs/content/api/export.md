@@ -2,19 +2,25 @@
 
 `QuillEditor` : The Quill Editor Component.
 
-`Quill` : The `Quill` namespace on which you can call `register`.
+`Quill` : The `Quill` namespace on which you can call `register`. In SSR
+applications, access other Quill APIs after the browser loads Quill.
 
-~~~ js 
-export { QuillEditor, Quill }
-~~~
+`loadQuill` : Loads the Quill browser runtime asynchronously. Use this from
+browser-only lifecycle hooks such as `onMounted`.
+
+`getLoadedQuill` : Returns the loaded Quill runtime when it is already
+available.
+
+```js
+export { QuillEditor, Quill, loadQuill, getLoadedQuill }
+```
 
 # Import
 
-~~~ javascript
+```javascript
 // ES6
-import { QuillEditor, Quill } from '@vueup/vue-quill';
+import { QuillEditor, Quill, loadQuill } from '@vueup/vue-quill'
 
 // CommonJS
-const { QuillEditor, Quill } = require('@vueup/vue-quill');
-~~~
-
+const { QuillEditor, Quill, loadQuill } = require('@vueup/vue-quill')
+```

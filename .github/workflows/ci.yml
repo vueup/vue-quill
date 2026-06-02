@@ -125,6 +125,7 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
+            examples/nuxt-app/package-lock.json
             examples/vite-app/package-lock.json
             packages/vue-quill/package-lock.json
       - name: Install root deps
@@ -135,8 +136,23 @@ jobs:
       - name: Install example deps
         working-directory: examples/vite-app
         run: npm ci
+      - name: Install Nuxt example deps
+        working-directory: examples/nuxt-app
+        run: npm ci
       - name: Build package assets for example
         run: npm run build -- vue-quill --assets --types
+      - name: Test Vite example catalog
+        working-directory: examples/vite-app
+        run: npm run test
       - name: Build Vite example
         working-directory: examples/vite-app
         run: npm run build
+      - name: Test Vite SSR example
+        working-directory: examples/vite-app
+        run: npm run test:ssr
+      - name: Test Nuxt example rendering
+        working-directory: examples/nuxt-app
+        run: npm run test:rendering
+      - name: Test Nuxt example generation
+        working-directory: examples/nuxt-app
+        run: npm run test:generate

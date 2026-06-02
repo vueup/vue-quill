@@ -105,6 +105,10 @@ export default defineConfig({
               text: 'Options',
               link: '/guide/options',
             },
+            {
+              text: 'Server-Side Rendering',
+              link: '/guide/ssr',
+            },
           ],
         },
         {

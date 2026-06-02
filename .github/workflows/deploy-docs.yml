@@ -59,7 +59,7 @@ jobs:
           ALGOLIA_SEARCH_KEY: ${{ secrets.ALGOLIA_SEARCH_KEY }}
       - name: Build Vite example for GitHub Pages
         working-directory: examples/vite-app
-        run: npm run build:pages
+        run: npm run test:pages
       - name: Add Vite example to docs deploy
         run: |
           mkdir -p docs/content/.vitepress/dist/examples/vite-app

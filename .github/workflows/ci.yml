@@ -150,6 +150,9 @@ jobs:
       - name: Test Vite SSR example
         working-directory: examples/vite-app
         run: npm run test:ssr
+      - name: Test Vite SSR Pages example
+        working-directory: examples/vite-app
+        run: npm run test:ssr:pages
       - name: Test Nuxt example rendering
         working-directory: examples/nuxt-app
         run: npm run test:rendering

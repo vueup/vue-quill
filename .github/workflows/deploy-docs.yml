@@ -64,6 +64,13 @@ jobs:
         run: |
           mkdir -p docs/content/.vitepress/dist/examples/vite-app
           cp -R examples/vite-app/dist/. docs/content/.vitepress/dist/examples/vite-app/
+      - name: Build Vite SSR example for GitHub Pages
+        working-directory: examples/vite-app
+        run: npm run test:ssr:pages
+      - name: Add Vite SSR example to docs deploy
+        run: |
+          mkdir -p docs/content/.vitepress/dist/examples/vite-app/ssr
+          cp -R examples/vite-app/dist/client/. docs/content/.vitepress/dist/examples/vite-app/ssr/
       - name: Build Nuxt example for GitHub Pages
         working-directory: examples/nuxt-app
         run: npm run test:pages

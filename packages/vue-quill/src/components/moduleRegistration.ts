@@ -25,7 +25,18 @@ export const getModuleOptionName = (name: string): string | undefined => {
     : undefined
 }
 
-type ModuleRegistration = { name: string; options?: object }
+type ModuleRegistration = { name: string; module: unknown; options?: object }
+type QuillRegistrationTarget = {
+  imports?: Record<string, unknown>
+  register: (name: string, module: unknown) => void
+}
+type QuillRegistry = { register: (...definitions: never[]) => unknown }
+const globalRegistryPathPrefixes = new Set(['blots', 'formats'])
+
+const usesParchmentRegistry = (name: string): boolean => {
+  const [prefix] = name.split('/')
+  return globalRegistryPathPrefixes.has(prefix)
+}
 
 export const getModuleOptions = (
   modules: ModuleRegistration | ModuleRegistration[],
@@ -39,4 +50,19 @@ export const getModuleOptions = (
   }
 
   return Object.keys(modulesOption).length > 0 ? modulesOption : undefined
+}
+
+export const registerModule = (
+  Quill: QuillRegistrationTarget,
+  module: ModuleRegistration,
+  registry?: QuillRegistry,
+) => {
+  const moduleName = getModuleRegistrationName(module.name)
+  const quillImports = Quill.imports
+  if (!quillImports || !(moduleName in quillImports)) {
+    Quill.register(moduleName, module.module)
+  }
+  if (registry && usesParchmentRegistry(moduleName)) {
+    registry.register(module.module as never)
+  }
 }

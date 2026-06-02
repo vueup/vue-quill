@@ -124,6 +124,14 @@ const modules = [
 
 `modules/mention` is registered as a Quill module and its `options` are passed to Quill as `modules.mention`. `blots/mention` is registered as a Quill blot and is not added to the module options.
 
+If you use Quill's `formats` option, include the mention blot name so Quill allows mention embeds in the editor contents:
+
+~~~ js
+const options = {
+  formats: ['bold', 'italic', 'mention'],
+}
+~~~
+
 ## Quill Modules
 
 - [quill-autoformat](https://github.com/weavy/quill-autoformat) - Module for transforming text including mentions, links and hashtags

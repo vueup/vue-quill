@@ -4,6 +4,7 @@ import {
   getModuleOptions,
   getModuleOptionName,
   getModuleRegistrationName,
+  registerModule,
 } from './moduleRegistration.ts'
 
 describe('module registration names', () => {
@@ -81,5 +82,84 @@ describe('module registration names', () => {
         mention: mentionOptions,
       },
     )
+  })
+
+  it('registers blots with a custom Quill registry', () => {
+    const mentionBlot = {}
+    const globalRegistrations = []
+    const registryRegistrations = []
+
+    registerModule(
+      {
+        imports: {},
+        register: (name, module) => {
+          globalRegistrations.push([name, module])
+        },
+      },
+      {
+        name: 'blots/mention',
+        module: mentionBlot,
+      },
+      {
+        register: (module) => {
+          registryRegistrations.push(module)
+        },
+      },
+    )
+
+    assert.deepEqual(globalRegistrations, [['blots/mention', mentionBlot]])
+    assert.deepEqual(registryRegistrations, [mentionBlot])
+  })
+
+  it('registers already imported blots with a custom Quill registry', () => {
+    const mentionBlot = {}
+    const globalRegistrations = []
+    const registryRegistrations = []
+
+    registerModule(
+      {
+        imports: {
+          'blots/mention': mentionBlot,
+        },
+        register: (name, module) => {
+          globalRegistrations.push([name, module])
+        },
+      },
+      {
+        name: 'blots/mention',
+        module: mentionBlot,
+      },
+      {
+        register: (module) => {
+          registryRegistrations.push(module)
+        },
+      },
+    )
+
+    assert.deepEqual(globalRegistrations, [])
+    assert.deepEqual(registryRegistrations, [mentionBlot])
+  })
+
+  it('does not register Quill modules with a custom Quill registry', () => {
+    const mentionModule = {}
+    const registryRegistrations = []
+
+    registerModule(
+      {
+        imports: {},
+        register: () => {},
+      },
+      {
+        name: 'modules/mention',
+        module: mentionModule,
+      },
+      {
+        register: (module) => {
+          registryRegistrations.push(module)
+        },
+      },
+    )
+
+    assert.deepEqual(registryRegistrations, [])
   })
 })

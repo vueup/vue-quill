@@ -1,5 +1,19 @@
+const quillRegistrationPathPrefixes = new Set([
+  'attributors',
+  'blots',
+  'formats',
+  'modules',
+  'themes',
+  'ui',
+])
+
+const isQuillRegistrationPath = (name: string): boolean => {
+  const [prefix] = name.split('/')
+  return quillRegistrationPathPrefixes.has(prefix)
+}
+
 export const getModuleRegistrationName = (name: string): string => {
-  return name.includes('/') ? name : `modules/${name}`
+  return isQuillRegistrationPath(name) ? name : `modules/${name}`
 }
 
 export const getModuleOptionName = (name: string): string | undefined => {

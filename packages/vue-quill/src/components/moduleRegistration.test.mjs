@@ -14,12 +14,42 @@ describe('module registration names', () => {
       'modules/mention',
     )
     assert.equal(getModuleRegistrationName('blots/mention'), 'blots/mention')
+    assert.equal(
+      getModuleRegistrationName('formats/mention'),
+      'formats/mention',
+    )
+    assert.equal(
+      getModuleRegistrationName('attributors/class/mention'),
+      'attributors/class/mention',
+    )
+    assert.equal(getModuleRegistrationName('themes/custom'), 'themes/custom')
+    assert.equal(getModuleRegistrationName('ui/icons'), 'ui/icons')
   })
 
   it('only adds Quill module registrations to options.modules', () => {
     assert.equal(getModuleOptionName('mention'), 'mention')
     assert.equal(getModuleOptionName('modules/mention'), 'mention')
     assert.equal(getModuleOptionName('blots/mention'), undefined)
+  })
+
+  it('keeps slash-containing shorthand names as modules', () => {
+    const options = { source: () => [] }
+
+    assert.equal(
+      getModuleRegistrationName('@scope/mention'),
+      'modules/@scope/mention',
+    )
+    assert.equal(getModuleOptionName('@scope/mention'), '@scope/mention')
+    assert.deepEqual(
+      getModuleOptions({
+        name: '@scope/mention',
+        module: {},
+        options,
+      }),
+      {
+        '@scope/mention': options,
+      },
+    )
   })
 
   it('does not create an empty modules option for non-module registrations', () => {

@@ -9,9 +9,11 @@
     "dev:npm": "NUXT_VUE_QUILL_SOURCE=npm nuxt dev",
     "generate": "nuxt generate",
     "generate:npm": "NUXT_VUE_QUILL_SOURCE=npm nuxt generate",
+    "generate:pages": "NUXT_APP_BASE_URL=/vue-quill/examples/nuxt-app/ nuxt build --preset github_pages",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "test:generate": "npm run generate && node scripts/smoke-generate.mjs",
+    "test:pages": "npm run generate:pages && node scripts/smoke-generate.mjs",
     "test:rendering": "npm run build && node scripts/smoke-rendering.mjs",
     "typecheck": "nuxt typecheck"
   },

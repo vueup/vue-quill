@@ -24,6 +24,8 @@ Nuxt rendering strategies:
   lets the Nuxt SSR example validate unreleased package changes.
 - `npm run dev:npm`, `npm run build:npm`, and `npm run generate:npm` force the
   released npm package with `NUXT_VUE_QUILL_SOURCE=npm`.
+- `npm run generate:pages` builds static output for GitHub Pages under
+  `/vue-quill/examples/nuxt-app/`.
 - After an SSR-capable Vue Quill release is published, the npm-mode scripts can
   be used as production-package checks.
 
@@ -38,5 +40,7 @@ npm run dev
 npm run typecheck
 npm run test:rendering
 npm run test:generate
+npm run test:pages
+npm run generate:pages
 npm run preview
 ```

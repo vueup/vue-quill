@@ -15,7 +15,7 @@ import { toolbarOptions } from './options'
 import type { ToolbarOptions } from './options'
 import { loadQuill, type QuillConstructor } from '../quill'
 import {
-  getModuleOptionName,
+  getModuleOptions,
   getModuleRegistrationName,
 } from './moduleRegistration'
 
@@ -223,25 +223,14 @@ export const QuillEditor = defineComponent({
         }
       }
       if (props.modules) {
-        const modules = (() => {
-          const modulesOption: { [key: string]: unknown } = {}
-          if (Array.isArray(props.modules)) {
-            for (const module of props.modules) {
-              const optionName = getModuleOptionName(module.name)
-              if (optionName) modulesOption[optionName] = module.options ?? {}
-            }
-          } else {
-            const optionName = getModuleOptionName(props.modules.name)
-            if (optionName)
-              modulesOption[optionName] = props.modules.options ?? {}
-          }
-          return modulesOption
-        })()
-        clientOptions.modules = Object.assign(
-          {},
-          clientOptions.modules,
-          modules,
-        )
+        const modules = getModuleOptions(props.modules)
+        if (modules) {
+          clientOptions.modules = Object.assign(
+            {},
+            clientOptions.modules,
+            modules,
+          )
+        }
       }
       return Object.assign(
         {},

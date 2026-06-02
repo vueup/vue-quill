@@ -41,7 +41,7 @@ describe('Vue Quill example catalog', () => {
   it('documents supported toolbar and theme variations', () => {
     assert.deepEqual(
       toolbarExamples.map((toolbar) => toolbar.id),
-      ['minimal', 'array', 'custom-container'],
+      ['minimal', 'array', 'custom-container', 'disabled'],
     )
     assert.deepEqual(
       themeExamples.map((theme) => theme.value),

@@ -10,7 +10,7 @@ export type ExampleSectionId =
 
 export type ThemeValue = 'snow' | 'bubble' | ''
 
-export type ToolbarValue = string | unknown[]
+export type ToolbarValue = string | unknown[] | false
 
 export type ExampleSection = {
   id: ExampleSectionId
@@ -20,7 +20,7 @@ export type ExampleSection = {
 }
 
 export type ToolbarExample = {
-  id: 'minimal' | 'array' | 'custom-container'
+  id: 'minimal' | 'array' | 'custom-container' | 'disabled'
   label: string
   description: string
   toolbar: ToolbarValue
@@ -66,7 +66,7 @@ export const exampleSections: ExampleSection[] = [
     id: 'toolbars',
     title: 'Toolbar customization',
     description:
-      'Switch between a built-in preset, an inline toolbar array, and a custom slot toolbar.',
+      'Switch between a built-in preset, an inline toolbar array, a custom slot toolbar, and no toolbar.',
     coverage: ['configuration variations', 'toolbar customization'],
   },
   {
@@ -129,6 +129,12 @@ export const toolbarExamples: ToolbarExample[] = [
     label: 'Custom container',
     description: 'Provides toolbar markup through the toolbar slot.',
     toolbar: '#article-toolbar',
+  },
+  {
+    id: 'disabled',
+    label: 'No toolbar',
+    description: 'Passes false to disable the toolbar module.',
+    toolbar: false,
   },
 ]
 

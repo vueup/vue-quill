@@ -18,6 +18,7 @@ import { loadQuill, type QuillConstructor } from '../quill'
 export type Module = { name: string; module: unknown; options?: object }
 
 type ContentPropType = string | Delta | undefined | null
+type ToolbarPropType = string | unknown[] | Record<string, unknown> | false
 type QuillWithImports = QuillConstructor & { imports?: Record<string, unknown> }
 type ToolbarModule = { container?: HTMLElement | null }
 type TextChangeHandler = (
@@ -80,9 +81,11 @@ export const QuillEditor = defineComponent({
       },
     },
     toolbar: {
-      type: [String, Array, Object],
+      type: [String, Array, Object, Boolean] as PropType<ToolbarPropType>,
       required: false,
+      default: undefined,
       validator: (value: string | unknown) => {
+        if (typeof value === 'boolean') return value === false
         if (typeof value === 'string' && value !== '') {
           return value.charAt(0) === '#'
             ? true
@@ -192,7 +195,11 @@ export const QuillEditor = defineComponent({
       if (props.theme !== '') clientOptions.theme = props.theme
       if (props.readOnly) clientOptions.readOnly = props.readOnly
       if (props.placeholder) clientOptions.placeholder = props.placeholder
-      if (props.toolbar && props.toolbar !== '') {
+      if (props.toolbar === false) {
+        clientOptions.modules = {
+          toolbar: false,
+        }
+      } else if (props.toolbar && props.toolbar !== '') {
         clientOptions.modules = {
           toolbar: (() => {
             if (typeof props.toolbar === 'object') {

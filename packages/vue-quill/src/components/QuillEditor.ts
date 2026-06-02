@@ -14,6 +14,10 @@ import type { PropType } from 'vue'
 import { toolbarOptions } from './options'
 import type { ToolbarOptions } from './options'
 import { loadQuill, type QuillConstructor } from '../quill'
+import {
+  getModuleOptionName,
+  getModuleRegistrationName,
+} from './moduleRegistration'
 
 export type Module = { name: string; module: unknown; options?: object }
 
@@ -157,12 +161,16 @@ export const QuillEditor = defineComponent({
       if (props.modules) {
         if (Array.isArray(props.modules)) {
           for (const module of props.modules) {
-            registerModule(Quill, `modules/${module.name}`, module.module)
+            registerModule(
+              Quill,
+              getModuleRegistrationName(module.name),
+              module.module,
+            )
           }
         } else {
           registerModule(
             Quill,
-            `modules/${props.modules.name}`,
+            getModuleRegistrationName(props.modules.name),
             props.modules.module,
           )
         }
@@ -219,10 +227,13 @@ export const QuillEditor = defineComponent({
           const modulesOption: { [key: string]: unknown } = {}
           if (Array.isArray(props.modules)) {
             for (const module of props.modules) {
-              modulesOption[module.name] = module.options ?? {}
+              const optionName = getModuleOptionName(module.name)
+              if (optionName) modulesOption[optionName] = module.options ?? {}
             }
           } else {
-            modulesOption[props.modules.name] = props.modules.options ?? {}
+            const optionName = getModuleOptionName(props.modules.name)
+            if (optionName)
+              modulesOption[optionName] = props.modules.options ?? {}
           }
           return modulesOption
         })()

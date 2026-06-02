@@ -97,6 +97,33 @@ export default defineComponent({
 
 See [Quill modules docs](https://quilljs.com/docs/modules/) for more details.
 
+## Registering Formats And Blots
+
+Use a shorthand name for ordinary modules, or pass a full Quill registration path when a package exposes formats or blots that must be registered before the module.
+
+~~~ js
+import { Mention, MentionBlot } from 'quill-mention'
+
+const modules = [
+  {
+    name: 'blots/mention',
+    module: MentionBlot,
+  },
+  {
+    name: 'modules/mention',
+    module: Mention,
+    options: {
+      mentionDenotationChars: ['@'],
+      source: (searchTerm, renderList) => {
+        renderList([], searchTerm)
+      },
+    },
+  },
+]
+~~~
+
+`modules/mention` is registered as a Quill module and its `options` are passed to Quill as `modules.mention`. `blots/mention` is registered as a Quill blot and is not added to the module options.
+
 ## Quill Modules
 
 - [quill-autoformat](https://github.com/weavy/quill-autoformat) - Module for transforming text including mentions, links and hashtags

@@ -58,7 +58,7 @@
 ## modules
 - **Type:** `Object | Object[]`
 
-  Options to register modules, see [Modules](../guide/modules.md) section for more details.
+  Options to register Quill modules, formats, and blots. Module names can be passed as shorthand names like `imageUploader` or as full Quill registration paths like `modules/mention` and `blots/mention`. See [Modules](../guide/modules.md) section for more details.
 
 ## options
 - **Type:** `Object`

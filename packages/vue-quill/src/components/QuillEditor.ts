@@ -13,13 +13,13 @@ import {
 import type { PropType } from 'vue'
 import { toolbarOptions } from './options'
 import type { ToolbarOptions } from './options'
-import { loadQuill, type QuillConstructor } from '../quill'
+import { loadQuill } from '../quill'
+import { getModuleOptions, registerModule } from './moduleRegistration'
 
 export type Module = { name: string; module: unknown; options?: object }
 
 type ContentPropType = string | Delta | undefined | null
 type ToolbarPropType = string | unknown[] | Record<string, unknown> | false
-type QuillWithImports = QuillConstructor & { imports?: Record<string, unknown> }
 type ToolbarModule = { container?: HTMLElement | null }
 type TextChangeHandler = (
   delta: Delta,
@@ -132,19 +132,6 @@ export const QuillEditor = defineComponent({
     let options: QuillOptions
     const editor = ref<HTMLElement>()
 
-    // Register Module if not already registered
-    const registerModule = (
-      Quill: QuillConstructor,
-      moduleName: string,
-      module: unknown,
-    ) => {
-      const quillImports = (Quill as QuillWithImports).imports
-      if (quillImports && moduleName in quillImports) {
-        return
-      }
-      Quill.register(moduleName, module)
-    }
-
     // Initialize Quill
     const initialize = async () => {
       if (!editor.value) return
@@ -157,14 +144,10 @@ export const QuillEditor = defineComponent({
       if (props.modules) {
         if (Array.isArray(props.modules)) {
           for (const module of props.modules) {
-            registerModule(Quill, `modules/${module.name}`, module.module)
+            registerModule(Quill, module, options.registry)
           }
         } else {
-          registerModule(
-            Quill,
-            `modules/${props.modules.name}`,
-            props.modules.module,
-          )
+          registerModule(Quill, props.modules, options.registry)
         }
       }
       // Create new Quill instance
@@ -215,22 +198,14 @@ export const QuillEditor = defineComponent({
         }
       }
       if (props.modules) {
-        const modules = (() => {
-          const modulesOption: { [key: string]: unknown } = {}
-          if (Array.isArray(props.modules)) {
-            for (const module of props.modules) {
-              modulesOption[module.name] = module.options ?? {}
-            }
-          } else {
-            modulesOption[props.modules.name] = props.modules.options ?? {}
-          }
-          return modulesOption
-        })()
-        clientOptions.modules = Object.assign(
-          {},
-          clientOptions.modules,
-          modules,
-        )
+        const modules = getModuleOptions(props.modules)
+        if (modules) {
+          clientOptions.modules = Object.assign(
+            {},
+            clientOptions.modules,
+            modules,
+          )
+        }
       }
       return Object.assign(
         {},

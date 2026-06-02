@@ -15,7 +15,7 @@ yarn add @enzedonline/quill-blot-formatter2
 
 **Usage:**
 
-~~~ vue
+```vue
 <template>
   <QuillEditor :modules="modules" toolbar="full" />
 </template>
@@ -41,7 +41,7 @@ export default defineComponent({
   },
 })
 </script>
-~~~
+```
 ## Example using quill-image-uploader
 In this example I am gonna use [quill-image-uploader](https://github.com/NoelOConnell/quill-image-uploader), A module for Quill rich text editor to allow images to be uploaded to a server instead of being base64 encoded.
 
@@ -52,7 +52,7 @@ npm install quill-image-uploader --save
 ```
 **Usage:**
 
-~~~ vue
+```vue
 <template>
   <QuillEditor :modules="modules" toolbar="full" />
 </template>
@@ -93,9 +93,44 @@ export default defineComponent({
   }
 })
 </script>
-~~~
+```
 
 See [Quill modules docs](https://quilljs.com/docs/modules/) for more details.
+
+## Registering Formats And Blots
+
+Use a shorthand name for ordinary modules, or pass a full Quill registration path when a package exposes formats or blots that must be registered before the module.
+
+```js
+import { Mention, MentionBlot } from 'quill-mention'
+
+const modules = [
+  {
+    name: 'blots/mention',
+    module: MentionBlot,
+  },
+  {
+    name: 'modules/mention',
+    module: Mention,
+    options: {
+      mentionDenotationChars: ['@'],
+      source: (searchTerm, renderList) => {
+        renderList([], searchTerm)
+      },
+    },
+  },
+]
+```
+
+`modules/mention` is registered as a Quill module and its `options` are passed to Quill as `modules.mention`. `blots/mention` is registered as a Quill blot and is not added to the module options.
+
+If you use Quill's `formats` option, include the mention blot name so Quill allows mention embeds in the editor contents:
+
+```js
+const options = {
+  formats: ['bold', 'italic', 'mention'],
+}
+```
 
 ## Quill Modules
 

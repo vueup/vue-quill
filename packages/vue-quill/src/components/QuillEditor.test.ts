@@ -69,3 +69,35 @@ describe('QuillEditor toolbar prop', () => {
     )
   })
 })
+
+describe('QuillEditor module registration', () => {
+  it('passes the composed Quill registry to module registration', () => {
+    const registerModuleCalls: ts.CallExpression[] = []
+
+    const visit = (node: ts.Node) => {
+      if (
+        ts.isCallExpression(node) &&
+        ts.isIdentifier(node.expression) &&
+        node.expression.text === 'registerModule'
+      ) {
+        registerModuleCalls.push(node)
+      }
+
+      ts.forEachChild(node, visit)
+    }
+
+    visit(sourceFile)
+
+    assert.ok(
+      registerModuleCalls.length > 0,
+      'QuillEditor should register modules through registerModule',
+    )
+    for (const call of registerModuleCalls) {
+      assert.equal(
+        call.arguments[2]?.getText(sourceFile),
+        'options.registry',
+        'registerModule should receive the composed Quill registry',
+      )
+    }
+  })
+})

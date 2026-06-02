@@ -9,6 +9,7 @@ import {
   requiredCoverage,
   themeExamples,
   toolbarExamples,
+  type ExampleSectionId,
   type ThemeValue,
   type ToolbarValue,
 } from './example-catalog'
@@ -41,6 +42,50 @@ type EditorChangePayload = {
   source?: string
 }
 
+type WordCounterMetrics = {
+  words: number
+  characters: number
+}
+
+type WordCounterOptions = {
+  onUpdate?: (metrics: WordCounterMetrics) => void
+}
+
+type WordCounterQuill = {
+  getText: () => string
+  on: (eventName: 'text-change', handler: () => void) => void
+}
+
+class WordCounterModule {
+  constructor(quill: WordCounterQuill, options: WordCounterOptions = {}) {
+    const update = () => {
+      const text = quill.getText().replace(/\s+/g, ' ').trim()
+      options.onUpdate?.({
+        words: text ? text.split(' ').length : 0,
+        characters: text.length,
+      })
+    }
+
+    quill.on('text-change', update)
+    update()
+  }
+}
+
+const getSection = (id: ExampleSectionId) => {
+  const section = exampleSections.find((item) => item.id === id)
+  if (!section) throw new Error(`Missing Vue Quill example section: ${id}`)
+  return section
+}
+
+const basicSection = getSection('basic')
+const modelSection = getSection('model')
+const toolbarSection = getSection('toolbars')
+const modulesSection = getSection('modules')
+const themesSection = getSection('themes')
+const readOnlySection = getSection('read-only')
+const eventsSection = getSection('events')
+const realWorldSection = getSection('real-world')
+
 const basicContent = new Delta()
   .insert('VueQuill starts with a simple component import.\n', { bold: true })
   .insert(
@@ -69,6 +114,20 @@ const activeToolbarDescription = computed(() => {
   return toolbarExamples.find((toolbar) => toolbar.id === activeToolbarId.value)
     ?.description
 })
+
+const moduleContent = ref(
+  '<h3>Release notes</h3><p>Custom modules can observe the editor and receive options from each Vue component instance.</p>',
+)
+const moduleMetrics = ref<WordCounterMetrics>({ words: 0, characters: 0 })
+const wordCounterModule = {
+  name: 'wordCounter',
+  module: WordCounterModule,
+  options: {
+    onUpdate: (metrics: WordCounterMetrics) => {
+      moduleMetrics.value = metrics
+    },
+  },
+}
 
 const activeTheme = ref<ThemeValue>('snow')
 const themedContent = ref(
@@ -237,8 +296,8 @@ const submitContent = () => {
     <div class="example-grid">
       <ExampleCard
         id="basic"
-        :title="exampleSections[0].title"
-        :description="exampleSections[0].description"
+        :title="basicSection.title"
+        :description="basicSection.description"
       >
         <QuillEditor
           theme="snow"
@@ -253,8 +312,8 @@ const submitContent = () => {
 
       <ExampleCard
         id="model"
-        :title="exampleSections[1].title"
-        :description="exampleSections[1].description"
+        :title="modelSection.title"
+        :description="modelSection.description"
       >
         <div class="split-panel">
           <div>
@@ -291,8 +350,8 @@ const submitContent = () => {
 
       <ExampleCard
         id="toolbars"
-        :title="exampleSections[2].title"
-        :description="exampleSections[2].description"
+        :title="toolbarSection.title"
+        :description="toolbarSection.description"
       >
         <div class="segmented-control" role="group" aria-label="Toolbar type">
           <button
@@ -342,9 +401,45 @@ const submitContent = () => {
       </ExampleCard>
 
       <ExampleCard
+        id="modules"
+        :title="modulesSection.title"
+        :description="modulesSection.description"
+      >
+        <div class="split-panel split-panel--compact">
+          <div class="editor-stack">
+            <QuillEditor
+              v-model:content="moduleContent"
+              content-type="html"
+              theme="snow"
+              toolbar="minimal"
+              :modules="wordCounterModule"
+              placeholder="Edit content to update custom module metrics..."
+            />
+          </div>
+          <div class="preview-panel metrics-panel">
+            <h3>Module output</h3>
+            <dl>
+              <div>
+                <dt>Words</dt>
+                <dd>{{ moduleMetrics.words }}</dd>
+              </div>
+              <div>
+                <dt>Characters</dt>
+                <dd>{{ moduleMetrics.characters }}</dd>
+              </div>
+            </dl>
+            <p>
+              The module is registered as <code>modules/wordCounter</code> and
+              receives an <code>onUpdate</code> option.
+            </p>
+          </div>
+        </div>
+      </ExampleCard>
+
+      <ExampleCard
         id="themes"
-        :title="exampleSections[3].title"
-        :description="exampleSections[3].description"
+        :title="themesSection.title"
+        :description="themesSection.description"
       >
         <div class="theme-list">
           <button
@@ -370,8 +465,8 @@ const submitContent = () => {
 
       <ExampleCard
         id="read-only"
-        :title="exampleSections[4].title"
-        :description="exampleSections[4].description"
+        :title="readOnlySection.title"
+        :description="readOnlySection.description"
       >
         <div class="split-panel split-panel--compact">
           <div>
@@ -408,8 +503,8 @@ const submitContent = () => {
 
       <ExampleCard
         id="events"
-        :title="exampleSections[5].title"
-        :description="exampleSections[5].description"
+        :title="eventsSection.title"
+        :description="eventsSection.description"
       >
         <div class="split-panel split-panel--events">
           <div class="editor-stack">
@@ -438,8 +533,8 @@ const submitContent = () => {
 
       <ExampleCard
         id="real-world"
-        :title="exampleSections[6].title"
-        :description="exampleSections[6].description"
+        :title="realWorldSection.title"
+        :description="realWorldSection.description"
       >
         <form class="form-example" @submit.prevent="submitContent">
           <label for="post-title">Post title</label>

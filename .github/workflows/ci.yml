@@ -87,33 +87,6 @@ jobs:
         working-directory: docs
         run: npm run build
 
-  demo:
-    name: Demo
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            demo/package-lock.json
-            packages/vue-quill/package-lock.json
-      - name: Install root deps
-        run: npm ci
-      - name: Install package deps
-        working-directory: packages/vue-quill
-        run: npm ci
-      - name: Install demo deps
-        working-directory: demo
-        run: npm ci
-      - name: Build package assets for demo
-        run: npm run build -- vue-quill --assets --types
-      - name: Build demo
-        working-directory: demo
-        run: npm run build
-
   examples:
     name: Examples
     runs-on: ubuntu-latest

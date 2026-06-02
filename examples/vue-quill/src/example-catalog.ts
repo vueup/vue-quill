@@ -2,6 +2,7 @@ export type ExampleSectionId =
   | 'basic'
   | 'model'
   | 'toolbars'
+  | 'modules'
   | 'themes'
   | 'read-only'
   | 'events'
@@ -35,6 +36,7 @@ export const requiredCoverage = [
   'basic usage',
   'configuration variations',
   'toolbar customization',
+  'custom modules',
   'v-model:content',
   'read-only mode',
   'placeholder usage',
@@ -66,6 +68,13 @@ export const exampleSections: ExampleSection[] = [
     description:
       'Switch between a built-in preset, an inline toolbar array, and a custom slot toolbar.',
     coverage: ['configuration variations', 'toolbar customization'],
+  },
+  {
+    id: 'modules',
+    title: 'Modules',
+    description:
+      'Register a custom Quill module through the modules prop and pass per-instance options.',
+    coverage: ['custom modules', 'configuration variations'],
   },
   {
     id: 'themes',

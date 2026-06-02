@@ -21,11 +21,6 @@ updates:
       interval: weekly
     open-pull-requests-limit: 10
   - package-ecosystem: npm
-    directory: /demo
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 10
-  - package-ecosystem: npm
     directory: /examples/vite-app
     schedule:
       interval: weekly

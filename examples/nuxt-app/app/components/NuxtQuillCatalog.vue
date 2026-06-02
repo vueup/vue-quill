@@ -42,6 +42,35 @@ type EditorChangePayload = {
   source?: string
 }
 
+type WordCounterMetrics = {
+  words: number
+  characters: number
+}
+
+type WordCounterOptions = {
+  onUpdate?: (metrics: WordCounterMetrics) => void
+}
+
+type WordCounterQuill = {
+  getText: () => string
+  on: (eventName: 'text-change', handler: () => void) => void
+}
+
+class WordCounterModule {
+  constructor(quill: WordCounterQuill, options: WordCounterOptions = {}) {
+    const update = () => {
+      const text = quill.getText().replace(/\s+/g, ' ').trim()
+      options.onUpdate?.({
+        words: text ? text.split(' ').length : 0,
+        characters: text.length,
+      })
+    }
+
+    quill.on('text-change', update)
+    update()
+  }
+}
+
 const getSection = (id: ExampleSectionId) => {
   const section = exampleSections.find((item) => item.id === id)
   if (!section) throw new Error(`Missing Vue Quill example section: ${id}`)
@@ -51,6 +80,7 @@ const getSection = (id: ExampleSectionId) => {
 const basicSection = getSection('basic')
 const modelSection = getSection('model')
 const toolbarSection = getSection('toolbars')
+const modulesSection = getSection('modules')
 const themesSection = getSection('themes')
 const readOnlySection = getSection('read-only')
 const eventsSection = getSection('events')
@@ -84,6 +114,20 @@ const activeToolbarDescription = computed(() => {
   return toolbarExamples.find((toolbar) => toolbar.id === activeToolbarId.value)
     ?.description
 })
+
+const moduleContent = ref(
+  '<h3>Release notes</h3><p>Custom modules can observe the editor and receive options from each Vue component instance.</p>',
+)
+const moduleMetrics = ref<WordCounterMetrics>({ words: 0, characters: 0 })
+const wordCounterModule = {
+  name: 'wordCounter',
+  module: WordCounterModule,
+  options: {
+    onUpdate: (metrics: WordCounterMetrics) => {
+      moduleMetrics.value = metrics
+    },
+  },
+}
 
 const activeTheme = ref<ThemeValue>('snow')
 const themedContent = ref(
@@ -355,6 +399,42 @@ const submitContent = () => {
             </div>
           </template>
         </QuillEditor>
+      </ExampleCard>
+
+      <ExampleCard
+        id="modules"
+        :title="modulesSection.title"
+        :description="modulesSection.description"
+      >
+        <div class="split-panel split-panel--compact">
+          <div class="editor-stack">
+            <QuillEditor
+              v-model:content="moduleContent"
+              content-type="html"
+              theme="snow"
+              toolbar="minimal"
+              :modules="wordCounterModule"
+              placeholder="Edit content to update custom module metrics..."
+            />
+          </div>
+          <div class="preview-panel metrics-panel">
+            <h3>Module output</h3>
+            <dl>
+              <div>
+                <dt>Words</dt>
+                <dd>{{ moduleMetrics.words }}</dd>
+              </div>
+              <div>
+                <dt>Characters</dt>
+                <dd>{{ moduleMetrics.characters }}</dd>
+              </div>
+            </dl>
+            <p>
+              The module is registered as <code>modules/wordCounter</code> and
+              receives an <code>onUpdate</code> option.
+            </p>
+          </div>
+        </div>
       </ExampleCard>
 
       <ExampleCard

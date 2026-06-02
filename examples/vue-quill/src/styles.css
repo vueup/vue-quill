@@ -73,7 +73,7 @@
 
 .section-index {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 10px;
   margin-bottom: 24px;
 }
@@ -206,6 +206,39 @@
   max-width: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.metrics-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.metrics-panel dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.metrics-panel dl div {
+  padding: 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.metrics-panel dt {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.metrics-panel dd {
+  margin: 4px 0 0;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-weight: 800;
 }
 
 .button-row,

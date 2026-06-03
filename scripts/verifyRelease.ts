@@ -23,6 +23,9 @@
 
   logger.header(target, 'VERIFY RELEASE')
 
+  const readmePath: string = path.resolve(pkgDir, 'README.md')
+  checkReadmeFile(`${target} readme`, readmePath)
+
   // verify package main entry (index.js)
   const mainEntryPath: string = path.resolve(pkgDir, pkg.main)
   checkBuildFile(`${target} main`, mainEntryPath)
@@ -79,6 +82,36 @@
           `✖  The file ${chalk.underline(buildPath)} file does not exist.`,
         )
         errors.push(`Missing file: ${buildPath}`)
+      }
+    } catch (err: any) {
+      logger.error(target, err)
+      errors.push(err.message || 'Unknown error')
+    }
+  }
+
+  function checkReadmeFile(target: string, readmePath: string) {
+    try {
+      if (!fs.existsSync(readmePath)) {
+        logger.error(
+          target,
+          `✖  The file ${chalk.underline(readmePath)} file does not exist.`,
+        )
+        errors.push(`Missing README: ${readmePath}`)
+        return
+      }
+
+      const readme: string = fs.readFileSync(readmePath, 'utf8').trim()
+      if (readme.length) {
+        logger.success(
+          target,
+          `✔  The file ${chalk.underline(readmePath)} exists and is not empty.`,
+        )
+      } else {
+        logger.error(
+          target,
+          `✖  The file ${chalk.underline(readmePath)} file is empty.`,
+        )
+        errors.push(`Empty README: ${readmePath}`)
       }
     } catch (err: any) {
       logger.error(target, err)

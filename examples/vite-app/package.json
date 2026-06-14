@@ -24,7 +24,7 @@
     "test:ssr:pages": "npm run build:ssr:pages && node scripts/smoke-ssr-pages.mjs"
   },
   "dependencies": {
-    "@vue/server-renderer": "^3.5.35",
+    "@vue/server-renderer": "^3.5.38",
     "@vueup/vue-quill": "^1.4.0",
     "express": "^5.2.1",
     "vue": "^3.5.35"

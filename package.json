@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@microsoft/api-extractor": "~7.58.7",
+    "@microsoft/api-extractor": "~7.58.9",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",

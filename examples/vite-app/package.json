@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@vue/server-renderer": "^3.5.38",
-    "@vueup/vue-quill": "^1.5.4",
+    "@vueup/vue-quill": "^1.5.5",
     "express": "^5.2.1",
     "vue": "^3.5.38"
   },

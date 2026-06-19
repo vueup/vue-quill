@@ -1,7 +1,7 @@
 # Methods
 
 ::: warning
-We highly recommend to call method when the quill editor ready, use @ready event
+Call component methods after the Quill editor is ready. Use the `@ready` event when you need direct access to the Quill instance.
 :::
 
 ## getEditor()
@@ -53,9 +53,9 @@ We highly recommend to call method when the quill editor ready, use @ready event
 
   To import raw HTML from a non-Quill environment.
 
-  ## focus()
+## focus()
 
-  Focuses the editor.
+Focuses the editor.
 
 ## getText(index, length)
   

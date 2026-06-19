@@ -2,6 +2,9 @@
 
 `QuillEditor` : The Quill Editor Component.
 
+`Delta` : The Quill Delta constructor, useful for creating Delta content for
+`v-model:content`.
+
 `Quill` : The `Quill` namespace on which you can call `register`. In SSR
 applications, access other Quill APIs after the browser loads Quill.
 
@@ -12,15 +15,15 @@ browser-only lifecycle hooks such as `onMounted`.
 available.
 
 ```js
-export { QuillEditor, Quill, loadQuill, getLoadedQuill }
+export { QuillEditor, Delta, Quill, loadQuill, getLoadedQuill }
 ```
 
 # Import
 
 ```javascript
 // ES6
-import { QuillEditor, Quill, loadQuill } from '@vueup/vue-quill'
+import { QuillEditor, Delta, Quill, loadQuill } from '@vueup/vue-quill'
 
 // CommonJS
-const { QuillEditor, Quill, loadQuill } = require('@vueup/vue-quill')
+const { QuillEditor, Delta, Quill, loadQuill } = require('@vueup/vue-quill')
 ```

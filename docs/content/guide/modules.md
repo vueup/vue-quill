@@ -3,11 +3,11 @@ Modules allow Quill’s behavior and functionality to be customized. To enable a
 
 ## Example
 
-In this example I am gonna use [quill-blot-formatter2](https://github.com/enzedonline/quill-blot-formatter2), a Quill 2-compatible module for resizing and realigning images and iframe video.
+This example uses [quill-blot-formatter2](https://github.com/enzedonline/quill-blot-formatter2), a Quill 2-compatible module for resizing and realigning images and iframe video.
 
 **Installation:**
 
-``` bash
+```bash
 npm install --save @enzedonline/quill-blot-formatter2
 # OR
 yarn add @enzedonline/quill-blot-formatter2
@@ -42,12 +42,13 @@ export default defineComponent({
 })
 </script>
 ```
-## Example using quill-image-uploader
-In this example I am gonna use [quill-image-uploader](https://github.com/NoelOConnell/quill-image-uploader), A module for Quill rich text editor to allow images to be uploaded to a server instead of being base64 encoded.
+## Example Using quill-image-uploader
+
+This example uses [quill-image-uploader](https://github.com/NoelOConnell/quill-image-uploader), a module for uploading images to a server instead of embedding them as base64 strings.
 
 
 **Installation:**
-``` bash
+```bash
 npm install quill-image-uploader --save
 ```
 **Usage:**
@@ -58,11 +59,10 @@ npm install quill-image-uploader --save
 </template>
 
 <script>
-import { ref, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
+import ImageUploader from 'quill-image-uploader'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import ImageUploader from 'quill-image-uploader';
-import axios from '../lib/axios';
 
 export default defineComponent({
   components: {
@@ -70,27 +70,26 @@ export default defineComponent({
   },
   setup: () => {
     const modules = {
-        name: 'imageUploader',
-        module: ImageUploader,
-        options: {
-          upload: file => {
-            return new Promise((resolve, reject) => {
-              const formData = new FormData();
-              formData.append("image", file);
+      name: 'imageUploader',
+      module: ImageUploader,
+      options: {
+        upload: async (file) => {
+          const formData = new FormData()
+          formData.append('image', file)
 
-              axios.post('/upload-image', formData)
-              .then(res => {
-                console.log(res)
-                resolve(res.data.url);
-              })
-              .catch(err => {
-                reject("Upload failed");
-                console.error("Error:", err)
-              })
-            })
-          }
+          const response = await fetch('/upload-image', {
+            method: 'POST',
+            body: formData,
+          })
+          const data = await response.json()
+
+          return data.url
+        },
+      },
+    }
+
     return { modules }
-  }
+  },
 })
 </script>
 ```
@@ -135,7 +134,7 @@ const options = {
 ## Quill Modules
 
 - [quill-autoformat](https://github.com/weavy/quill-autoformat) - Module for transforming text including mentions, links and hashtags
-- [quill-better-table](https://github.com/soccerloway/quill-better-table) - A module for table editting, support resizing column, multiline cell, merging/unmerging cells
+- [quill-better-table](https://github.com/soccerloway/quill-better-table) - A module for table editing, column resizing, multiline cells, and merging/unmerging cells
 - [quill-blot-formatter2](https://github.com/enzedonline/quill-blot-formatter2) - Quill 2-compatible module for resizing and realigning images and iframe videos
 - [quill-cursors](https://github.com/reedsy/quill-cursors) - A multi cursor module for Quill text editor
 - [quill-emoji](https://github.com/contentco/quill-emoji) - Quill module toolbar extension for emoji

@@ -2,10 +2,12 @@
 
 ## In The Browser
 
-Register the component in your javascript:
+Register the component with a Vue 3 app instance:
 
 ```js
-Vue.component('QuillEditor', VueQuill.QuillEditor);
+const app = Vue.createApp({})
+app.component('QuillEditor', VueQuill.QuillEditor)
+app.mount('#app')
 ```
 
 Basic Usage:
@@ -23,26 +25,30 @@ We're showing you a simple example here, but in a typical Vue application, we us
 
 **Global Registration:**
 
-``` javascript
+```javascript
 import { createApp } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import App from './App.vue'
 
-const app = createApp()
+const app = createApp(App)
 app.component('QuillEditor', QuillEditor)
+app.mount('#app')
 ```
 
 **or Local Registration:**
 
-``` javascript
+```vue
+<script>
 import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 export default {
   components: {
     QuillEditor
   }
 }
+</script>
 ```
 
 **Basic Usage:**

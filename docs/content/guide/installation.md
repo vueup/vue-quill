@@ -1,7 +1,7 @@
 # Installation
 
 ::: tip TIP
-This guide assumes intermediate-level knowledge of Vue 3. If you are totally new to Vue 3, grasp the [Basics of Vue 3](https://v3.vuejs.org/guide/introduction.html) first and then come back, but is not required.
+This guide assumes intermediate-level knowledge of Vue 3. If you are new to Vue 3, start with the [Vue introduction](https://vuejs.org/guide/introduction.html) and then come back.
 :::
 
 ## CDN
@@ -12,7 +12,7 @@ VueQuill ships as a UMD module that is accessible in the browser. When loaded in
 
 ```html
 <!-- include VueJS first -->
-<script src="https://unpkg.com/vue@next"></script>
+<script src="https://unpkg.com/vue@3"></script>
 
 <!-- use the latest VueQuill release -->
 <script src="https://unpkg.com/@vueup/vue-quill@latest"></script>

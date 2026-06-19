@@ -7,10 +7,10 @@ titleTemplate: Rich Text Editor Component for Vue 3
 hero:
   name: VueQuill
   text: Rich Text Editor for Vue 3
-  tagline: VueQuill is a Component for building rich text editors, powered by Vue 3 and Quill.
+  tagline: VueQuill is a component for building rich text editors, powered by Vue 3 and Quill.
   image:
     src: /quill.svg
-    alt: Vite
+    alt: Vue and Quill logo
   actions:
     - theme: brand
       text: Get Started
@@ -24,7 +24,7 @@ features:
     title: Built With Vue 3
     details: More powerful and performant framework than ever before.
   - icon: 🧙‍♂️
-    title: Fully Typescript
+    title: Fully TypeScript
     details: VueQuill source code is written entirely in TypeScript.
   - icon: 🛠️
     title: Easy To Use

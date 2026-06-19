@@ -34,11 +34,48 @@
 
 ## 🔎 Overview
 
-**VueQuill** is a **Component** for building rich text editors, powered by Vue 3 and Quill.
+**VueQuill** is a Vue 3 component for building rich text editors with [Quill](https://quilljs.com/).
 
 - 💚 **Built With Vue 3:** More powerful and performant framework than ever before.
-- 🧙‍♂️ **Fully Typescript:** VueQuill source code is written entirely in TypeScript.
+- 🧙‍♂️ **Fully TypeScript:** VueQuill source code is written entirely in TypeScript.
 - 🛠️ **Easy To Use:** Straightforward implementation through a simple API.
+- 📦 **Quill 2 Ready:** Includes Quill 2 as a dependency and exposes the underlying Quill instance when you need it.
+- 🖥️ **SSR Friendly:** Can be imported in Vue SSR applications and initializes Quill in the browser.
+
+## 🚀 Quick Start
+
+Install VueQuill with your package manager:
+
+```bash
+npm install @vueup/vue-quill@latest
+# or
+yarn add @vueup/vue-quill@latest
+# or
+pnpm add @vueup/vue-quill@latest
+```
+
+Use the component in a Vue single-file component and import the theme stylesheet you want:
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+const content = ref('<p>Hello VueQuill!</p>')
+</script>
+
+<template>
+  <QuillEditor
+    v-model:content="content"
+    content-type="html"
+    theme="snow"
+    toolbar="minimal"
+  />
+</template>
+```
+
+That is enough for a basic editor. Remember to import a theme stylesheet (`snow` or `bubble`) and set `content-type` when binding HTML or plain text content.
 
 ## 📚 Documentation
 
@@ -57,14 +94,6 @@
 	- [📢 Methods](https://vueup.github.io/vue-quill/api/methods.html)
 	- [🔌 Slots](https://vueup.github.io/vue-quill/api/slots.html)
 	- [↗️ Export](https://vueup.github.io/vue-quill/api/export.html)
-
-## ☑️ To do list
-
-- [x] Release `alpha` version
-- [x] Release `beta` version
-- [x] Stable `v1.0.0` release
-- [x] Enhance Typescript support with Vue 3
-- [ ] Update the Documentation with more examples and more information
 
 ## 👏 Contributing
 

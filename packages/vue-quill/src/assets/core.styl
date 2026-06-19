@@ -20,9 +20,12 @@ resets(arr)
 .ql-container.ql-disabled
   .ql-tooltip
     visibility: hidden
-  .ql-editor
-    ul[data-checked] > li::before
-      pointer-events: none
+
+.ql-container:not(.ql-disabled)
+  li[data-list=checked],
+  li[data-list=unchecked]
+    > .ql-ui
+      cursor: pointer
 
 .ql-clipboard
   left: -100000px
@@ -36,6 +39,7 @@ resets(arr)
 
 .ql-editor
   box-sizing: border-box
+  counter-reset: resets(0..MAX_INDENT)
   line-height: 1.42
   height: 100%
   outline: none
@@ -49,59 +53,68 @@ resets(arr)
   > *
     cursor: text
 
-  p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6
+  p, ol, pre, blockquote, h1, h2, h3, h4, h5, h6
     margin: 0
     padding: 0
-    counter-reset: resets(1..MAX_INDENT)
-  ol, ul
-    padding-left: 1.5em
-  ol > li, ul > li
-    list-style-type: none
-  ul > li::before
-    content: '\2022'
-  ul[data-checked=true],
-  ul[data-checked=false]
-    pointer-events: none
-    > li *
-      pointer-events: all
-    > li::before
-      color: #777
-      cursor: pointer
-      pointer-events: all
-  ul[data-checked=true] > li::before
-    content: '\2611'
-  ul[data-checked=false] > li::before
-    content: '\2610'
-  li::before
-    display: inline-block
-    white-space: nowrap
-    width: LIST_STYLE_WIDTH
-  li:not(.ql-direction-rtl)::before
-    margin-left: -1*LIST_STYLE_OUTER_WIDTH
-    margin-right: LIST_STYLE_MARGIN
-    text-align: right
-  li.ql-direction-rtl::before
-    margin-left: LIST_STYLE_MARGIN
-    margin-right: -1*LIST_STYLE_OUTER_WIDTH
-  ol, ul
-    li:not(.ql-direction-rtl)
-      padding-left: LIST_STYLE_OUTER_WIDTH
-    li.ql-direction-rtl
-      padding-right: LIST_STYLE_OUTER_WIDTH
+  p, h1, h2, h3, h4, h5, h6
+    @supports (counter-set: none)
+      counter-set: resets(0..MAX_INDENT)
+    @supports not (counter-set: none)
+      counter-reset: resets(0..MAX_INDENT)
+  table
+    border-collapse: collapse
+  td
+    border: 1px solid #000
+    padding: 2px 5px
   ol
-    li
+    padding-left: 1.5em
+  li
+    list-style-type: none
+    padding-left: LIST_STYLE_OUTER_WIDTH
+    position: relative
+
+    > .ql-ui:before
+      display: inline-block
+      margin-left: -1*LIST_STYLE_OUTER_WIDTH
+      margin-right: LIST_STYLE_MARGIN
+      text-align: right
+      white-space: nowrap
+      width: LIST_STYLE_WIDTH
+
+  li[data-list=checked],
+  li[data-list=unchecked]
+    > .ql-ui
+      color: #777
+
+  li[data-list=bullet] > .ql-ui:before
+    content: '\2022'
+  li[data-list=checked] > .ql-ui:before
+    content: '\2611'
+  li[data-list=unchecked] > .ql-ui:before
+    content: '\2610'
+
+  li[data-list]
+    @supports (counter-set: none)
+      counter-set: resets(1..MAX_INDENT)
+    @supports not (counter-set: none)
       counter-reset: resets(1..MAX_INDENT)
-      counter-increment: unquote('list-0')
-      &:before
-        content: unquote('counter(list-0, ' + LIST_STYLE[0] + ')') '. '
-    for num in (1..MAX_INDENT)
-      li.ql-indent-{num}
-        counter-increment: unquote('list-' + num)
-        &:before
-          content: unquote('counter(list-' + num + ', ' + LIST_STYLE[num%3] + ')') '. '
-      if (num < MAX_INDENT)
-        li.ql-indent-{num}
+
+  li[data-list=ordered]
+    counter-increment: list-0
+    > .ql-ui:before
+      content: unquote('counter(list-0, ' + LIST_STYLE[0] + ')') '. '
+  for num in (1..MAX_INDENT)
+    li[data-list=ordered].ql-indent-{num}
+      counter-increment: unquote('list-' + num)
+      > .ql-ui:before
+        content: unquote('counter(list-' + num + ', ' + LIST_STYLE[num%3] + ')') '. '
+    if (num < MAX_INDENT)
+      li[data-list].ql-indent-{num}
+        @supports (counter-set: none)
+          counter-set: resets((num+1)..MAX_INDENT)
+        @supports not (counter-set: none)
           counter-reset: resets((num+1)..MAX_INDENT)
+
   for num in (1..MAX_INDENT)
     .ql-indent-{num}:not(.ql-direction-rtl)
       padding-left: (3*num)em
@@ -111,6 +124,22 @@ resets(arr)
       padding-right: (3*num)em
     li.ql-indent-{num}.ql-direction-rtl.ql-align-right
       padding-right: (3*num + LIST_STYLE_OUTER_WIDTH)em
+
+  li.ql-direction-rtl
+    padding-right: LIST_STYLE_OUTER_WIDTH
+    > .ql-ui:before
+      margin-left: LIST_STYLE_MARGIN
+      margin-right: -1*LIST_STYLE_OUTER_WIDTH
+      text-align: left
+
+  table
+    table-layout: fixed
+    width: 100%
+    td
+      outline: none
+
+  .ql-code-block-container
+    font-family: monospace
 
   .ql-video
     display: block
@@ -172,6 +201,9 @@ resets(arr)
     text-align: justify
   .ql-align-right
     text-align: right
+
+  .ql-ui
+    position: absolute
 
 .ql-editor.ql-blank::before
   color: rgba(0,0,0,0.6)

@@ -12,14 +12,14 @@
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.11",
-    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/postcss": "^4.3.1",
     "autoprefixer": "^10.5.0",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
-    "tailwindcss": "^4.3.0",
+    "tailwindcss": "^4.3.1",
     "types-quill-delta": "^1.0.0",
     "vitepress": "^2.0.0-alpha.17",
-    "vue": "^3.5.35"
+    "vue": "^3.5.38"
   },
   "dependencies": {
     "@vueup/vue-quill": "file:../packages/vue-quill"

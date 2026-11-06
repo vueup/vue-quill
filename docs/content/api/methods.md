@@ -39,13 +39,13 @@ Call component methods after the Quill editor is ready. Use the `@ready` event w
   
 - **Return:** `html: string`
 
-  Returns the full HTML contents of the editor.
+  Returns the full HTML contents of the editor, as returned by Quill's [`getSemanticHTML()`](https://quilljs.com/docs/api#getsemantichtml). Lists are returned as `<ul>`/`<ol>`, and empty lines (including an empty editor) are returned as `<p></p>`. This is also the value emitted by `v-model:content` when `contentType` is `html`.
 
-## setHTML(html)
+## setHTML(html, source)
 
-- **Parameter:** `html: string`
+- **Parameter:** `html: string, source: 'api' | 'user' | 'silent'`
 
-  To set the HTML contents of the editor.
+  To set the HTML contents of the editor. The HTML is converted by Quill's clipboard module, so it is normalized to the formats Quill supports.
   
 ## pasteHTML(html, source)
 

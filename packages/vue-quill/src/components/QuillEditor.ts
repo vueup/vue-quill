@@ -353,11 +353,11 @@ export const QuillEditor = defineComponent({
     }
 
     const getHTML = (): string => {
-      return quill?.root.innerHTML ?? ''
+      return quill?.getSemanticHTML() ?? ''
     }
 
-    const setHTML = (html: string) => {
-      if (quill) quill.root.innerHTML = html
+    const setHTML = (html: string, source: EmitterSource = 'api') => {
+      pasteHTML(html, source)
     }
 
     const pasteHTML = (html: string, source: EmitterSource = 'api') => {
